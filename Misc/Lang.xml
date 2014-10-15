@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="LANudo.Textos[]">
+    <Item>
+      <Idioma>Português</Idioma>
+      <ISO>pt</ISO>
+      <NovoJogo>Novo Jogo</NovoJogo>
+      <Config>Configurações</Config>
+      <Sair>Sair</Sair>
+    </Item>
+    <Item>      
+	 <Idioma>English</Idioma>
+      <ISO>en</ISO>
+	 <NovoJogo>New Game</NovoJogo>
+      <Config>Settings</Config>
+      <Sair>Quit</Sair>
+    </Item>
+  </Asset>
+</XnaContent>  

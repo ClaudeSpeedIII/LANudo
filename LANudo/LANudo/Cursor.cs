@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
+namespace LANudo
+{
+    public class Cursor
+    {
+        SpriteBatch desenhista;
+        Texture2D ratoNormal;
+        Texture2D ratoPressionado;
+        Texture2D ratoAtual;
+        Rectangle posAtual;
+        Vector2 offSet;
+        Color corAtual;
+
+        public Color Cor
+        {
+            get { return corAtual; }
+            set { corAtual = value; }
+        }
+
+        bool ativo;
+
+        public bool Ativado() { return ativo; }
+
+        public void Ativar() { ativo = true; }
+
+        public void Desativar() { ativo = true; }
+
+        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado, Vector2 _offSet)
+        {
+            desenhista = _desenhista;
+            ratoNormal = _ratoNormal;
+            ratoPressionado = _ratoPressionado;
+            offSet = _offSet;
+            corAtual = Color.White;
+            ativo = false;
+        }
+
+        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado)
+        {
+            desenhista = _desenhista;
+            ratoNormal = _ratoNormal;
+            ratoPressionado = _ratoPressionado;
+            offSet = new Vector2(0f, 0f);
+            corAtual = Color.White;
+            ativo = false;
+        }
+
+        public void Atualizar()
+        {
+            if (ativo)
+            {
+                MouseState rato = Mouse.GetState();
+                if (rato.LeftButton == ButtonState.Pressed)
+                {
+                    ratoAtual = ratoPressionado;
+                }
+                else
+                {
+                    ratoAtual = ratoNormal;
+                }
+                posAtual = new Rectangle(Convert.ToInt16(rato.X + offSet.X), Convert.ToInt16(rato.Y + offSet.Y), ratoAtual.Width, ratoAtual.Height);
+            }
+        }
+
+        public void Desenhar()
+        {
+            if (ativo)
+            {
+                desenhista.Draw(ratoAtual, posAtual, corAtual);
+            }
+        }
+    }
+
+}
+
