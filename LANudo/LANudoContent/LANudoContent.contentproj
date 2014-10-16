@@ -42,13 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arial.spritefont">
-      <Name>Arial</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Botao.jpg">
       <Name>Botao</Name>
     </Compile>
@@ -66,6 +59,11 @@
     </Compile>
     <Compile Include="Seta.png">
       <Name>Seta</Name>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArialSavino.spritefont">
+      <Name>ArialSavino</Name>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

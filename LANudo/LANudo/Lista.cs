@@ -17,9 +17,8 @@ namespace LANudo
         SpriteFont fonte;
         Texture2D fundo;
         Texture2D fundoMouse;
-        Texture2D fundoSeta;
-        Texture2D fundoSetaMouse;
         Texture2D seta;
+        Texture2D fundoSeta;
         int tamanho;
         float escala;
         Vector2 posicao;
@@ -39,43 +38,28 @@ namespace LANudo
 
         public void Desativar() { ativo = true; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, float _escalaTexto, bool _dropDown = true, bool _vertical = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _tamanho, float _escalaTexto = 1f, bool _dropDown = true, bool _vertical = true)
         {
             desenhista = _desenhista;
-            itens = _elementos;
             fonte = _fonte;
+            itens = _elementos;
+
             fundo = _fundo;
             fundoMouse = _fundoMouseOver;
             fundoSeta = _fundoSeta;
+            seta = _seta;
+
+            dropDown = _dropDown;
+            vertical = _vertical;
 
             coresDeselecionado = _coresDeselecionado;
             coresSelecionado = _coresSelecionado;
             coresVazio = _coresVazio;
+            coresSeta = _coresSeta;
 
+            tamanho = _tamanho;
             posicao = _posicao;
             escala = _escala;
-            vertical = _vertical;
-            escalaTexto = _escalaTexto;
-
-            ativo = false;
-        }
-
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, Texture2D _fundo, Texture2D _fundoSeta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, float _escalaTexto, bool _dropDown = true, bool _vertical = true)
-        {
-            desenhista = _desenhista;
-            itens = _elementos;
-            fonte = _fonte;
-            fundo = _fundo;
-            fundoMouse = null;
-            fundoSeta = _fundoSeta;
-
-            coresDeselecionado = _coresDeselecionado;
-            coresSelecionado = _coresSelecionado;
-            coresVazio = _coresVazio;
-
-            posicao = _posicao;
-            escala = _escala;
-            vertical = _vertical;
             escalaTexto = _escalaTexto;
 
             ativo = false;

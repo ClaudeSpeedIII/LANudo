@@ -24,7 +24,7 @@ namespace LANudo
         private static Textos idiomaAtual = new Textos(); public static Textos Textos { get { return idiomaAtual; } }
 
 
-        public void SetaIdioma(string iso6391)
+        public void SetaIdioma(string iso6391, string fail)
         {
             if (iso6391 == "auto")
             {
@@ -32,6 +32,7 @@ namespace LANudo
                 {
                     if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) { idiomaAtual = idioma; break; }
                 }
+                return;
             }
             else
             {
@@ -39,6 +40,11 @@ namespace LANudo
                 {
                     if (idioma.ISO == iso6391) { idiomaAtual = idioma; break; }
                 }
+                return;
+            }
+            foreach (Textos idioma in locale.Idiomas)
+            {
+                if (idioma.ISO == fail) { idiomaAtual = idioma; break; }
             }
         }
 
@@ -138,8 +144,8 @@ namespace LANudo
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            locale = new Localizacao(Constantes.caminho_idiomas());
-            SetaIdioma(Constantes.idioma_padrao());
+            locale = new Localizacao(Constantes.caminho_idiomas(), Content.Load<SpriteFont>(Constantes.caminho_fonte()));
+            SetaIdioma(Constantes.idioma_inicial(), Constantes.idioma_emergencia());
             rato = new Cursor(
                 spriteBatch,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),

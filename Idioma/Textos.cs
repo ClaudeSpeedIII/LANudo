@@ -29,8 +29,9 @@ namespace Idioma
             {
                 return textos.Element(codigo).Value;
             }
-            catch (Exception e)
+            catch (Exception erro)
             {
+                Console.WriteLine("Requisitado código inexistente no arquivo de idioma atual " + erro.Message);
                 return "STRING FAIL";
             }
         }

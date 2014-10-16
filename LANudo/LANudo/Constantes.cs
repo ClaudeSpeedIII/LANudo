@@ -9,7 +9,7 @@ namespace LANudo
     public static class Constantes
     {
         //***Caminhos***
-        public static string caminho_fonte() { return "Arial"; }
+        public static string caminho_fonte() { return "ArialHumberto"; }
         public static string caminho_logo_menu() { return "LogoMenu"; }
         public static string caminho_rato() { return "Cursor"; }
         public static string caminho_rato_apertado() { return "CursorApertado"; }
@@ -23,7 +23,8 @@ namespace LANudo
         public static int resolucao_x() { return 800; }
         public static int resolucao_y() { return 600; }
         public static bool janela() { return true; }
-        public static string idioma_padrao() { return "en";} //Código ISO 639-1 de dois digitos, ou então "auto" pra usar o do sistema
+        public static string idioma_inicial() { return "pt"; } //Código ISO 639-1 de dois digitos, ou então "auto" pra usar o do sistema
+        public static string idioma_emergencia() { return "en"; } //Código ISO 639-1 de dois digitos, auto não é permitido visto que é usado na falha do auto
         public static Color cor_P1() { return Color.Blue; }
         public static Color cor_P2() { return Color.Yellow; }
         public static Color cor_P3() { return Color.Green; }

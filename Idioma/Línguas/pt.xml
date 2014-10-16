@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Língua>
+ï»¿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<LÃ­ngua>
 	<ISO>pt</ISO>
-	<Rotulo>Português</Rotulo>
+	<Rotulo>PortuguÃªs</Rotulo>
 	<Strings>
 		<Novo_Jogo>Novo Jogo</Novo_Jogo>
-		<Config>Configurações</Config>
+		<Config>ConfiguraÃ§Ãµes</Config>
 		<Sair>Sair</Sair>
 	</Strings>
-</Língua>
+</LÃ­ngua>
