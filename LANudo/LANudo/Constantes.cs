@@ -9,7 +9,7 @@ namespace LANudo
     public static class Constantes
     {
         //***Caminhos***
-        public static string caminho_fonte() { return "ArialHumberto"; }
+        public static string caminho_fonte() { return "Arial"; }
         public static string caminho_logo_menu() { return "LogoMenu"; }
         public static string caminho_rato() { return "Cursor"; }
         public static string caminho_rato_apertado() { return "CursorApertado"; }
