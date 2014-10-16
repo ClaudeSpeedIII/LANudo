@@ -122,11 +122,6 @@
     <Compile Include="Recursos.cs" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-=======
-    <Content Include="Game.ico" />
-    <Content Include="GameThumbnail.png" />
->>>>>>> cdc1947b8067a3199897c1652866a9b6d1b50915
     <Content Include="Icon.ico" />
     <Content Include="Thumbnail.png" />
   </ItemGroup>
