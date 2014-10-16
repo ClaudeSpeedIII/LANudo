@@ -9,40 +9,33 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Globalization;
+using System.IO;
+using System.Xml.Linq;
 
 namespace Idioma
 {
     public class Localizacao
     {
 
-        private HashSet<Textos> idiomas = new HashSet<Textos>(); public HashSet<Textos> Idiomas { get { return idiomas; } }
-        private Textos idiomaAtual; public Textos IdiomaAtual { get { return idiomaAtual; } }
+        private HashSet<Textos> idiomas = new HashSet<Textos>();
+        private Textos fail = new Textos();
+        public HashSet<Textos> Idiomas { get { return idiomas; } }
+        public Textos Fail { get { return fail; } }
 
-        public Localizacao(TodosTextos[] xml, string iso6391, out Action<string> Redefine)
+        public Localizacao(string caminho)
         {
-            foreach (TodosTextos textos in xml)
+            foreach (string arquivo in Directory.EnumerateFiles(caminho, "*.xml"))
             {
-                idiomas.Add(new Textos(textos));
-            }
-            SetaIdioma(iso6391);
-            Redefine = SetaIdioma;
-        }
-        private void SetaIdioma(string iso6391)
-        {
-            if (iso6391 == "auto")
-            {
-                foreach (Textos idioma in idiomas)
+                try
                 {
-                    if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) { idiomaAtual = idioma; break; }
+                    XDocument xml = XDocument.Load(arquivo);
+                    idiomas.Add(new Textos(xml.Root.Element("Rotulo").Value, xml.Root.Element("ISO").Value, xml.Root.Element("Strings")));
                 }
-            }
-            else
-            {
-                foreach (Textos idioma in idiomas)
+                catch (Exception error)
                 {
-                    if (idioma.ISO == iso6391) { idiomaAtual = idioma; break; }
                 }
             }
         }
+
     }
 }

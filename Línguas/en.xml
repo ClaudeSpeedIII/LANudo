@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>>
+<Língua>
+	<ISO>en</ISO>
+	<Rotulo>English</Rotulo>
+	<Strings>
+		<Novo_Jogo>New Game</Novo_Jogo>
+		<Config>Settings</Config>
+		<Sair>Quit</Sair>
+	</Strings>
+</Língua>

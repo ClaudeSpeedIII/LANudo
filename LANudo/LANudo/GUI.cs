@@ -21,7 +21,6 @@ namespace LANudo
         Botoes novoJogo;
         Botoes menuInicial;
         Action sair;
-        Action<string> trocaIdioma;
         Cursor rato;
 
         public enum EstadoGUI { intro, inicial, conf, iniciar, pausado, emJogo };
@@ -29,7 +28,7 @@ namespace LANudo
         public static EstadoGUI Estado { get { return estado; } }
 
 
-        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato, Action<string> _trocaIdioma, Action _sair)
+        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato,  Action _sair)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -38,13 +37,12 @@ namespace LANudo
             botao = _botao;
             rato = _rato;
             sair = _sair;
-            trocaIdioma = _trocaIdioma;
 
             //Instancia menu inicial
             menuInicial = new Botoes(desenhista, fonte, botao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true);
-            menuInicial.AdicionaBotao(Motor.Local.IdiomaAtual.NovoJogo, Jogar);
-            menuInicial.AdicionaBotao(Motor.Local.IdiomaAtual.Config, Conf);
-            menuInicial.AdicionaBotao(Motor.Local.IdiomaAtual.Sair, Sair);
+            menuInicial.AdicionaBotao(Motor.Textos.Val("Novo_Jogo"), Jogar);
+            menuInicial.AdicionaBotao(Motor.Textos.Val("Config"), Conf);
+            menuInicial.AdicionaBotao(Motor.Textos.Val("Sair"), Sair);
 
             Redimensionado();
             estado = EstadoGUI.intro;

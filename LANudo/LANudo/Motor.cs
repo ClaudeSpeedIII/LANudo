@@ -20,11 +20,29 @@ namespace LANudo
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private static Action<string> redefineIdioma;
-        private static Localizacao local;
-        public static Localizacao Local { get { return local; } }
+        private Localizacao locale;
+        private static Textos idiomaAtual = new Textos(); public static Textos Textos { get { return idiomaAtual; } }
 
-        private static GameTime tempo;
+
+        public void SetaIdioma(string iso6391)
+        {
+            if (iso6391 == "auto")
+            {
+                foreach (Textos idioma in locale.Idiomas)
+                {
+                    if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) { idiomaAtual = idioma; break; }
+                }
+            }
+            else
+            {
+                foreach (Textos idioma in locale.Idiomas)
+                {
+                    if (idioma.ISO == iso6391) { idiomaAtual = idioma; break; }
+                }
+            }
+        }
+
+        private static GameTime tempo = new GameTime();
         public static GameTime Tempo { get { return tempo; } }
 
         private static bool rodando = true;
@@ -109,7 +127,6 @@ namespace LANudo
 
             base.Initialize();
             this.AtualizaDimensoes();
-            tempo = new GameTime();
         }
 
         /// <summary>
@@ -121,14 +138,14 @@ namespace LANudo
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Precisamos de uma interface
-            ;
+            locale = new Localizacao(Constantes.caminho_idiomas());
+            SetaIdioma(Constantes.idioma_padrao());
             rato = new Cursor(
                 spriteBatch,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
                 Content.Load<Texture2D>(Constantes.caminho_rato_apertado())
                 );
-            local = new Localizacao(Content.Load<TodosTextos[]>(Constantes.caminho_idiomas()), Constantes.idioma_padrao(), out redefineIdioma);
+            //Precisamos de uma interface
             menu = new GUI(
                 spriteBatch,
                 Content.Load<SpriteFont>(Constantes.caminho_fonte()),
@@ -137,7 +154,6 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
                 rato,
-                redefineIdioma,
                 Sair
                 );
             ChecaCorFundo(); ;

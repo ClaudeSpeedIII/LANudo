@@ -68,17 +68,6 @@
       <Name>Seta</Name>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Lang.xml">
-      <Name>Lang</Name>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Idioma\Idioma.csproj">
-      <Project>{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}</Project>
-      <Name>Idioma</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
