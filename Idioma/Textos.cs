@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Idioma
 {
@@ -22,6 +23,7 @@ namespace Idioma
             rotulo = "STRING FAIL";
             iso = "fail";
         }
+
 
         public string Val(string codigo)
         {

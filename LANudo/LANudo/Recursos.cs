@@ -10,6 +10,8 @@ namespace LANudo
     public static class Recursos
     {
 
+        public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception erro) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
+
         public static float RegraDeTres(float A, float B, float C)
         {
             return (B * C) / A;
@@ -61,7 +63,7 @@ namespace LANudo
             return new Rectangle(posicionado.X - escalado.X / 2, posicionado.Y - escalado.Y / 2, escalado.X, escalado.Y);
         }
 
-        public static Vector2 RetanguloCentralizadoNoRetangulo(Rectangle cantosInternos,Rectangle cantosExternos)
+        public static Vector2 RetanguloCentralizadoNoRetangulo(Rectangle cantosInternos, Rectangle cantosExternos)
         {
             return new Vector2((cantosExternos.Left + cantosExternos.Width / 2) - (cantosInternos.Width / 2), (cantosExternos.Top + cantosExternos.Height / 2) - (cantosInternos.Height / 2));
         }

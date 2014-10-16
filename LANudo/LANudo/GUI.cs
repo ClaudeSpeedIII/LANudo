@@ -18,6 +18,7 @@ namespace LANudo
         Texture2D seta;
         Rectangle posLogo;
         Rectangle posIntro;
+        Lista algo;
         Botoes novoJogo;
         Botoes menuInicial;
         Action sair;
@@ -35,6 +36,7 @@ namespace LANudo
             logo = _logo;
             intro = _intro;
             botao = _botao;
+            seta = _seta;
             rato = _rato;
             sair = _sair;
 
@@ -45,6 +47,9 @@ namespace LANudo
             menuInicial.AdicionaBotao(Motor.Textos.Val("Sair"), Sair);
 
             Redimensionado();
+
+            algo = new Lista(desenhista,fonte,,botao,null,seta,
+
             estado = EstadoGUI.intro;
             ativo = false;
         }
@@ -72,6 +77,7 @@ namespace LANudo
             posLogo = Recursos.RetanguloRelativamenteDeslocado(logo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial());
             posIntro = Recursos.RetanguloCentralizado(intro.Bounds, Constantes.escala_logo_intro());
             menuInicial.Redimensionado();
+            algo.Redimensionado();
         }
 
         public void Atualizar()
@@ -83,6 +89,7 @@ namespace LANudo
                     if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { estado = EstadoGUI.inicial; menuInicial.Ativar(); rato.Ativar(); }
                 }
                 menuInicial.Atualizar();
+                algo.Atualizar();
             }
         }
 
@@ -99,6 +106,7 @@ namespace LANudo
                     desenhista.Draw(intro, posIntro, Color.White); //tela inicial
                 }
                 menuInicial.Desenhar();
+                algo.Desenhar();
 
             }
 

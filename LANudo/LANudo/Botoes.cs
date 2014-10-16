@@ -32,6 +32,7 @@ namespace LANudo
 
         public void Desativar() { ativo = true; }
 
+
         public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
         {
             desenhista = _desenhista;

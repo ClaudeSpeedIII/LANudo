@@ -29,6 +29,7 @@ namespace LANudo
         Rectangle dimensoesTexto;
 
 
+
         bool mouseSobre;
         bool clicouDentro;
         MouseState ratoAnterior;
@@ -45,6 +46,11 @@ namespace LANudo
         public void Ativar() { ativo = true; }
 
         public void Desativar() { ativo = true; }
+
+        bool temMouseSobre;
+        public bool SobreMouse() { return temMouseSobre; }
+        public void AtivarSobreMouse() { temMouseSobre = true; }
+        public void DesativarSobreMouse() { temMouseSobre = false; }
 
         public Rectangle Cantos
         {
@@ -162,6 +168,10 @@ namespace LANudo
             CursorEmVolta();
         }
 
+        public void ZeraEventos()
+        {
+            Clicado = null;
+        }
 
         public void MedeFonte()
         {
@@ -171,9 +181,12 @@ namespace LANudo
 
         public void CursorEmCima()
         {
-            corTextoAtual = cores.CorTextoMouse;
-            corFundoAtual = cores.CorFundoMouse;
-            if (imagemMouseOver != null) { imagemAtual = imagemMouseOver; }
+            if (temMouseSobre)
+            {
+                corTextoAtual = cores.CorTextoMouse;
+                corFundoAtual = cores.CorFundoMouse;
+                if (imagemMouseOver != null) { imagemAtual = imagemMouseOver; }
+            }
         }
 
         public void CursorEmVolta()

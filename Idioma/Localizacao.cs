@@ -16,24 +16,12 @@ namespace Idioma
 {
     public class Localizacao
     {
-        private SpriteFont fonte;
         private HashSet<Textos> idiomas = new HashSet<Textos>();
         private Textos fail = new Textos();
         public HashSet<Textos> Idiomas { get { return idiomas; } }
         public Textos Fail { get { return fail; } }
 
-        public Localizacao(string caminho, SpriteFont _fonte)
-        {
-            fonte = _fonte;
-            Carrega(caminho,true);
-        }
         public Localizacao(string caminho)
-        {
-            Carrega(caminho,false);
-        }
-
-
-        private void Carrega(string caminho, bool fonte)
         {
             foreach (string arquivo in Directory.EnumerateFiles(caminho, "*.xml"))
             {

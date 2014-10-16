@@ -18,8 +18,8 @@ namespace LANudo
     public class Motor : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
+        static SpriteBatch desenhista;
+        static SpriteFont escritor; public static Vector2 MedeTexto(string texto) { try { return escritor.MeasureString(texto); } catch (Exception erro) { throw erro; } }
         private Localizacao locale;
         private static Textos idiomaAtual = new Textos(); public static Textos Textos { get { return idiomaAtual; } }
 
@@ -142,19 +142,20 @@ namespace LANudo
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            desenhista = new SpriteBatch(GraphicsDevice);
+            escritor = Content.Load<SpriteFont>(Constantes.caminho_fonte());
 
-            locale = new Localizacao(Constantes.caminho_idiomas(), Content.Load<SpriteFont>(Constantes.caminho_fonte()));
+            locale = new Localizacao(Constantes.caminho_idiomas());
             SetaIdioma(Constantes.idioma_inicial(), Constantes.idioma_emergencia());
             rato = new Cursor(
-                spriteBatch,
+                desenhista,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
                 Content.Load<Texture2D>(Constantes.caminho_rato_apertado())
                 );
             //Precisamos de uma interface
             menu = new GUI(
-                spriteBatch,
-                Content.Load<SpriteFont>(Constantes.caminho_fonte()),
+                desenhista,
+                escritor,
                 Content.Load<Texture2D>(Constantes.caminho_logo_menu()),
                 Content.Load<Texture2D>(Constantes.caminho_logo_intro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
@@ -200,13 +201,13 @@ namespace LANudo
 
             //Sequencia de "joga na tela"
 
-            spriteBatch.Begin();
+            desenhista.Begin();
 
             menu.Desenhar();
 
             rato.Desenhar();
 
-            spriteBatch.End();
+            desenhista.End();
 
 
 
