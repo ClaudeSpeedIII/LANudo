@@ -62,8 +62,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArialSavino.spritefont">
-      <Name>ArialSavino</Name>
+    <Compile Include="ArialHumberto.png">
+      <Name>ArialHumberto</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>FontTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
