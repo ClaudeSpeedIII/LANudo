@@ -12,10 +12,10 @@ namespace LANudo
 
         bool ativo;
         SpriteBatch desenhista;
-        Texture2D sprite; Texture2D Img { get { return sprite; } set { sprite = value; } }
+        Texture2D sprite; public Texture2D Img { get { return sprite; } set { sprite = value; } }
 
         Rectangle pixel;
-        Vector2 relativo;
+        Vector3 relativo;
         public Rectangle PosPx
         {
             get { return pixel; }
@@ -24,16 +24,14 @@ namespace LANudo
                 pixel = value;
             }
         }
-      /*  public Vector3 PosRel
+        public Vector3 PosRel
         {
-            get { return relativo; }
             set
             {
-                //pixel = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds, new Vector2(value.X, value.Y), value.Z);
+                pixel = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds,  value.Z,new Vector2(value.X, value.Y));
                 relativo = value;
             }
         }
-        */
 
         Color cor = Color.White; Color Cor { get { return cor; } set { cor = value; } }
         public bool Ativado() { return ativo; }
@@ -55,6 +53,22 @@ namespace LANudo
             this.desenhista = desenhista;
             this.sprite = imagem;
             this.pixel = pos;
+            this.ativo = ativo;
+        }
+
+        public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector3 pos, Color cor, bool ativo = true)
+        {
+            this.desenhista = desenhista;
+            this.sprite = imagem;
+            this.cor = cor;
+            this.PosRel = pos;
+            this.ativo = ativo;
+        }
+        public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector3 pos, bool ativo = true)
+        {
+            this.desenhista = desenhista;
+            this.sprite = imagem;
+            this.PosRel = pos;
             this.ativo = ativo;
         }
 

@@ -11,6 +11,8 @@ namespace LANudo
     {
         HashSet<Botao> botoesTodos = new HashSet<Botao>();
         HashSet<Botao> botoesDinamicos = new HashSet<Botao>();
+        Sprite setaSuperior;
+        Sprite setaInferior;
         Botao botaoSuperior;
         Botao botaoInferior;
         HashSet<ElementoLista> itens = new HashSet<ElementoLista>();
@@ -88,6 +90,8 @@ namespace LANudo
                 botaoInferior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
                 botaoSuperior.Clicado += ClicouSobe;
                 botaoInferior.Clicado += ClicouDesce;
+                setaSuperior = new Sprite(desenhista, seta, seta.Bounds);
+                setaInferior = new Sprite(desenhista, seta, seta.Bounds);
 
                 botoesTodos.Add(botaoSuperior);
             }
@@ -281,6 +285,7 @@ namespace LANudo
                         if (first)
                         {
                             tamanho = Recursos.RegraDeTres(Motor.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
+
                             if (dropDown)
                             {
                                 posY -= tamanho / 2;
@@ -290,6 +295,7 @@ namespace LANudo
                                 posY -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
                             }
                             first = false;
+                            //setaSuperior.PosRel(Recursos.RegraDeTres(seta,,));
                         }
                         else
                         {
