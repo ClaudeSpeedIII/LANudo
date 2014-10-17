@@ -30,7 +30,7 @@ namespace LANudo
 
         public void Ativar() { ativo = true; }
 
-        public void Desativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
 
 
         public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
@@ -77,6 +77,7 @@ namespace LANudo
             {
                 temp = new Botao(desenhista, imagem, cores, lugar, escala, fonte, rotulo, escalaTexto, false);
             }
+            temp.AtivarSobreMouse();
             temp.Clicado += acao;
             botoes.Add(temp);
         }

@@ -18,7 +18,7 @@ namespace LANudo
         Texture2D seta;
         Rectangle posLogo;
         Rectangle posIntro;
-        Lista algo;
+        Lista listaAlgo;
         Botoes novoJogo;
         Botoes menuInicial;
         Action sair;
@@ -29,7 +29,7 @@ namespace LANudo
         public static EstadoGUI Estado { get { return estado; } }
 
 
-        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato,  Action _sair)
+        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato, Action _sair)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -46,10 +46,18 @@ namespace LANudo
             menuInicial.AdicionaBotao(Motor.Textos.Val("Config"), Conf);
             menuInicial.AdicionaBotao(Motor.Textos.Val("Sair"), Sair);
 
+            HashSet<string> vetor = new HashSet<string>();
+            vetor.Add("Espaço");
+            vetor.Add("Nuvens");
+            vetor.Add("Superficie");
+            vetor.Add("Metrô");
+            vetor.Add("Lava");
+            vetor.Add("Bedrock");
+            vetor.Add("Void");
+            HashSet<ElementoLista> result = ElementoLista.CriaVariosElementoLista(vetor, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
+            listaAlgo = new Lista(desenhista, fonte, result, Lista.TipoEvento.SelecionavelExternamente, botao, null, botao, seta, Constantes.esquema_cores_lista_seta(), Constantes.esquema_cores_lista_vazia(), Constantes.esquema_cores_lista_inclicavel(), Constantes.esquema_cores_lista_selecionada(), Constantes.esquema_cores_lista_deselecionada(), new Vector2(0.85f, 0.5f), 0.1f, 5, 1f,false, true, true);
+            listaAlgo.Ativar();
             Redimensionado();
-
-            algo = new Lista(desenhista,fonte,,botao,null,seta,
-
             estado = EstadoGUI.intro;
             ativo = false;
         }
@@ -70,14 +78,14 @@ namespace LANudo
 
         public void Ativar() { ativo = true; }
 
-        public void Desativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
 
         public void Redimensionado()
         {
             posLogo = Recursos.RetanguloRelativamenteDeslocado(logo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial());
             posIntro = Recursos.RetanguloCentralizado(intro.Bounds, Constantes.escala_logo_intro());
             menuInicial.Redimensionado();
-            algo.Redimensionado();
+            listaAlgo.Redimensionado();
         }
 
         public void Atualizar()
@@ -89,7 +97,7 @@ namespace LANudo
                     if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { estado = EstadoGUI.inicial; menuInicial.Ativar(); rato.Ativar(); }
                 }
                 menuInicial.Atualizar();
-                algo.Atualizar();
+                listaAlgo.Atualizar();
             }
         }
 
@@ -106,7 +114,7 @@ namespace LANudo
                     desenhista.Draw(intro, posIntro, Color.White); //tela inicial
                 }
                 menuInicial.Desenhar();
-                algo.Desenhar();
+                listaAlgo.Desenhar();
 
             }
 

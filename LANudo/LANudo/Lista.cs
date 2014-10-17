@@ -28,8 +28,10 @@ namespace LANudo
         int tamanho;
         float escala;
         Vector2 posicao;
+        bool temSetas;
         bool vertical;
-        bool destino;
+        public enum TipoEvento { SelecionavelIntermanete, SelecionavelExternamente, Setado };
+        TipoEvento tipo;
         bool dropDown;
         float escalaTexto;
         EsquemaCores coresSeta;
@@ -44,9 +46,9 @@ namespace LANudo
 
         public void Ativar() { ativo = true; }
 
-        public void Desativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _tamanho, float _escalaTexto, bool _destino = true, bool _dropDown = true, bool _vertical = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _tamanho, float _escalaTexto, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -59,7 +61,8 @@ namespace LANudo
 
             dropDown = _dropDown;
             vertical = _vertical;
-            destino = _destino;
+            tipo = _selecionavel;
+            temSetas = _temSetas;
 
             coresDeselecionado = _coresDeselecionado;
             coresSelecionado = _coresSelecionado;
@@ -79,72 +82,106 @@ namespace LANudo
 
         private void InicializaBotoes()
         {
-            botaoSuperior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
-            botaoInferior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
-            botaoSuperior.Clicado += ClicouSobe;
-            botaoInferior.Clicado += ClicouDesce;
+            if (temSetas)
+            {
+                botaoSuperior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
+                botaoInferior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
+                botaoSuperior.Clicado += ClicouSobe;
+                botaoInferior.Clicado += ClicouDesce;
 
-            botoesTodos.Add(botaoSuperior);
-
-            for (int i = 1; i < tamanho; i++)
+                botoesTodos.Add(botaoSuperior);
+            }
+            for (int i = 1; i <= tamanho; i++)
             {
                 Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, " ", escalaTexto, false);
+                botao.OcultaTexto();
+                botao.DesativarSobreMouse();
                 botoesTodos.Add(botao);
+                botoesDinamicos.Add(botao);
             }
-
-            botoesTodos.Add(botaoInferior);
+            if (temSetas)
+            {
+                botoesTodos.Add(botaoInferior);
+            }
         }
-
         public void InicializaItens()
         {
             Rolagem(rolagem);
-            if (itens.Count > botoesDinamicos.Count) { ponto = Ponto.Travado; } else { ponto = Ponto.Inicio; }
+            if (itens.Count <= botoesDinamicos.Count) { pontoAtual = Ponto.Travado; } else { pontoAtual = Ponto.Inicio; }
+            SetaSetas();
         }
 
         enum Ponto { Inicio, Meio, Fim, Travado };
-        Ponto ponto;
+        Ponto pontoAtual;
+        Ponto pontoAnterior = Ponto.Fim;
         Ponto Rolagem(int scroll)
         {
-            if (ponto != Ponto.Travado)
+            if (pontoAtual != Ponto.Travado)
             {
-                int contador = -scroll;
-                ElementoLista item;
+                bool semMais = false;
+                int contador = scroll;
                 foreach (Botao botao in botoesDinamicos)
                 {
-                    try { item = itens.ElementAt(contador + 1); }
-                    catch (Exception erro)
-                    { EsvaziaBotao(botao); return Ponto.Fim; }
+                    if (semMais)
+                    {
+                        EsvaziaBotao(botao);
+                    }
+                    else
+                    {
+                        ElementoLista item = null;
 
-                    try { item = itens.ElementAt(contador); }
-                    catch (Exception erro)
-                    { EsvaziaBotao(botao); return Ponto.Travado; }
-                    SetaBotao(botao, item);
-                    contador++;
+                        try { item = itens.ElementAt(contador); }
+                        catch (Exception erro)
+                        { semMais = true; }
+                        if (item == null)
+                        {
+                            EsvaziaBotao(botao);
+                        }
+                        else
+                        {
+                            SetaBotao(botao, item);
+                        }
+
+                        try { itens.ElementAt(contador + 1); }
+                        catch (Exception erro)
+                        { return Ponto.Fim; }
+                        contador++;
+                    }
                 }
-                if (scroll == 0) { return Ponto.Inicio; } else { return Ponto.Meio; };
+                if (scroll > 0) { return Ponto.Meio; } else { return Ponto.Inicio; }
             }
-            else { return Ponto.Travado; }
+            return Ponto.Travado;
         }
 
         private void EsvaziaBotao(Botao botao)
         {
             botao.Cores = coresVazio;
             botao.DesativarSobreMouse();
+            botao.OcultaTexto();
             botao.ZeraEventos();
         }
 
         private void SetaBotao(Botao botao, ElementoLista item)
         {
-            botao.AtivarSobreMouse();
             botao.Cores = item.CoresDesel;
-            botao.Rotulo = item.Rotulo;
-            if (destino)
+            if (item.Rotulo != null)
             {
-                botao.Clicado += item.Clicado;
+                botao.Rotulo = item.Rotulo; botao.MostraTexto();
             }
-            else
+            switch (tipo)
             {
-                botao.Clicado += Clicou;
+                case TipoEvento.Setado:
+                    botao.Clicado += item.Clicado;
+                    botao.AtivarSobreMouse();
+                    break;
+                case TipoEvento.SelecionavelExternamente:
+                    botao.DesativarSobreMouse();
+                    botao.ZeraEventos();
+                    break;
+                case TipoEvento.SelecionavelIntermanete:
+                    botao.AtivarSobreMouse();
+                    botao.Clicado += Clicou;
+                    break;
             }
         }
 
@@ -164,52 +201,72 @@ namespace LANudo
 
         private void SelecionaBotao(Botao botao)
         {
-            if (botao != null) { botao.Cores = coresSelecionado; }
+            if (botao != null) { botao.Cores = coresSelecionado; botao.DesativarSobreMouse(); }
         }
         private void DeselecionaBotao(Botao botao)
         {
-            if (botao != null) { botao.Cores = coresDeselecionado; }
+            if (botao != null) { botao.Cores = coresDeselecionado; botao.AtivarSobreMouse(); }
         }
 
 
         private void ClicouSobe(Botao remetente)
         {
-            ScrollaPraCima(1);
+            ScrollaPraCima();
         }
 
         private void ClicouDesce(Botao remetente)
         {
-            ScrollaPraBaixo(1);
+            ScrollaPraBaixo();
         }
 
-        private void ScrollaPraCima(int quanto)
+        private void ScrollaPraCima()
         {
-            if (ponto != Ponto.Travado && ponto != Ponto.Inicio)
+            if (pontoAtual != Ponto.Travado && pontoAtual != Ponto.Inicio)
             {
-                Rolagem(rolagem += quanto);
+                rolagem--;
+                pontoAtual = Rolagem(rolagem);
+                SetaSetas();
             }
         }
 
 
-        private void ScrollaPraBaixo(int quanto)
+        private void ScrollaPraBaixo()
         {
-            if (ponto != Ponto.Travado && ponto != Ponto.Fim)
+            if (pontoAtual != Ponto.Travado && pontoAtual != Ponto.Fim)
             {
-                Rolagem(rolagem -= quanto);
+                rolagem++;
+                pontoAtual = Rolagem(rolagem);
+                SetaSetas();
             }
         }
 
-        private void Trava()
-        {
-            ponto = Ponto.Travado;
-            botaoInferior.Cores = coresInclicavel; botaoInferior.DesativarSobreMouse();
-            botaoSuperior.Cores = coresInclicavel; botaoSuperior.DesativarSobreMouse();
-        }
-        private void ColidiuTopo() { ponto = Ponto.Inicio; botaoSuperior.Cores = coresInclicavel; botaoSuperior.DesativarSobreMouse(); }
-        private void LivreTopo() { ponto = Ponto.Meio; botaoSuperior.Cores = coresSeta; botaoSuperior.AtivarSobreMouse(); }
-        private void ColidiuChao() { ponto = Ponto.Fim; botaoInferior.Cores = coresInclicavel; botaoInferior.DesativarSobreMouse(); }
-        private void LivreChao() { ponto = Ponto.Meio; botaoInferior.Cores = coresSeta; botaoInferior.AtivarSobreMouse(); }
 
+        private void SetaSetas()
+        {
+            if (temSetas && pontoAtual != pontoAnterior)
+            {
+                switch (pontoAtual)
+                {
+                    case Ponto.Inicio:
+                        botaoSuperior.Cores = coresInclicavel; botaoSuperior.DesativarSobreMouse();
+                        botaoInferior.Cores = coresSeta; botaoInferior.AtivarSobreMouse();
+                        break;
+                    case Ponto.Meio:
+                        botaoSuperior.Cores = coresSeta; botaoSuperior.AtivarSobreMouse();
+                        botaoInferior.Cores = coresSeta; botaoInferior.AtivarSobreMouse();
+                        break;
+                    case Ponto.Fim:
+                        botaoSuperior.Cores = coresSeta; botaoSuperior.AtivarSobreMouse();
+                        botaoInferior.Cores = coresInclicavel; botaoInferior.DesativarSobreMouse();
+                        break;
+                    case Ponto.Travado:
+                        botaoSuperior.Cores = coresInclicavel; botaoSuperior.DesativarSobreMouse();
+                        botaoInferior.Cores = coresInclicavel; botaoInferior.DesativarSobreMouse();
+                        break;
+                }
+                pontoAnterior = pontoAtual;
+            }
+        }
         public void Redimensionado()
         {
             float tamanho = 0f, posX = posicao.X, posY = posicao.Y;
@@ -226,7 +283,7 @@ namespace LANudo
                             tamanho = Recursos.RegraDeTres(Motor.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
                             if (dropDown)
                             {
-                                posY -= (botoesTodos.Count * tamanho) - (tamanho / 2);
+                                posY -= tamanho / 2;
                             }
                             else
                             {
@@ -244,14 +301,7 @@ namespace LANudo
                         if (first)
                         {
                             tamanho = Recursos.RegraDeTres(Motor.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
-                            if (dropDown)
-                            {
-                                posY -= (botoesTodos.Count * tamanho) - (tamanho / 2);
-                            }
-                            else
-                            {
-                                posX -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
-                            }
+                            posX -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
                             first = false;
                         }
                         else

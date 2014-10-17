@@ -39,11 +39,11 @@ namespace LANudo
         public static Color cor_de_fundo_MenuConf() { return Color.Black; }
 
         //Esquema Cores
-        public static EsquemaCores esquema_cores_lista_deselecionada() { return new EsquemaCores(Color.Black, Color.Black, Color.Black, Color.Black); }
-        public static EsquemaCores esquema_cores_lista_selecionada() { return new EsquemaCores(Color.Black, Color.Black, Color.Black, Color.Black); }
-        public static EsquemaCores esquema_cores_lista_seta() { return new EsquemaCores(Color.Black, Color.Black, Color.Black, Color.Black); }
-        public static EsquemaCores esquema_cores_lista_vazia() { return new EsquemaCores(Color.Black, Color.Black, Color.Black, Color.Black); }
-        public static EsquemaCores esquema_cores_lista_inclicavel() { return new EsquemaCores(Color.Black, Color.Black, Color.Black, Color.Black); }
+        public static EsquemaCores esquema_cores_lista_deselecionada() { return new EsquemaCores(Color.DarkCyan, Color.Cyan); }
+        public static EsquemaCores esquema_cores_lista_selecionada() { return new EsquemaCores(Color.DarkBlue, Color.DarkBlue); }
+        public static EsquemaCores esquema_cores_lista_seta() { return new EsquemaCores(Color.Green, Color.DarkGreen); }
+        public static EsquemaCores esquema_cores_lista_vazia() { return new EsquemaCores(Color.LightGray); }
+        public static EsquemaCores esquema_cores_lista_inclicavel() { return new EsquemaCores(Color.LightGreen); }
         //Botao
 
         public static EsquemaCores esquema_cores_botao() { return new EsquemaCores(Color.Silver, Color.Cyan, Color.White, Color.Silver); }

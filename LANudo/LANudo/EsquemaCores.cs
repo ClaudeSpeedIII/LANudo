@@ -42,6 +42,13 @@ namespace LANudo
             corFundoMouse = _corFundoMouse;
             corTexto = Color.White;
             corTextoMouse = Color.White;
-            }
+        }
+        public EsquemaCores(Color _corFundo)
+        {
+            corFundo = _corFundo;
+            corFundoMouse = _corFundo;
+            corTexto = Color.White;
+            corTextoMouse = Color.White;
+        }
     }
 }

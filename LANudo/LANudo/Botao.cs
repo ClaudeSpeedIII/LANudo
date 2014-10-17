@@ -20,6 +20,7 @@ namespace LANudo
         float tamanho;
         Vector2 posicao;
         EsquemaCores cores;
+        EsquemaCores oldCores;
         Color corTextoAtual;
         Color corFundoAtual;
 
@@ -45,9 +46,15 @@ namespace LANudo
 
         public void Ativar() { ativo = true; }
 
-        public void Desativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
 
-        bool temMouseSobre;
+        public bool TemTexto() { return temTexto; }
+
+        public void MostraTexto() { temTexto = true; }
+
+        public void OcultaTexto() { temTexto = false; }
+
+        bool temMouseSobre = false;
         public bool SobreMouse() { return temMouseSobre; }
         public void AtivarSobreMouse() { temMouseSobre = true; }
         public void DesativarSobreMouse() { temMouseSobre = false; }
@@ -106,6 +113,7 @@ namespace LANudo
             escalaTextoInicial = _escalaTexto;
             clicouDentro = false;
             mouseSobre = false;
+            temMouseSobre = false;
             temTexto = true;
             ativo = true;
             dinamico = _dinamico;
@@ -127,6 +135,7 @@ namespace LANudo
             escalaTextoInicial = _escalaTexto;
             clicouDentro = false;
             mouseSobre = false;
+            temMouseSobre = false;
             temTexto = true;
             ativo = true;
             dinamico = _dinamico;
@@ -144,6 +153,7 @@ namespace LANudo
             tamanho = _tamanho;
             clicouDentro = false;
             mouseSobre = false;
+            temMouseSobre = false;
             temTexto = false;
             ativo = true;
             dinamico = _dinamico;
@@ -161,6 +171,7 @@ namespace LANudo
             tamanho = _tamanho;
             clicouDentro = false;
             mouseSobre = false;
+            temMouseSobre = false;
             temTexto = false;
             ativo = true;
             dinamico = _dinamico;
@@ -200,7 +211,7 @@ namespace LANudo
         {
             cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
             escalaTextoAtual = Recursos.RegraDeTres(Constantes.resolucao_y(), escalaTextoInicial, Motor.Altura);
-            MedeFonte();
+            if (temTexto) { MedeFonte(); }
             posicaoTexto = Recursos.RetanguloCentralizadoNoRetangulo(dimensoesTexto, cantos);
         }
 
@@ -231,6 +242,12 @@ namespace LANudo
                     clicouDentro = false;
                 }
                 ratoAnterior = rato;
+
+                if ((oldCores.CorFundo != cores.CorFundo) || (oldCores.CorFundoMouse != cores.CorFundoMouse) || (oldCores.CorTexto != cores.CorTexto) || (oldCores.CorTextoMouse != cores.CorTextoMouse))
+                {
+                    if (mouseSobre && temMouseSobre) { corTextoAtual = cores.CorTextoMouse; corFundoAtual = cores.CorFundoMouse; } else { corTextoAtual = cores.CorTexto; corFundoAtual = cores.CorFundo; }
+                    oldCores = cores;
+                }
             }
         }
 

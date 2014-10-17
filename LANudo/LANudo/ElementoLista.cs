@@ -13,13 +13,48 @@ namespace LANudo
         EsquemaCores esquemaSel; public EsquemaCores CoresSel { get { return esquemaSel; } }
         EsquemaCores esquemaDesel; public EsquemaCores CoresDesel { get { return esquemaDesel; } }
         Action fazer;
-        
+
         public static HashSet<ElementoLista> CriaVariosElementoLista(HashSet<string> rotulos, EsquemaCores coresDesel, EsquemaCores coresSel)
         {
             HashSet<ElementoLista> listaRetornada = new HashSet<ElementoLista>();
-            foreach (string rotulo in rotulos) { 
+            foreach (string rotulo in rotulos)
+            {
+                listaRetornada.Add(new ElementoLista((rotulo), coresDesel, coresSel));
             }
             return listaRetornada;
+        }
+
+        public static HashSet<ElementoLista> CriaVariosElementoLista(EsquemaCores[] coresDesel, EsquemaCores[] coresSel)
+        {
+            if (coresDesel.Length != coresSel.Length) { return null; }
+
+            HashSet<ElementoLista> listaRetornada = new HashSet<ElementoLista>();
+            for (int i = 0; i < coresSel.Length; i++)
+            {
+                listaRetornada.Add(new ElementoLista(coresSel[i], coresSel[i]));
+            }
+            return listaRetornada;
+        }
+        public ElementoLista(ManipuladorClique fazer, EsquemaCores coresDesel, EsquemaCores coresSel)
+        {
+            this.rotulo = null;
+            evento = fazer;
+            esquemaSel = coresSel;
+            esquemaDesel = coresDesel;
+        }
+        public ElementoLista(Action fazer, EsquemaCores coresDesel, EsquemaCores coresSel)
+        {
+            this.rotulo = null;
+            evento += Faz;
+            this.fazer = fazer;
+            esquemaSel = coresSel;
+            esquemaDesel = coresDesel;
+        }
+        public ElementoLista(EsquemaCores coresDesel, EsquemaCores coresSel)
+        {
+            this.rotulo = null;
+            esquemaSel = coresSel;
+            esquemaDesel = coresDesel;
         }
 
         public ElementoLista(string rotulo, ManipuladorClique fazer, EsquemaCores coresDesel, EsquemaCores coresSel)
@@ -56,11 +91,13 @@ namespace LANudo
             evento += Faz;
             this.fazer = fazer;
             esquemaDesel = coresDesel;
+            esquemaSel = coresDesel;
         }
         public ElementoLista(string rotulo, EsquemaCores coresDesel)
         {
             this.rotulo = rotulo;
             esquemaDesel = coresDesel;
+            esquemaSel = coresDesel;
         }
         public ElementoLista(string rotulo, Action fazer)
         {
@@ -76,6 +113,7 @@ namespace LANudo
 
         public ElementoLista(string rotulo)
         {
+            this.rotulo = rotulo;
         }
 
         void Faz(Botao botao) { fazer(); }
