@@ -55,7 +55,7 @@ namespace LANudo
             vetor.Add("Bedrock");
             vetor.Add("Void");
             HashSet<ElementoLista> result = ElementoLista.CriaVariosElementoLista(vetor, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
-            listaAlgo = new Lista(desenhista, fonte, result, Lista.TipoEvento.SelecionavelExternamente, botao, null, botao, seta, Constantes.esquema_cores_lista_seta(), Constantes.esquema_cores_lista_vazia(), Constantes.esquema_cores_lista_inclicavel(), Constantes.esquema_cores_lista_selecionada(), Constantes.esquema_cores_lista_deselecionada(), new Vector2(0.85f, 0.5f), 0.1f, 5, 1f,false, true, true);
+            listaAlgo = new Lista(desenhista, fonte, result, Lista.TipoEvento.SelecionavelIntermanete, botao, null, botao, seta, Constantes.esquema_cores_lista_seta(), Constantes.esquema_cores_lista_vazia(), Constantes.esquema_cores_lista_inclicavel(), Constantes.esquema_cores_lista_selecionada(), Constantes.esquema_cores_lista_deselecionada(), new Vector2(0.85f, 0.5f), 0.1f, 5, 1f,false, true,true);
             listaAlgo.Ativar();
             Redimensionado();
             estado = EstadoGUI.intro;

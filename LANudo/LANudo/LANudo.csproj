@@ -120,6 +120,7 @@
     <Compile Include="Raiz.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Recursos.cs" />
+    <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
