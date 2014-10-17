@@ -11,6 +11,8 @@ namespace LANudo
     public class Botao
     {
         public event ManipuladorClique Clicado;
+        public event ManipuladorClique MouseEmCima;
+        public event ManipuladorClique MouseEmVolta;
 
         SpriteBatch desenhista;
         SpriteFont fonte;
@@ -31,7 +33,7 @@ namespace LANudo
 
 
 
-        bool mouseSobre;
+        bool mouseSobre; public bool MouseSobre { get { return mouseSobre; } }
         bool clicouDentro;
         MouseState ratoAnterior;
         float escalaTextoAtual;
@@ -192,6 +194,8 @@ namespace LANudo
 
         public void CursorEmCima()
         {
+            if (MouseEmCima != null) { MouseEmCima(this); }
+            clicouDentro = false;
             if (temMouseSobre)
             {
                 corTextoAtual = cores.CorTextoMouse;
@@ -202,6 +206,7 @@ namespace LANudo
 
         public void CursorEmVolta()
         {
+            if (MouseEmVolta != null) { MouseEmVolta(this); }
             corTextoAtual = cores.CorTexto;
             corFundoAtual = cores.CorFundo;
             imagemAtual = imagem;

@@ -27,7 +27,7 @@ namespace LANudo
         Texture2D fundoMouse;
         Texture2D seta;
         Texture2D fundoSeta;
-        int tamanho;
+        int capacidade;
         float escala;
         Vector2 posicao;
         bool temSetas;
@@ -36,6 +36,7 @@ namespace LANudo
         TipoEvento tipo;
         bool dropDown;
         float escalaTexto;
+        float escalaSetinha;
         EsquemaCores coresSeta;
         EsquemaCores coresVazio;
         EsquemaCores coresInclicavel;
@@ -50,7 +51,7 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _tamanho, float _escalaTexto, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -71,10 +72,11 @@ namespace LANudo
             coresVazio = _coresVazio;
             coresSeta = _coresSeta;
             coresInclicavel = _coresInclicavel;
-            tamanho = _tamanho;
+            capacidade = _capacidade;
             posicao = _posicao;
             escala = _escala;
             escalaTexto = _escalaTexto;
+            escalaSetinha = _escalaSetinha;
 
             InicializaBotoes();
             InicializaItens();
@@ -90,12 +92,16 @@ namespace LANudo
                 botaoInferior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
                 botaoSuperior.Clicado += ClicouSobe;
                 botaoInferior.Clicado += ClicouDesce;
-                setaSuperior = new Sprite(desenhista, seta, seta.Bounds);
-                setaInferior = new Sprite(desenhista, seta, seta.Bounds);
+                setaSuperior = new Sprite(desenhista, seta, new Vector3(10f, 10f, 0f), coresSeta.CorTexto);
+                setaInferior = new Sprite(desenhista, seta, new Vector3(10f, 10f, 0f), coresSeta.CorTexto);
+                botaoInferior.MouseEmCima += this.SetaCorSetaInferiorMouse;
+                botaoInferior.MouseEmVolta += this.SetaCorSetaInferiorDesel;
+                botaoSuperior.MouseEmCima += this.SetaCorSetaSuperiorMouse;
+                botaoSuperior.MouseEmVolta += this.SetaCorSetaSuperiorDesel;
 
                 botoesTodos.Add(botaoSuperior);
             }
-            for (int i = 1; i <= tamanho; i++)
+            for (int i = 1; i <= capacidade; i++)
             {
                 Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, " ", escalaTexto, false);
                 botao.OcultaTexto();
@@ -275,6 +281,7 @@ namespace LANudo
         {
             float tamanho = 0f, posX = posicao.X, posY = posicao.Y;
             bool first = true;
+            int contador = 1;
             foreach (Botao botao in botoesTodos)
             {
                 if (botoesTodos.Count > 1)
@@ -294,8 +301,6 @@ namespace LANudo
                             {
                                 posY -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
                             }
-                            first = false;
-                            //setaSuperior.PosRel(Recursos.RegraDeTres(seta,,));
                         }
                         else
                         {
@@ -308,7 +313,7 @@ namespace LANudo
                         {
                             tamanho = Recursos.RegraDeTres(Motor.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
                             posX -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
-                            first = false;
+
                         }
                         else
                         {
@@ -317,10 +322,40 @@ namespace LANudo
                     }
                 }
                 botao.Posicao = new Vector2(posX, posY);
+                if (first)
+                {
+                    setaSuperior.PosRel = new Vector3(posX, posY, escala * escalaSetinha);
+                    first = false;
+                }
+                else
+                {
+                    if (contador == capacidade + 2)
+                    {
+                        setaInferior.PosRel = new Vector3(posX, posY, escala * escalaSetinha);
+                    }
+                }
+                contador++;
             }
 
         }
 
+        void SetaCorSetaInferiorMouse(Botao botao)
+        {
+            setaInferior.Cor = coresSeta.CorTextoMouse;
+        }
+        void SetaCorSetaInferiorDesel(Botao botao)
+        {
+            setaInferior.Cor = coresSeta.CorTexto;
+        }
+
+        void SetaCorSetaSuperiorMouse(Botao botao)
+        {
+            setaSuperior.Cor = coresSeta.CorTextoMouse;
+        }
+        void SetaCorSetaSuperiorDesel(Botao botao)
+        {
+            setaSuperior.Cor = coresSeta.CorTexto;
+        }
 
         public void Atualizar()
         {
@@ -341,6 +376,8 @@ namespace LANudo
                 {
                     botao.Desenhar();
                 }
+                setaSuperior.Desenhar();
+                setaInferior.Desenhar();
             }
         }
 

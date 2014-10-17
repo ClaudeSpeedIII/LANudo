@@ -33,7 +33,7 @@ namespace LANudo
             }
         }
 
-        Color cor = Color.White; Color Cor { get { return cor; } set { cor = value; } }
+        Color cor = Color.White; public Color Cor { get { return cor; } set { cor = value; } }
         public bool Ativado() { return ativo; }
 
         public void Ativar() { ativo = true; }
