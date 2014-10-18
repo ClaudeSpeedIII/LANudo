@@ -201,7 +201,7 @@ namespace LANudo
 
             //Sequencia de "joga na tela"
 
-            desenhista.Begin();
+            desenhista.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             menu.Desenhar();
 
