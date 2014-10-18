@@ -49,7 +49,7 @@ namespace LANudo
             ativo = false;
         }
 
-        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, Texture2D _fundoMouseOver,EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
+        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -95,30 +95,25 @@ namespace LANudo
                     {
                         if (first)
                         {
-                            tamanho = Recursos.RegraDeTres(Motor.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
+                            tamanho = Recursos.RegraDeTres(Configuracoes.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
                             posY -= (((botoes.Count * (tamanho + distancia)) - distancia) / 2) - (tamanho / 2);
                             first = false;
                         }
                         else
-                        {
-                            posY += (tamanho + distancia);
-                        }
+                        { posY += (tamanho + distancia); }
                     }
                     else
                     {
                         if (first)
                         {
-                            tamanho = Recursos.RegraDeTres(Motor.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
+                            tamanho = Recursos.RegraDeTres(Configuracoes.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
                             posX -= (((botoes.Count * (tamanho + distancia)) - distancia) / 2) - (tamanho / 2);
                             first = false;
                         }
                         else
-                        {
-                            posX += (tamanho + distancia);
-                        }
+                        { posX += (tamanho + distancia); }
                     }
-                }
-                botao.Posicao = new Vector2(posX, posY);
+                } botao.Posicao = new Vector2(posX, posY);
             }
 
         }

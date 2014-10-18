@@ -21,15 +21,24 @@ namespace LANudo
         Lista listaAlgo;
         Botoes novoJogo;
         Botoes menuInicial;
-        Action sair;
+        
         Cursor rato;
 
+        Action sair;
+        Configuracoes conf;
         public enum EstadoGUI { intro, inicial, conf, iniciar, pausado, emJogo };
         static EstadoGUI estado;
         public static EstadoGUI Estado { get { return estado; } }
 
+        bool ativo;
 
-        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato, Action _sair)
+        public bool Ativado() { return ativo; }
+
+        public void Ativar() { ativo = true; }
+
+        public void Desativar() { ativo = false; }
+
+        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato, Action _sair, Configuracoes _conf)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -39,6 +48,7 @@ namespace LANudo
             seta = _seta;
             rato = _rato;
             sair = _sair;
+            conf = _conf;
 
             //Instancia menu inicial
             menuInicial = new Botoes(desenhista, fonte, botao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true);
@@ -67,18 +77,16 @@ namespace LANudo
             sair();
         }
 
-        void Jogar(Botao remetente) { }
+        void Jogar(Botao remetente)
+        {
+        
+        }
 
 
         void Conf(Botao remetente) { }
 
-        bool ativo;
 
-        public bool Ativado() { return ativo; }
 
-        public void Ativar() { ativo = true; }
-
-        public void Desativar() { ativo = false; }
 
         public void Redimensionado()
         {

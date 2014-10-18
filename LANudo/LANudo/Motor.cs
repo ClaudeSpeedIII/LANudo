@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using System.Globalization;
 using Idioma;
 
 namespace LANudo
@@ -20,33 +19,10 @@ namespace LANudo
         GraphicsDeviceManager graphics;
         static SpriteBatch desenhista;
         static SpriteFont escritor; public static Vector2 MedeTexto(string texto) { try { return escritor.MeasureString(texto); } catch (Exception erro) { throw erro; } }
-        private Localizacao locale;
+        static Configuracoes config; public static Configuracoes Config { get { return config; } }
         private static Textos idiomaAtual = new Textos(); public static Textos Textos { get { return idiomaAtual; } }
+        public Textos SetaTextos { set { idiomaAtual = value; ;} }
 
-
-        public void SetaIdioma(string iso6391, string fail)
-        {
-            if (iso6391 == "auto")
-            {
-                foreach (Textos idioma in locale.Idiomas)
-                {
-                    if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) { idiomaAtual = idioma; break; }
-                }
-                return;
-            }
-            else
-            {
-                foreach (Textos idioma in locale.Idiomas)
-                {
-                    if (idioma.ISO == iso6391) { idiomaAtual = idioma; break; }
-                }
-                return;
-            }
-            foreach (Textos idioma in locale.Idiomas)
-            {
-                if (idioma.ISO == fail) { idiomaAtual = idioma; break; }
-            }
-        }
 
         private static GameTime tempo = new GameTime();
         public static GameTime Tempo { get { return tempo; } }
@@ -58,21 +34,11 @@ namespace LANudo
         private static GUI menu;
         private Cursor rato;
 
-        private static int largura;
-        private static int altura;
 
-        public static int Largura { get { return largura; } }
-        public static int Altura { get { return altura; } }
-
-        public void AtualizaDimensoes()
-        {
-            Motor.largura = this.GraphicsDevice.Viewport.Width;
-            Motor.altura = this.GraphicsDevice.Viewport.Height;
-        }
 
         void Redimensionado(object sender, EventArgs e)
         {
-            AtualizaDimensoes();
+            config.AtualizaDimensoes();
             menu.Redimensionado();
         }
 
@@ -113,10 +79,8 @@ namespace LANudo
             graphics = new GraphicsDeviceManager(this);
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsFixedTimeStep = false;
-            Motor.largura = Constantes.resolucao_x();
-            Motor.altura = Constantes.resolucao_y();
-            graphics.PreferredBackBufferWidth = Motor.largura;
-            graphics.PreferredBackBufferHeight = Motor.altura;
+            config = new Configuracoes(this, graphics, new Localizacao(Constantes.caminho_idiomas()), Constantes.idioma_emergencia());
+            config.SetaRes(Constantes.resolucao_x(),Constantes.resolucao_y(), Constantes.janela());
             this.Window.AllowUserResizing = true;
             this.Window.ClientSizeChanged += new EventHandler<EventArgs>(Redimensionado);
             Content.RootDirectory = "Content";
@@ -134,7 +98,6 @@ namespace LANudo
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            this.AtualizaDimensoes();
         }
 
         /// <summary>
@@ -147,8 +110,7 @@ namespace LANudo
             desenhista = new SpriteBatch(GraphicsDevice);
             escritor = Content.Load<SpriteFont>(Constantes.caminho_fonte());
 
-            locale = new Localizacao(Constantes.caminho_idiomas());
-            SetaIdioma(Constantes.idioma_inicial(), Constantes.idioma_emergencia());
+            config.SetaIdioma(Constantes.idioma_inicial());
             rato = new Cursor(
                 desenhista,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
@@ -163,7 +125,8 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
                 rato,
-                Sair
+                Sair,
+                config
                 );
             ChecaCorFundo(); ;
             menu.Ativar();

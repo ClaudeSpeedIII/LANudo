@@ -16,9 +16,9 @@ namespace Idioma
 {
     public class Localizacao
     {
-        private HashSet<Textos> idiomas = new HashSet<Textos>();
+        private List<Textos> idiomas = new List<Textos>();
         private Textos fail = new Textos();
-        public HashSet<Textos> Idiomas { get { return idiomas; } }
+        public List<Textos> Idiomas { get { return idiomas; } }
         public Textos Fail { get { return fail; } }
 
         public Localizacao(string caminho)

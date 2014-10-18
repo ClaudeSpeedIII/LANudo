@@ -320,7 +320,7 @@ namespace LANudo
                     {
                         if (first)
                         {
-                            tamanho = Recursos.RegraDeTres(Motor.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
+                            tamanho = Recursos.RegraDeTres(Configuracoes.Altura, 1, (botao.Cantos.Bottom - botao.Cantos.Top));
 
                             if (dropDown)
                             {
@@ -340,7 +340,7 @@ namespace LANudo
                     {
                         if (first)
                         {
-                            tamanho = Recursos.RegraDeTres(Motor.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
+                            tamanho = Recursos.RegraDeTres(Configuracoes.Largura, 1, (botao.Cantos.Right - botao.Cantos.Left));
                             posX -= ((botoesTodos.Count * tamanho) / 2) - (tamanho / 2);
 
                         }

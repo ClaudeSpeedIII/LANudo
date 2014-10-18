@@ -20,9 +20,10 @@ namespace LANudo
 
         //***Conf***
 
-        public static int resolucao_x() { return 800; }
-        public static int resolucao_y() { return 600; }
-        public static bool janela() { return true; }
+        public static int resolucao_x() { return 1600; }
+        public static int resolucao_y() { return 900; }
+        public static bool janela() { return false; }
+
         public static string idioma_inicial() { return "pt"; } //Código ISO 639-1 de dois digitos, ou então "auto" pra usar o do sistema
         public static string idioma_emergencia() { return "en"; } //Código ISO 639-1 de dois digitos, auto não é permitido visto que é usado na falha do auto
         public static Color cor_P1() { return Color.Blue; }

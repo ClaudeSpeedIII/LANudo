@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Botao.cs" />
     <Compile Include="Botoes.cs" />
+    <Compile Include="Configuracoes.cs" />
     <Compile Include="ElementoLista.cs" />
     <Compile Include="Entrada.cs" />
     <Compile Include="EsquemaCores.cs" />
