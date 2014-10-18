@@ -34,7 +34,7 @@ namespace Idioma
             catch (Exception erro)
             {
                 Console.WriteLine("Requisitado código inexistente no arquivo de idioma atual " + erro.Message);
-                return "STRING FAIL";
+                return codigo;
             }
         }
 

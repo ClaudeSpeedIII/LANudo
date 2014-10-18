@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Language>
+	<ISO>en</ISO>
+	<Name>English</Name>
+	<Strings>
+		<NEW_GAME>New Game</NEW_GAME>
+		<SETTINGS>Settings</SETTINGS>
+		<QUIT>Exit</QUIT>
+		<BACK>Back</BACK>
+		<RES>Screen resolution</RES>
+		<APPLY>Apply</APPLY>
+		<LOCALE>Language</LOCALE>
+		<FULLSCREEN>Fullscreen</FULLSCREEN>
+	</Strings>
+</Language>

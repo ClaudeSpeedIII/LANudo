@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LANudo", "LANudo\LANudo\LANudo.csproj", "{0EFAB314-8CB8-44E3-BA7B-AB9942BEC75D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LANudoContent", "LANudo\LANudoContent\LANudoContent.contentproj", "{2D899C03-C4C5-46B2-AFC2-511E04D0DAA7}"
@@ -8,23 +8,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idioma", "Idioma\Idioma.csproj", "{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}"
 EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0EFAB314-8CB8-44E3-BA7B-AB9942BEC75D}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{0EFAB314-8CB8-44E3-BA7B-AB9942BEC75D}.Debug|x86.ActiveCfg = Debug|x86
-		{0EFAB314-8CB8-44E3-BA7B-AB9942BEC75D}.Debug|x86.Build.0 = Debug|x86
-		{2D899C03-C4C5-46B2-AFC2-511E04D0DAA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D899C03-C4C5-46B2-AFC2-511E04D0DAA7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Debug|x86.ActiveCfg = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
@@ -40,5 +23,8 @@ Global
 		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Debug|x86.Build.0 = Debug|x86
 		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Release|x86.ActiveCfg = Release|x86
 		{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

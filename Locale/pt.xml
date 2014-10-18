@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Language>
+	<ISO>pt</ISO>
+	<Name>Português</Name>
+	<Strings>
+		<NEW_GAME>Novo Jogo</NEW_GAME>
+		<SETTINGS>Configurações</SETTINGS>
+		<QUIT>Sair</QUIT>
+		<BACK>Voltar</BACK>
+		<RES>Resolução de tela</RES>
+		<APPLY>Aplicar</APPLY>
+		<LOCALE>Idioma</LOCALE>
+		<FULLSCREEN>Tela inteira</FULLSCREEN>
+	</Strings>
+</Language>
