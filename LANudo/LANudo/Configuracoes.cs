@@ -6,6 +6,7 @@ using System.Text;
 using Idioma;
 using System.Globalization;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LANudo
 {
@@ -14,6 +15,7 @@ namespace LANudo
         Motor motor;
         Localizacao locale;
         GraphicsDeviceManager graficos;
+        List<Vector2> resolucoes = new List<Vector2>();
 
         string failLang;
 
@@ -29,6 +31,16 @@ namespace LANudo
             locale = idioma;
             graficos = _graficos;
             failLang = failLangISO6391;
+            AlimentaResolucoes();
+        }
+
+        void AlimentaResolucoes()
+        {
+            foreach (DisplayMode modo in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+            {
+                Vector2 resTemp = new Vector2(modo.Width, modo.Height);
+                if (!resolucoes.Contains(resTemp)) { resolucoes.Add(resTemp); }
+            }
         }
 
         public void AtualizaDimensoes()
