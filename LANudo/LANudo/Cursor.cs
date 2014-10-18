@@ -14,7 +14,7 @@ namespace LANudo
         Texture2D ratoNormal;
         Texture2D ratoPressionado;
         Texture2D ratoAtual;
-        Rectangle posAtual;
+        Vector2 posAtual;
         Vector2 offSet;
         Color corAtual;
 
@@ -47,7 +47,7 @@ namespace LANudo
             desenhista = _desenhista;
             ratoNormal = _ratoNormal;
             ratoPressionado = _ratoPressionado;
-            offSet = new Vector2(0f, 0f);
+            offSet = Vector2.Zero;
             corAtual = Color.White;
             ativo = false;
         }
@@ -65,7 +65,7 @@ namespace LANudo
                 {
                     ratoAtual = ratoNormal;
                 }
-                posAtual = new Rectangle(Convert.ToInt16(rato.X + offSet.X), Convert.ToInt16(rato.Y + offSet.Y), ratoAtual.Width, ratoAtual.Height);
+                posAtual = new Vector2(rato.X, rato.Y) + offSet;
             }
         }
 

@@ -9,7 +9,7 @@ namespace LANudo
 {
     public class Botoes
     {
-        HashSet<Botao> botoes = new HashSet<Botao>();
+        List<Botao> botoes = new List<Botao>();
 
 
         SpriteBatch desenhista;

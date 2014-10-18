@@ -14,9 +14,9 @@ namespace LANudo
         EsquemaCores esquemaDesel; public EsquemaCores CoresDesel { get { return esquemaDesel; } }
         Action fazer;
 
-        public static HashSet<ElementoLista> CriaVariosElementoLista(HashSet<string> rotulos, EsquemaCores coresDesel, EsquemaCores coresSel)
+        public static List<ElementoLista> CriaVariosElementoLista(List<string> rotulos, EsquemaCores coresDesel, EsquemaCores coresSel)
         {
-            HashSet<ElementoLista> listaRetornada = new HashSet<ElementoLista>();
+            List<ElementoLista> listaRetornada = new List<ElementoLista>();
             foreach (string rotulo in rotulos)
             {
                 listaRetornada.Add(new ElementoLista((rotulo), coresDesel, coresSel));
@@ -24,11 +24,11 @@ namespace LANudo
             return listaRetornada;
         }
 
-        public static HashSet<ElementoLista> CriaVariosElementoLista(EsquemaCores[] coresDesel, EsquemaCores[] coresSel)
+        public static List<ElementoLista> CriaVariosElementoLista(EsquemaCores[] coresDesel, EsquemaCores[] coresSel)
         {
             if (coresDesel.Length != coresSel.Length) { return null; }
 
-            HashSet<ElementoLista> listaRetornada = new HashSet<ElementoLista>();
+            List<ElementoLista> listaRetornada = new List<ElementoLista>();
             for (int i = 0; i < coresSel.Length; i++)
             {
                 listaRetornada.Add(new ElementoLista(coresSel[i], coresSel[i]));

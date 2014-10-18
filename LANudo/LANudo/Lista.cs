@@ -9,14 +9,13 @@ namespace LANudo
 {
     public class Lista
     {
-        HashSet<Botao> botoesTodos = new HashSet<Botao>();
-        HashSet<Botao> botoesDinamicos = new HashSet<Botao>();
+        List<Botao> botoesTodos = new List<Botao>();
+        List<Botao> botoesDinamicos = new List<Botao>();
         Sprite setaSuperior;
         Sprite setaInferior;
         Botao botaoSuperior;
         Botao botaoInferior;
-        HashSet<ElementoLista> itens = new HashSet<ElementoLista>();
-
+        List<ElementoLista> itens = new List<ElementoLista>();
         ElementoLista itemAtual = null; public ElementoLista ItemSelecionado { get { return itemAtual; } }
         Botao botaoAtual = null;
         int rolagem = 0;
@@ -43,6 +42,16 @@ namespace LANudo
         EsquemaCores coresSelecionado;
         EsquemaCores coresDeselecionado;
 
+        public List<ElementoLista> Itens
+        {
+            get { return itens; }
+            set
+            {
+                itens = value;
+                InicializaItens();
+            }
+        }
+
         bool ativo;
 
         public bool Ativado() { return ativo; }
@@ -51,7 +60,7 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, HashSet<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;

@@ -46,7 +46,7 @@ namespace LANudo
             menuInicial.AdicionaBotao(Motor.Textos.Val("Config"), Conf);
             menuInicial.AdicionaBotao(Motor.Textos.Val("Sair"), Sair);
 
-            HashSet<string> vetor = new HashSet<string>();
+            List<string> vetor = new List<string>();
             vetor.Add("Espaço");
             vetor.Add("Nuvens");
             vetor.Add("Superficie");
@@ -54,7 +54,7 @@ namespace LANudo
             vetor.Add("Lava");
             vetor.Add("Bedrock");
             vetor.Add("Void");
-            HashSet<ElementoLista> result = ElementoLista.CriaVariosElementoLista(vetor, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
+            List<ElementoLista> result = ElementoLista.CriaVariosElementoLista(vetor, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
             listaAlgo = new Lista(desenhista, fonte, result, Lista.TipoEvento.SelecionavelIntermanete, botao, null, botao, seta, Constantes.esquema_cores_lista_seta(), Constantes.esquema_cores_lista_vazia(), Constantes.esquema_cores_lista_inclicavel(), Constantes.esquema_cores_lista_selecionada(), Constantes.esquema_cores_lista_deselecionada(), new Vector2(0.85f, 0.5f), 0.1f, 5, 1f,0.5f,false, true,true);
             listaAlgo.Ativar();
             Redimensionado();
