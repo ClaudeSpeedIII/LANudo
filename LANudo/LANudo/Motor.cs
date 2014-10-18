@@ -111,6 +111,8 @@ namespace LANudo
         public Motor()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.SynchronizeWithVerticalRetrace = false;
+            this.IsFixedTimeStep = false;
             Motor.largura = Constantes.resolucao_x();
             Motor.altura = Constantes.resolucao_y();
             graphics.PreferredBackBufferWidth = Motor.largura;
