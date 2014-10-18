@@ -215,7 +215,7 @@ namespace LANudo
         public void Movimentou()
         {
             cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
-            escalaTextoAtual = Recursos.RegraDeTres(Constantes.resolucao_y(), escalaTextoInicial, Configuracoes.Altura);
+            escalaTextoAtual = Recursos.EscalaFonteRelativoTela(escalaTextoInicial);
             if (temTexto) { MedeFonte(); }
             posicaoTexto = Recursos.RetanguloCentralizadoNoRetangulo(dimensoesTexto, cantos);
         }

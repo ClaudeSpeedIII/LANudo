@@ -49,16 +49,17 @@ namespace LANudo
             altura = motor.GraphicsDevice.Viewport.Height;
         }
 
-        public void SetaRes(int x, int y, bool janela)
+        public void SetaRes(int x, int y, bool janela, bool primeira = false)
         {
             graficos.PreferredBackBufferWidth = x;
             graficos.PreferredBackBufferHeight = y;
             if (graficos.IsFullScreen)
-            { if (janela) { graficos.ToggleFullScreen(); } }
+            { if (janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(true); } } }
             else
-            { if (!janela) { graficos.ToggleFullScreen(); } }
+            { if (!janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(false); } } }
             largura = x;
             altura = y;
+            if (!primeira) { graficos.ApplyChanges(); }
         }
 
         public void SetaIdioma(string iso6391)

@@ -15,15 +15,38 @@ namespace LANudo
         public static float RegraDeTres(float A, float B, float C)
         {
             return (B * C) / A;
+
+        }
+        public static float EscalaFonteRelativoTela(float escalaInicial)
+        {
+            if (Configuracoes.Largura > Configuracoes.Altura)
+            {
+                return RegraDeTres(Constantes.resolucao_y(), escalaInicial, Configuracoes.Altura);
+            }
+            else
+            {
+                return RegraDeTres(Constantes.resolucao_y(), escalaInicial, Configuracoes.Largura);
+            }
         }
 
         public static Point EscalaRelativoTela(Rectangle dimensoes, float escala)
         {
-            int alturaEscalada = Convert.ToInt16(Configuracoes.Altura * (dimensoes.Height * escala) / dimensoes.Height);
-            return new Point(
+            if (Configuracoes.Largura > Configuracoes.Altura)
+            {
+                int alturaEscalada = Convert.ToInt16(Configuracoes.Altura * (dimensoes.Height * escala) / dimensoes.Height);
+                return new Point(
                 Convert.ToInt16(alturaEscalada * (((float)dimensoes.Width / (float)dimensoes.Height))),
                 alturaEscalada
-            );
+                );
+            }
+            else
+            {
+                int alturaEscalada = Convert.ToInt16(Configuracoes.Largura * (dimensoes.Height * escala) / dimensoes.Height);
+                return new Point(
+                Convert.ToInt16(alturaEscalada * (((float)dimensoes.Width / (float)dimensoes.Height))),
+                alturaEscalada
+                );
+            }
         }
 
         public static Point RelTelaParaAbs(Vector2 pos)
