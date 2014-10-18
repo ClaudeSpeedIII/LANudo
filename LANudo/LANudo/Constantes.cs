@@ -41,7 +41,7 @@ namespace LANudo
         //Esquema Cores
         public static EsquemaCores esquema_cores_lista_deselecionada() { return new EsquemaCores(Color.DarkCyan, Color.Cyan); }
         public static EsquemaCores esquema_cores_lista_selecionada() { return new EsquemaCores(Color.DarkBlue, Color.DarkBlue); }
-        public static EsquemaCores esquema_cores_lista_seta() { return new EsquemaCores(Color.ForestGreen, Color.DarkGreen, Color.LightGray, Color.Gray); }
+        public static EsquemaCores esquema_cores_lista_seta() { return new EsquemaCores(Color.ForestGreen, Color.DarkGreen, Color.White, Color.White); }
         public static EsquemaCores esquema_cores_lista_vazia() { return new EsquemaCores(Color.LightGray); }
         public static EsquemaCores esquema_cores_lista_inclicavel() { return new EsquemaCores(Color.LightGreen); }
         //Botao

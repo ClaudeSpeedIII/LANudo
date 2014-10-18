@@ -94,6 +94,7 @@ namespace LANudo
                 botaoInferior.Clicado += ClicouDesce;
                 setaSuperior = new Sprite(desenhista, seta, new Vector3(10f, 10f, 0f), coresSeta.CorTexto);
                 setaInferior = new Sprite(desenhista, seta, new Vector3(10f, 10f, 0f), coresSeta.CorTexto);
+                setaInferior.Eff = SpriteEffects.FlipVertically;
                 botaoInferior.MouseEmCima += this.SetaCorSetaInferiorMouse;
                 botaoInferior.MouseEmVolta += this.SetaCorSetaInferiorDesel;
                 botaoSuperior.MouseEmCima += this.SetaCorSetaSuperiorMouse;

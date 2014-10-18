@@ -13,6 +13,8 @@ namespace LANudo
         bool ativo;
         SpriteBatch desenhista;
         Texture2D sprite; public Texture2D Img { get { return sprite; } set { sprite = value; } }
+        float angulo = 0; public float Rot { get { return MathHelper.ToDegrees(angulo); } set { angulo = MathHelper.ToRadians(value); } }
+        SpriteEffects efeitos = SpriteEffects.None; public SpriteEffects Eff { get { return efeitos; } set { efeitos = value; } }
 
         Rectangle pixel;
         Vector3 relativo;
@@ -28,7 +30,7 @@ namespace LANudo
         {
             set
             {
-                pixel = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds,  value.Z,new Vector2(value.X, value.Y));
+                pixel = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds, value.Z, new Vector2(value.X, value.Y));
                 relativo = value;
             }
         }
@@ -76,7 +78,7 @@ namespace LANudo
         {
             if (ativo)
             {
-                desenhista.Draw(sprite, pixel, cor);
+                desenhista.Draw(sprite, pixel,null, cor,  angulo, Vector2.Zero, efeitos, 0f);
             }
         }
     }
