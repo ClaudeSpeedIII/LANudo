@@ -202,7 +202,7 @@ namespace LANudo
             {
                 if (item.Rotulo == botao.Rotulo)
                 {
-                    DeselecionaBotao(botaoAtual);
+                    if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
                     SelecionaBotao(botao);
                     itemAtual = item;
                     botaoAtual = botao;
@@ -218,7 +218,24 @@ namespace LANudo
         {
             if (botao != null) { botao.Cores = coresDeselecionado; botao.AtivarSobreMouse(); }
         }
+        private void AtualizaSelecao()
+        {
+            if (itemAtual != null)
+            {
+                if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
+                foreach (Botao botao in botoesDinamicos)
+                {
+                    if (itemAtual.Rotulo == botao.Rotulo)
+                    {
+                        botaoAtual = botao;
+                        SelecionaBotao(botao);
+                        return;
+                    }
+                }
 
+            }
+            botaoAtual = null;
+        }
 
         private void ClicouSobe(Botao remetente)
         {
@@ -237,6 +254,7 @@ namespace LANudo
                 rolagem--;
                 pontoAtual = Rolagem(rolagem);
                 SetaSetas();
+                AtualizaSelecao();
             }
         }
 
@@ -248,6 +266,7 @@ namespace LANudo
                 rolagem++;
                 pontoAtual = Rolagem(rolagem);
                 SetaSetas();
+                AtualizaSelecao();
             }
         }
 
