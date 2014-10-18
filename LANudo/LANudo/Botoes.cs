@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
-    public class Botoes
+    public class Botoes : Elemento
     {
         List<Botao> botoes = new List<Botao>();
 
@@ -33,7 +33,7 @@ namespace LANudo
         public void Desativar() { ativo = false; }
 
 
-        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
+        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical, bool _ativo = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -46,10 +46,10 @@ namespace LANudo
             distancia = _distancia;
             escalaTexto = _escalaTexto;
 
-            ativo = false;
+            ativo = _ativo;
         }
 
-        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical)
+        public Botoes(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _escala, float _escalaTexto, float _distancia, bool _vertical, bool _ativo = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -62,7 +62,7 @@ namespace LANudo
             distancia = _distancia;
             escalaTexto = _escalaTexto;
 
-            ativo = true;
+            ativo = _ativo;
         }
 
         public void AdicionaBotao(string rotulo, ManipuladorClique acao)
@@ -71,7 +71,7 @@ namespace LANudo
             Botao temp;
             if (imagemMouseOver != null)
             {
-                temp = new Botao(desenhista, imagem, imagemMouseOver, cores, lugar, escala, fonte, rotulo, escalaTexto, false);
+                temp = new Botao(desenhista, imagem, imagemMouseOver, cores, lugar, escala, fonte, rotulo, escalaTexto,false);
             }
             else
             {
@@ -90,7 +90,7 @@ namespace LANudo
             {
                 if (botoes.Count > 1)
                 {
-                    botao.Movimentou();
+                    botao.Redimensionado();
                     if (vertical)
                     {
                         if (first)

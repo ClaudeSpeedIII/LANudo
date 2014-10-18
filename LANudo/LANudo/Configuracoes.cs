@@ -68,17 +68,23 @@ namespace LANudo
             {
                 foreach (Textos idioma in locale.Idiomas)
                 {
-                    if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) { motor.SetaTextos = idioma; break; }
+                    if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+                    {
+                        motor.SetaTextos = idioma;
+                        return;
+                    }
                 }
-                return;
             }
             else
             {
                 foreach (Textos idioma in locale.Idiomas)
                 {
-                    if (idioma.ISO == iso6391) { motor.SetaTextos = idioma; break; }
+                    if (idioma.ISO == iso6391)
+                    {
+                        motor.SetaTextos = idioma;
+                        return;
+                    }
                 }
-                return;
             }
             foreach (Textos idioma in locale.Idiomas)
             {

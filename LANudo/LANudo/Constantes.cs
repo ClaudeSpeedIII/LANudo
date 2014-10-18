@@ -16,7 +16,7 @@ namespace LANudo
         public static string caminho_botao() { return "Botao"; }
         public static string caminho_seta() { return "Seta"; }
         public static string caminho_logo_intro() { return "LogoIntro"; }
-        public static string caminho_idiomas() { return "Línguas/"; }
+        public static string caminho_idiomas() { return "Lang/"; }
 
         //***Conf***
 

@@ -49,17 +49,42 @@ namespace LANudo
             }
         }
 
-        public static Point RelTelaParaAbs(Vector2 pos)
+        public static Vector2 RelTelaParaAbs(Vector2 pos)
         {
-            return new Point(
-                Convert.ToInt16(Configuracoes.Largura * pos.X / 1),
-                Convert.ToInt16(Configuracoes.Altura * pos.Y / 1)
+            return new Vector2(
+                Convert.ToInt32(Configuracoes.Largura * pos.X / 1f),
+                Convert.ToInt32(Configuracoes.Altura * pos.Y / 1f)
+            );
+        }
+        public static Vector3 RelTelaParaAbs(Vector3 pos)
+        {
+            return new Vector3(
+                Convert.ToInt16(Configuracoes.Largura * pos.X / 1f),
+                Convert.ToInt16(Configuracoes.Altura * pos.Y / 1f),
+                pos.Z
             );
         }
 
         public static int RelTelaParaAbs(float y)
         {
             return Convert.ToInt16(Configuracoes.Altura * y / 1);
+        }
+
+        public static Vector2 AbsParaRelTela(Vector2 pos)
+        {
+            return new Vector2(
+               pos.X / Configuracoes.Largura,
+               pos.Y / Configuracoes.Altura
+                );
+
+        }
+        public static Vector3 AbsParaRelTela(Vector3 pos)
+        {
+            return new Vector3(
+                pos.X / Configuracoes.Largura,
+                pos.Y / Configuracoes.Altura,
+                pos.Z
+            );
         }
 
         public static Rectangle RetanguloCentralizado(Rectangle dimensoes)
@@ -82,8 +107,8 @@ namespace LANudo
         public static Rectangle RetanguloRelativamenteDeslocado(Rectangle dimensoes, float escala, Vector2 pos)
         {
             Point escalado = EscalaRelativoTela(dimensoes, escala);
-            Point posicionado = RelTelaParaAbs(pos);
-            return new Rectangle(posicionado.X - escalado.X / 2, posicionado.Y - escalado.Y / 2, escalado.X, escalado.Y);
+            Vector2 posicionado = RelTelaParaAbs(pos);
+            return new Rectangle(Convert.ToInt16(posicionado.X - escalado.X / 2), Convert.ToInt16(posicionado.Y - escalado.Y / 2), Convert.ToInt16(escalado.X), Convert.ToInt16(escalado.Y));
         }
 
         public static Vector2 RetanguloCentralizadoNoRetangulo(Rectangle cantosInternos, Rectangle cantosExternos)

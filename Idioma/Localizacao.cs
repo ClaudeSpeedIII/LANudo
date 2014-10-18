@@ -28,7 +28,7 @@ namespace Idioma
                 foreach (string arquivo in Directory.EnumerateFiles(caminho, "*.xml"))
                 {
                     XDocument xml = XDocument.Load(arquivo);
-                    idiomas.Add(new Textos(xml.Root.Element("Rotulo").Value, xml.Root.Element("ISO").Value, xml.Root.Element("Strings")));
+                    idiomas.Add(new Textos(xml.Root.Element("Name").Value, xml.Root.Element("ISO").Value, xml.Root.Element("Strings")));
 
                 }
             }

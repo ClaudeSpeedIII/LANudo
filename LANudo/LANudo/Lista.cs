@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
-    public class Lista
+    public class Lista : Elemento
     {
+        string rotulo;
+        Botao botaoRotulo;
         List<Botao> botoesTodos = new List<Botao>();
         List<Botao> botoesDinamicos = new List<Botao>();
         Sprite setaSuperior;
@@ -19,6 +21,7 @@ namespace LANudo
         ElementoLista itemAtual = null; public ElementoLista ItemSelecionado { get { return itemAtual; } }
         Botao botaoAtual = null;
         int rolagem = 0;
+        bool aberto;
 
         SpriteBatch desenhista;
         SpriteFont fonte;
@@ -60,7 +63,7 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, string _dropDown = null, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -71,7 +74,7 @@ namespace LANudo
             fundoSeta = _fundoSeta;
             seta = _seta;
 
-            dropDown = _dropDown;
+            if (_dropDown == null) { dropDown = false; } else { dropDown = true; rotulo = _dropDown; }
             vertical = _vertical;
             tipo = _selecionavel;
             temSetas = _temSetas;
@@ -108,7 +111,10 @@ namespace LANudo
                 botaoInferior.MouseEmVolta += this.SetaCorSetaInferiorDesel;
                 botaoSuperior.MouseEmCima += this.SetaCorSetaSuperiorMouse;
                 botaoSuperior.MouseEmVolta += this.SetaCorSetaSuperiorDesel;
-
+                if (dropDown) {
+                    botaoRotulo = new Botao(desenhista, fundo, coresDeselecionado, posicao, escala * 0.1f, fonte, rotulo, 1f, false);
+                    
+                }
                 botoesTodos.Add(botaoSuperior);
             }
             for (int i = 1; i <= capacidade; i++)
@@ -315,7 +321,7 @@ namespace LANudo
             {
                 if (botoesTodos.Count > 1)
                 {
-                    botao.Movimentou();
+                    botao.Redimensionado();
                     if (vertical)
                     {
                         if (first)
@@ -401,6 +407,7 @@ namespace LANudo
         {
             if (ativo)
             {
+                if (dropDown) { botaoRotulo.Desenhar(); }
                 foreach (Botao botao in botoesTodos)
                 {
                     botao.Desenhar();

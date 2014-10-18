@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LANudo
 {
-    public class Botao
+    public class Botao : Elemento
     {
         public event ManipuladorClique Clicado;
         public event ManipuladorClique MouseEmCima;
@@ -71,7 +71,7 @@ namespace LANudo
             set
             {
                 rotulo = value;
-                Movimentou();
+                Redimensionado();
                 temTexto = true;
             }
         }
@@ -81,7 +81,7 @@ namespace LANudo
             set
             {
                 posicao = value;
-                Movimentou();
+                Redimensionado();
             }
         }
 
@@ -97,11 +97,11 @@ namespace LANudo
             set
             {
                 tamanho = value;
-                Movimentou();
+                Redimensionado();
             }
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
@@ -117,13 +117,13 @@ namespace LANudo
             mouseSobre = false;
             temMouseSobre = false;
             temTexto = true;
-            ativo = true;
             dinamico = _dinamico;
-            Movimentou();
+            Redimensionado();
             CursorEmVolta();
+            ativo = _ativo;
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
@@ -139,13 +139,13 @@ namespace LANudo
             mouseSobre = false;
             temMouseSobre = false;
             temTexto = true;
-            ativo = true;
             dinamico = _dinamico;
-            Movimentou();
+            Redimensionado();
             CursorEmVolta();
+            ativo = _ativo;
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, bool _dinamico)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
@@ -157,13 +157,13 @@ namespace LANudo
             mouseSobre = false;
             temMouseSobre = false;
             temTexto = false;
-            ativo = true;
             dinamico = _dinamico;
-            Movimentou();
+            Redimensionado();
             CursorEmVolta();
+            ativo = _ativo;
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, bool _dinamico)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
@@ -175,10 +175,10 @@ namespace LANudo
             mouseSobre = false;
             temMouseSobre = false;
             temTexto = false;
-            ativo = true;
             dinamico = _dinamico;
-            Movimentou();
+            Redimensionado();
             CursorEmVolta();
+            ativo = _ativo;
         }
 
         public void ZeraEventos()
@@ -212,7 +212,7 @@ namespace LANudo
             imagemAtual = imagem;
         }
 
-        public void Movimentou()
+        public void Redimensionado()
         {
             cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
             escalaTextoAtual = Recursos.EscalaFonteRelativoTela(escalaTextoInicial);
@@ -238,7 +238,7 @@ namespace LANudo
                 }
                 if (dinamico)
                 {
-                    Movimentou();
+                    Redimensionado();
                 }
                 if (mouseSobre && rato.LeftButton == ButtonState.Pressed && ratoAnterior.LeftButton == ButtonState.Released) { clicouDentro = true; }
                 if (mouseSobre && rato.LeftButton == ButtonState.Released && ratoAnterior.LeftButton == ButtonState.Pressed && clicouDentro)

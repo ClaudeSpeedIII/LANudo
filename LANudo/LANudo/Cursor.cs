@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LANudo
 {
-    public class Cursor
+    public class Cursor : Elemento
     {
         SpriteBatch desenhista;
         Texture2D ratoNormal;
@@ -68,6 +68,8 @@ namespace LANudo
                 posAtual = new Vector2(rato.X, rato.Y) + offSet;
             }
         }
+
+        public void Redimensionado(){}
 
         public void Desenhar()
         {

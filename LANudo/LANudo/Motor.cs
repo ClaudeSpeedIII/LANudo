@@ -68,7 +68,7 @@ namespace LANudo
             return corFundo;
         }
 
-        void Sair()
+        void QUIT()
         {
             rodando = false;
             Exit();
@@ -125,8 +125,8 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
                 rato,
-                Sair,
-                config
+                QUIT,
+                Config
                 );
             ChecaCorFundo(); ;
             menu.Ativar();

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
-    public class Sprite
+    public class Sprite : Elemento
     {
 
         bool ativo;
@@ -16,22 +16,37 @@ namespace LANudo
         float angulo = 0; public float Rot { get { return MathHelper.ToDegrees(angulo); } set { angulo = MathHelper.ToRadians(value); } }
         SpriteEffects efeitos = SpriteEffects.None; public SpriteEffects Eff { get { return efeitos; } set { efeitos = value; } }
 
-        Rectangle pixel;
+        Rectangle retangulo;
+        Vector3 pixel;
         Vector3 relativo;
-        public Rectangle PosPx
+        public Rectangle PosRect
+        {
+            get { return new Rectangle(Convert.ToInt32(retangulo.X - (sprite.Width / 2)), Convert.ToInt32(retangulo.Y - (sprite.Height / 2)), sprite.Width, sprite.Height); }
+            set
+            {
+                retangulo = value;
+                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.Center.X, retangulo.Center.Y, Recursos.RegraDeTres(Configuracoes.Altura, 1, retangulo.Height)));
+                pixel = new Vector3((float)retangulo.X, (float)retangulo.Y, relativo.Z);
+            }
+        }
+        public Vector3 PosPx
         {
             get { return pixel; }
             set
             {
                 pixel = value;
+                retangulo = new Rectangle(Convert.ToInt32(value.X + ((sprite.Width * value.Z) / 2)), Convert.ToInt32(value.Y + ((sprite.Height * value.Z) / 2)), Convert.ToInt32(sprite.Width * value.Z), Convert.ToInt32(sprite.Height * value.Z));
+                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.Center.X, retangulo.Center.Y, value.Z));
             }
         }
         public Vector3 PosRel
         {
+            get { return relativo; }
             set
             {
-                pixel = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds, value.Z, new Vector2(value.X, value.Y));
                 relativo = value;
+                retangulo = Recursos.RetanguloRelativamenteDeslocado(sprite.Bounds, value.Z, new Vector2(relativo.X, relativo.Y));
+                pixel = new Vector3(retangulo.X, retangulo.Y, value.Z);
             }
         }
 
@@ -47,14 +62,14 @@ namespace LANudo
             this.desenhista = desenhista;
             this.sprite = imagem;
             this.cor = cor;
-            this.pixel = pos;
+            this.PosRect = pos;
             this.ativo = ativo;
         }
         public Sprite(SpriteBatch desenhista, Texture2D imagem, Rectangle pos, bool ativo = true)
         {
             this.desenhista = desenhista;
             this.sprite = imagem;
-            this.pixel = pos;
+            this.PosRect = pos;
             this.ativo = ativo;
         }
 
@@ -74,11 +89,17 @@ namespace LANudo
             this.ativo = ativo;
         }
 
+        public void Redimensionado()
+        {
+            PosRel = PosRel;
+        }
+        public void Atualizar() { }
+
         public void Desenhar()
         {
             if (ativo)
             {
-                desenhista.Draw(sprite, pixel,null, cor,  angulo, Vector2.Zero, efeitos, 0f);
+                desenhista.Draw(sprite, retangulo, null, cor, angulo, Vector2.Zero, efeitos, 0f);
             }
         }
     }
