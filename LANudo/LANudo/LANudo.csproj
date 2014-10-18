@@ -110,7 +110,9 @@
     <Compile Include="Botao.cs" />
     <Compile Include="Botoes.cs" />
     <Compile Include="Configuracoes.cs" />
+    <Compile Include="Elemento.cs" />
     <Compile Include="ElementoLista.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="Entrada.cs" />
     <Compile Include="EsquemaCores.cs" />
     <Compile Include="Lista.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Raiz.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Recursos.cs" />
+    <Compile Include="Rotulo.cs" />
     <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
