@@ -27,7 +27,7 @@ namespace LANudo
         Vector2 posPx;
         public Vector2 PosPx
         {
-            get { return posPx + new Vector2(bordas.Width / 2f, bordas.Height / 2f);}
+            get { return posPx + new Vector2(bordas.Width / 2f, bordas.Height / 2f); }
             set
             {
                 posPx = value - new Vector2(bordas.Width / 2, bordas.Height / 2);
@@ -36,6 +36,7 @@ namespace LANudo
         }
         Rectangle bordas; public Rectangle Dimensoes { get { return bordas; } }
         Color cor; public Color Cor { get { return cor; } set { cor = value; } }
+        string val; public string Val { get { return val; } set { val = value; Redimensionado(); } }
         string rotulo; public string String { get { return rotulo; } set { rotulo = value; AtualizaPosicoes(); } }
         float escalaInicial;
         float escalaAtual;
@@ -48,11 +49,11 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public Rotulo(SpriteBatch _desenhista, SpriteFont _fonte, string _rotulo, Vector3 _posicao, Color _cor, bool _ativo = true)
+        public Rotulo(SpriteBatch _desenhista, SpriteFont _fonte, string _rotulo, bool _xml, Vector3 _posicao, Color _cor, bool _ativo = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
-            rotulo = _rotulo;
+            if (_xml) { rotulo = Motor.Textos.Val(val = _rotulo); } else { rotulo = _rotulo; val = null;}
             escalaInicial = _posicao.Z;
             escalaAtual = escalaInicial;
             cor = _cor;
@@ -63,23 +64,29 @@ namespace LANudo
 
         public void AtualizaPosicoes()
         {
-            escalaAtual = Recursos.EscalaFonteRelativoTela(escalaInicial);
-            Vector2 dimensoes = fonte.MeasureString(rotulo);
-            bordas = new Rectangle(Convert.ToInt16(posPx.X), Convert.ToInt16(posPx.Y), Convert.ToInt16(dimensoes.X * (float)escalaAtual), Convert.ToInt16(dimensoes.Y * (float)escalaAtual));
-            
+            if (rotulo != null)
+            {
+                escalaAtual = Recursos.EscalaFonteRelativoTela(escalaInicial);
+                Vector2 dimensoes = fonte.MeasureString(rotulo);
+                bordas = new Rectangle(Convert.ToInt16(posPx.X), Convert.ToInt16(posPx.Y), Convert.ToInt16(dimensoes.X * (float)escalaAtual), Convert.ToInt16(dimensoes.Y * (float)escalaAtual));
+            }
         }
         public void Redimensionado()
         {
+            if (val != null) { rotulo = Motor.Textos.Val(val); }
             AtualizaPosicoes();
             PosRel = PosRel;
         }
 
         public void Atualizar() { }
-        public void Desenhar()
-        {
+        public void Desenhar() {
+        
             if (ativo)
             {
-                desenhista.DrawString(fonte, rotulo, posPx, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 0f);
+                if (rotulo != null)
+                {
+                    desenhista.DrawString(fonte, rotulo, posPx, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 0f);
+                }
             }
         }
     }

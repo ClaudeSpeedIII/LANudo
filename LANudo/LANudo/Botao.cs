@@ -8,11 +8,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LANudo
 {
+    public delegate void ManipuladorBotao(Botao origem);
     public class Botao : Elemento
     {
-        public event ManipuladorClique Clicado;
-        public event ManipuladorClique MouseEmCima;
-        public event ManipuladorClique MouseEmVolta;
+        public event ManipuladorBotao Clicado;
+        public event ManipuladorBotao MouseEmCima;
+        public event ManipuladorBotao MouseEmVolta;
 
         SpriteBatch desenhista;
         SpriteFont fonte;
@@ -28,6 +29,7 @@ namespace LANudo
 
         float escalaTextoInicial;
         string rotulo;
+        string val;
         bool temTexto;
         Rectangle dimensoesTexto;
 
@@ -101,13 +103,13 @@ namespace LANudo
             }
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, bool _xml, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
             imagemMouseOver = null;
             cores = _cores;
-            rotulo = _rotulo;
+            if (_xml) { rotulo = Motor.Textos.Val(val = _rotulo); } else { val = null; rotulo = _rotulo; }
             posicao = _posicao;
             tamanho = _tamanho;
             fonte = _fonte;
@@ -123,13 +125,13 @@ namespace LANudo
             ativo = _ativo;
         }
 
-        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
+        public Botao(SpriteBatch _desenhista, Texture2D _fundo, Texture2D _fundoMouseOver, EsquemaCores _cores, Vector2 _posicao, float _tamanho, SpriteFont _fonte, string _rotulo, bool _xml, float _escalaTexto, bool _dinamico = false, bool _ativo = true)
         {
             desenhista = _desenhista;
             imagem = _fundo;
             imagemMouseOver = _fundoMouseOver;
             cores = _cores;
-            rotulo = _rotulo;
+            if (_xml) { rotulo = Motor.Textos.Val(val = _rotulo); } else { val = null; rotulo = _rotulo; }
             posicao = _posicao;
             tamanho = _tamanho;
             fonte = _fonte;
@@ -194,10 +196,10 @@ namespace LANudo
 
         public void CursorEmCima()
         {
-            if (MouseEmCima != null) { MouseEmCima(this); }
             clicouDentro = false;
             if (temMouseSobre)
             {
+                if (MouseEmCima != null) { MouseEmCima(this); }
                 corTextoAtual = cores.CorTextoMouse;
                 corFundoAtual = cores.CorFundoMouse;
                 if (imagemMouseOver != null) { imagemAtual = imagemMouseOver; }
@@ -214,9 +216,9 @@ namespace LANudo
 
         public void Redimensionado()
         {
+            if (temTexto && rotulo != null) { if (val != null) { rotulo = Motor.Textos.Val(val); } MedeFonte(); }
             cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
             escalaTextoAtual = Recursos.EscalaFonteRelativoTela(escalaTextoInicial);
-            if (temTexto) { MedeFonte(); }
             posicaoTexto = Recursos.RetanguloCentralizadoNoRetangulo(dimensoesTexto, cantos);
         }
 
@@ -261,7 +263,7 @@ namespace LANudo
             if (ativo)
             {
                 desenhista.Draw(imagemAtual, cantos, corFundoAtual);
-                if (temTexto)
+                if (temTexto && rotulo != null)
                 {
                     desenhista.DrawString(fonte, rotulo, posicaoTexto, corTextoAtual, 0f, new Vector2(0f, 0f), escalaTextoAtual, new SpriteEffects(), 0f);
                 }

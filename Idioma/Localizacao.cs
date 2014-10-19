@@ -16,9 +16,9 @@ namespace Idioma
 {
     public class Localizacao
     {
-        private List<Textos> idiomas = new List<Textos>();
+        private static List<Textos> idiomas = new List<Textos>();
         private Textos fail = new Textos();
-        public List<Textos> Idiomas { get { return idiomas; } }
+        public static List<Textos> Idiomas { get { return idiomas; } }
         public Textos Fail { get { return fail; } }
 
         public Localizacao(string caminho)

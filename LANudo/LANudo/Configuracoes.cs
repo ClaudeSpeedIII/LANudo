@@ -15,7 +15,7 @@ namespace LANudo
         Motor motor;
         Localizacao locale;
         GraphicsDeviceManager graficos;
-        List<Vector2> resolucoes = new List<Vector2>();
+        private List<Vector2> resolucoes = new List<Vector2>(); public List<Vector2> Resolucoes { get { return resolucoes; } }
 
         string failLang;
 
@@ -24,6 +24,7 @@ namespace LANudo
 
         public static int Largura { get { return largura; } }
         public static int Altura { get { return altura; } }
+        public static Vector2 Resolucao { get { return new Vector2(largura, altura); } }
 
         public Configuracoes(Motor _motor, GraphicsDeviceManager _graficos, Localizacao idioma, string failLangISO6391)
         {
@@ -59,36 +60,67 @@ namespace LANudo
             { if (!janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(false); } } }
             largura = x;
             altura = y;
-            if (!primeira) { graficos.ApplyChanges(); }
+            if (!primeira)
+            {
+                graficos.ApplyChanges();
+                //motor.Redimensionado(this, new EventArgs());
+            }
+        }
+        public void SetaRes(Vector2 vetor)
+        {
+            graficos.PreferredBackBufferWidth = (int)vetor.X;
+            graficos.PreferredBackBufferHeight = (int)vetor.Y;
+            largura = (int)vetor.X;
+            altura = (int)vetor.Y;
+            graficos.ApplyChanges();
+            //motor.Redimensionado(this, new EventArgs());
         }
 
-        public void SetaIdioma(string iso6391)
+        public void ChaveiaJanela()
+        {
+            bool janela = !graficos.IsFullScreen;
+            if (graficos.IsFullScreen)
+            { if (janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(true); } }
+            else
+            { if (!janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(false); } }
+            graficos.ApplyChanges();
+           // motor.Redimensionado(this, new EventArgs());
+
+        }
+
+        public void SetaIdioma(string iso6391, bool primeira = false)
         {
             if (iso6391 == "auto")
             {
-                foreach (Textos idioma in locale.Idiomas)
+                foreach (Textos idioma in Localizacao.Idiomas)
                 {
                     if (idioma.ISO == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
                     {
                         motor.SetaTextos = idioma;
+                        if (!primeira) { motor.Redimensionado((object)this, new EventArgs()); }
                         return;
                     }
                 }
             }
             else
             {
-                foreach (Textos idioma in locale.Idiomas)
+                foreach (Textos idioma in Localizacao.Idiomas)
                 {
                     if (idioma.ISO == iso6391)
                     {
                         motor.SetaTextos = idioma;
+                        if (!primeira) { motor.Redimensionado((object)this, new EventArgs()); }
                         return;
                     }
                 }
             }
-            foreach (Textos idioma in locale.Idiomas)
+            foreach (Textos idioma in Localizacao.Idiomas)
             {
-                if (idioma.ISO == failLang) { motor.SetaTextos = idioma; break; }
+                if (idioma.ISO == failLang)
+                {
+                    motor.SetaTextos = idioma;
+                    if (!primeira) { motor.Redimensionado((object)this, new EventArgs()); }
+                }
             }
         }
 

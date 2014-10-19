@@ -12,14 +12,14 @@ using Idioma;
 
 namespace LANudo
 {
-    public delegate void ManipuladorClique(Botao origem);
-
     public class Motor : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         static SpriteBatch desenhista;
         static SpriteFont escritor; public static Vector2 MedeTexto(string texto) { try { return escritor.MeasureString(texto); } catch (Exception erro) { throw erro; } }
         static Configuracoes config; public static Configuracoes Config { get { return config; } }
+
+
         private static Textos idiomaAtual = new Textos(); public static Textos Textos { get { return idiomaAtual; } }
         public Textos SetaTextos { set { idiomaAtual = value; ;} }
 
@@ -36,7 +36,7 @@ namespace LANudo
 
 
 
-        void Redimensionado(object sender, EventArgs e)
+       public void Redimensionado(object sender, EventArgs e)
         {
             config.AtualizaDimensoes();
             menu.Redimensionado();
@@ -110,7 +110,7 @@ namespace LANudo
             desenhista = new SpriteBatch(GraphicsDevice);
             escritor = Content.Load<SpriteFont>(Constantes.caminho_fonte());
 
-            config.SetaIdioma(Constantes.idioma_inicial());
+            config.SetaIdioma(Constantes.idioma_inicial(),true);
             rato = new Cursor(
                 desenhista,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
@@ -128,8 +128,9 @@ namespace LANudo
                 QUIT,
                 Config
                 );
-            ChecaCorFundo(); ;
+            ChecaCorFundo();
             menu.Ativar();
+            Redimensionado(this, new EventArgs());
         }
 
         /// <summary>

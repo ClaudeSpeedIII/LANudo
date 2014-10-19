@@ -10,7 +10,7 @@ namespace LANudo
     public static class Recursos
     {
 
-        public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception erro) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
+        public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception ) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
 
         public static float RegraDeTres(float A, float B, float C)
         {

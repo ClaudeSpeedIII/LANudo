@@ -65,17 +65,17 @@ namespace LANudo
             ativo = _ativo;
         }
 
-        public void AdicionaBotao(string rotulo, ManipuladorClique acao)
+        public void AdicionaBotao(string rotulo, bool xml, ManipuladorBotao acao)
         {
             Vector2 lugar = posicao;
             Botao temp;
             if (imagemMouseOver != null)
             {
-                temp = new Botao(desenhista, imagem, imagemMouseOver, cores, lugar, escala, fonte, rotulo, escalaTexto,false);
+                temp = new Botao(desenhista, imagem, imagemMouseOver, cores, lugar, escala, fonte, rotulo,xml, escalaTexto,false);
             }
             else
             {
-                temp = new Botao(desenhista, imagem, cores, lugar, escala, fonte, rotulo, escalaTexto, false);
+                temp = new Botao(desenhista, imagem, cores, lugar, escala, fonte, rotulo, xml, escalaTexto, false);
             }
             temp.AtivarSobreMouse();
             temp.Clicado += acao;

@@ -45,7 +45,6 @@ namespace LANudo
 
             ativo = _ativo;
             estado = EstadoGUI.intro;
-            Redimensionado();
         }
 
         public enum EstadoGUI { intro, inicial, conf, iniciar, pausado, emJogo };
@@ -80,9 +79,9 @@ namespace LANudo
         void InstanciaMenuInicial()
         {
             menuInicial = new Botoes(desenhista, fonte, botao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true, false);
-            menuInicial.AdicionaBotao(Motor.Textos.Val("NEW_GAME"), Jogar);
-            menuInicial.AdicionaBotao(Motor.Textos.Val("SETTINGS"), Conf);
-            menuInicial.AdicionaBotao(Motor.Textos.Val("QUIT"), Sair);
+            menuInicial.AdicionaBotao("NEW_GAME", true, Jogar);
+            menuInicial.AdicionaBotao("SETTINGS", true, Conf);
+            menuInicial.AdicionaBotao("QUIT", true, Sair);
             logoInicial = new Sprite(desenhista, logo, Recursos.RetanguloRelativamenteDeslocado(logo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial()), false);
             elementosMenuInicial.Add(logoInicial);
             elementosMenuInicial.Add(menuInicial);
@@ -91,62 +90,77 @@ namespace LANudo
 
         void Jogar(Botao remetente) { }
 
-        void Conf(Botao remetente) { VaiMenuConf(); }
+        void Conf(Botao remetente) { SaiMenuInicial(); VaiMenuConf(); }
 
         void VaiMenuInicial() { estado = EstadoGUI.inicial; foreach (Elemento e in elementosMenuInicial) { e.Ativar(); } }
         void SaiMenuInicial() { foreach (Elemento e in elementosMenuInicial) { e.Desativar(); } }
 
         //Configuracoes
         Lista listaIdiomas;
+        Lista listaResolucoes;
         Botao saiConfVoltaInicial;
+        List<Elemento> elementosConfiguracoes = new List<Elemento>();
 
         void InstanciaMenuConfiguracoes()
         {
-            saiConfVoltaInicial = new Botao(desenhista, botao, Constantes.esquema_cores_botao(), new Vector2(0.2f, 0.9f), 0.1f, fonte, "Voltar", 1f, false, false);
+            saiConfVoltaInicial = new Botao(desenhista, botao, Constantes.esquema_cores_botao(), Constantes.pos_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
             saiConfVoltaInicial.Clicado += SaiConfVoltaIniciar;
+            saiConfVoltaInicial.AtivarSobreMouse();
 
-            List<string> vetor = new List<string>();
-            vetor.Add("Espaço");
-            vetor.Add("Nuvens");
-            vetor.Add("Superficie");
-            vetor.Add("Metrô");
-            vetor.Add("Lava");
-            vetor.Add("Bedrock");
-            vetor.Add("Void");
-            List<ElementoLista> result = ElementoLista.CriaVariosElementoLista(vetor, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
-            listaIdiomas = new Lista(desenhista, fonte, result, Lista.TipoEvento.SelecionavelIntermanete, botao, null, botao, seta, Constantes.esquema_cores_lista_seta(), Constantes.esquema_cores_lista_vazia(), Constantes.esquema_cores_lista_inclicavel(), Constantes.esquema_cores_lista_selecionada(), Constantes.esquema_cores_lista_deselecionada(), new Vector2(0.85f, 0.5f), 0.1f, 5, 1f, 0.5f, "Idioma", true, true);
+            List<ElementoLista> vetor;
+
+            vetor = ElementoLista.CriaVariosElementoLista(Localizacao.Idiomas, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
+            listaIdiomas = new Lista(desenhista, fonte, vetor,
+                Lista.TipoEvento.SelecionavelInternamente,
+                botao, null, botao, seta,
+                Constantes.esquema_cores_lista_seta(),
+                Constantes.esquema_cores_lista_vazia(),
+                Constantes.esquema_cores_lista_inclicavel(),
+                Constantes.esquema_cores_lista_selecionada(),
+                Constantes.esquema_cores_lista_deselecionada(),
+                Constantes.pos_lista_idiomas(),
+                Constantes.escala_elementos_conf(), 5,
+                Constantes.escala_texto_elementos_conf(),
+                Constantes.escala_setinha_conf(), true,
+                "LOCALE", true,
+                Constantes.escala_rotulo_conf(),
+                Constantes.distancia_rotulo_conf(),
+                Motor.Textos.ISO
+                , false, true, true);
+
+            vetor = ElementoLista.CriaVariosElementoLista(conf.Resolucoes, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
+            listaResolucoes = new Lista(desenhista, fonte, vetor,
+                Lista.TipoEvento.SelecionavelInternamente,
+                botao, null, botao, seta,
+                Constantes.esquema_cores_lista_seta(),
+                Constantes.esquema_cores_lista_vazia(),
+                Constantes.esquema_cores_lista_inclicavel(),
+                Constantes.esquema_cores_lista_selecionada(),
+                Constantes.esquema_cores_lista_deselecionada(),
+                Constantes.pos_lista_res(),
+                Constantes.escala_elementos_conf(), 5,
+                Constantes.escala_texto_elementos_conf(),
+                Constantes.escala_setinha_conf(), true,
+                "RES", true,
+                Constantes.escala_rotulo_conf(),
+                Constantes.distancia_rotulo_conf(),
+                Configuracoes.Resolucao,
+                false, true, true);
+
+            listaIdiomas.clicouDropDown += SetouListaIdioma;
+            listaResolucoes.clicouDropDown += SetouListaResolucoes;
+
+            elementosConfiguracoes.Add(listaIdiomas);
+            elementosConfiguracoes.Add(listaResolucoes);
+            elementosConfiguracoes.Add(saiConfVoltaInicial);
         }
 
-        void RedimensionaConfiguracoes()
-        {
-            listaIdiomas.Atualizar();
-            saiConfVoltaInicial.Atualizar();
-        }
-
-        void AtualizaConfiguracoes()
-        {
-            listaIdiomas.Atualizar();
-            saiConfVoltaInicial.Redimensionado();
-        }
-
-        void DesenhaConfiguracoes()
-        {
-            listaIdiomas.Desenhar();
-            saiConfVoltaInicial.Desenhar();
-        }
-
+        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); }
+        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); }
         void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
-        void VaiMenuConf()
-        {
-            estado = EstadoGUI.conf;
-            listaIdiomas.Ativar();
-        }
-
-        void SaiMenuConf()
-        {
-            listaIdiomas.Desativar();
-        }
+        void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } }
+        void SaiMenuConf() { foreach (Elemento e in elementosConfiguracoes) { e.Desativar(); } }
 
 
 
@@ -155,8 +169,13 @@ namespace LANudo
         {
             logoIntro.Redimensionado();
             foreach (Elemento e in elementosMenuInicial) { e.Redimensionado(); }
+            foreach (Elemento e in elementosConfiguracoes)
+            {
+                e.Redimensionado(); listaResolucoes.Itens =
+ElementoLista.CriaVariosElementoLista(conf.Resolucoes, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
+                listaResolucoes.PayloadItemSelecionado = Configuracoes.Resolucao;
+            }
 
-            RedimensionaConfiguracoes();
         }
 
         public void Atualizar()
@@ -165,8 +184,8 @@ namespace LANudo
             {
                 ContaLogoIntro();
                 foreach (Elemento e in elementosMenuInicial) { e.Atualizar(); }
+                foreach (Elemento e in elementosConfiguracoes) { e.Atualizar(); }
 
-                AtualizaConfiguracoes();
             }
         }
 
@@ -177,8 +196,8 @@ namespace LANudo
                 logoIntro.Desenhar();
 
                 foreach (Elemento e in elementosMenuInicial) { e.Desenhar(); }
+                foreach (Elemento e in elementosConfiguracoes) { e.Desenhar(); }
 
-                DesenhaConfiguracoes();
             }
 
         }

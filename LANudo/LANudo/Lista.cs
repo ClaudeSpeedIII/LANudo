@@ -7,21 +7,28 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
+    public delegate void ManipuladorLista(Lista origem);
+    public delegate void ManipuladorDropDown(ElementoLista atual);
     public class Lista : Elemento
     {
-        string rotulo;
+        public event ManipuladorDropDown clicouDropDown; public void ZeraClicouDropDown() { clicouDropDown = null; }
+        string txtRotulo;
+        bool xml;
+        Rotulo rotulo;
         Botao botaoRotulo;
+        float escalaTextoRotulo;
         List<Botao> botoesTodos = new List<Botao>();
         List<Botao> botoesDinamicos = new List<Botao>();
         Sprite setaSuperior;
         Sprite setaInferior;
         Botao botaoSuperior;
         Botao botaoInferior;
-        List<ElementoLista> itens = new List<ElementoLista>();
-        ElementoLista itemAtual = null; public ElementoLista ItemSelecionado { get { return itemAtual; } }
+        List<ElementoLista> itens = new List<ElementoLista>(); public List<ElementoLista> Itens { get { return itens; } set { itens = value; InicializaItens(); AtualizaSelecao(); } }
+        ElementoLista itemAtual = null; public ElementoLista ItemSelecionado { get { return itemAtual; } set { itemAtual = value; AtualizaSelecao(); } }
+        public object PayloadItemSelecionado { get { return itemAtual.Payload; } set { foreach (ElementoLista item in itens) { if (item.Payload.Equals(value)) { itemAtual = item; } } } }
         Botao botaoAtual = null;
         int rolagem = 0;
-        bool aberto;
+        bool aberto = false;
 
         SpriteBatch desenhista;
         SpriteFont fonte;
@@ -32,9 +39,11 @@ namespace LANudo
         int capacidade;
         float escala;
         Vector2 posicao;
+        float distanciaRotulo;
+        bool rotuloAcima;
         bool temSetas;
         bool vertical;
-        public enum TipoEvento { SelecionavelIntermanete, SelecionavelExternamente, Setado };
+        public enum TipoEvento { SelecionavelInternamente, SelecionavelExternamente, Setado };
         TipoEvento tipo;
         bool dropDown;
         float escalaTexto;
@@ -45,16 +54,6 @@ namespace LANudo
         EsquemaCores coresSelecionado;
         EsquemaCores coresDeselecionado;
 
-        public List<ElementoLista> Itens
-        {
-            get { return itens; }
-            set
-            {
-                itens = value;
-                InicializaItens();
-            }
-        }
-
         bool ativo;
 
         public bool Ativado() { return ativo; }
@@ -63,7 +62,7 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, string _dropDown = null, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -74,10 +73,14 @@ namespace LANudo
             fundoSeta = _fundoSeta;
             seta = _seta;
 
-            if (_dropDown == null) { dropDown = false; } else { dropDown = true; rotulo = _dropDown; }
+            dropDown = _dropDown;
+            xml = _xml;
+            txtRotulo = _txtRotulo;
+            foreach (ElementoLista item in itens) { if (item.Payload.Equals(_payloadSelecao)) { itemAtual = item; } }
             vertical = _vertical;
             tipo = _selecionavel;
             temSetas = _temSetas;
+            rotuloAcima = _rotuloAcima;
 
             coresDeselecionado = _coresDeselecionado;
             coresSelecionado = _coresSelecionado;
@@ -85,19 +88,25 @@ namespace LANudo
             coresSeta = _coresSeta;
             coresInclicavel = _coresInclicavel;
             capacidade = _capacidade;
+            distanciaRotulo = _distanciaRotulo;
+
             posicao = _posicao;
             escala = _escala;
             escalaTexto = _escalaTexto;
+            escalaTextoRotulo = _escalaTextoRotulo;
             escalaSetinha = _escalaSetinha;
 
             InicializaBotoes();
             InicializaItens();
+            AtualizaSelecao();
 
             ativo = false;
+
         }
 
         private void InicializaBotoes()
         {
+            bool usaXML = itens.ElementAt(0).XML;
             if (temSetas)
             {
                 botaoSuperior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
@@ -111,15 +120,27 @@ namespace LANudo
                 botaoInferior.MouseEmVolta += this.SetaCorSetaInferiorDesel;
                 botaoSuperior.MouseEmCima += this.SetaCorSetaSuperiorMouse;
                 botaoSuperior.MouseEmVolta += this.SetaCorSetaSuperiorDesel;
-                if (dropDown) {
-                    botaoRotulo = new Botao(desenhista, fundo, coresDeselecionado, posicao, escala * 0.1f, fonte, rotulo, 1f, false);
-                    
-                }
+
                 botoesTodos.Add(botaoSuperior);
+            }
+            if (dropDown)
+            {
+                botaoRotulo = new Botao(desenhista, fundo, coresDeselecionado, posicao, escala * 1.1f, fonte, null, usaXML, 1f, false);
+                if (itemAtual != null) { botaoRotulo.Rotulo = itemAtual.Rotulo; }
+                botaoRotulo.Clicado += Abriu;
+                botaoRotulo.AtivarSobreMouse();
+            }
+            if (txtRotulo != null)
+            {
+                rotulo = new Rotulo(desenhista, fonte, txtRotulo, xml, new Vector3(posicao.X, posicao.Y, escalaTextoRotulo), coresSelecionado.CorTexto, true);
+                if (rotuloAcima)
+                { rotulo.PosRel -= new Vector2(0, distanciaRotulo + ((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura); }
+                else
+                { rotulo.PosRel -= new Vector2(distanciaRotulo + ((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura), 0); }
             }
             for (int i = 1; i <= capacidade; i++)
             {
-                Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, " ", escalaTexto, false);
+                Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, null, usaXML, escalaTexto, false);
                 botao.OcultaTexto();
                 botao.DesativarSobreMouse();
                 botoesTodos.Add(botao);
@@ -157,7 +178,7 @@ namespace LANudo
                         ElementoLista item = null;
 
                         try { item = itens.ElementAt(contador); }
-                        catch (Exception erro)
+                        catch (Exception)
                         { semMais = true; }
                         if (item == null)
                         {
@@ -169,7 +190,7 @@ namespace LANudo
                         }
 
                         try { itens.ElementAt(contador + 1); }
-                        catch (Exception erro)
+                        catch (Exception)
                         { return Ponto.Fim; }
                         contador++;
                     }
@@ -204,7 +225,7 @@ namespace LANudo
                     botao.DesativarSobreMouse();
                     botao.ZeraEventos();
                     break;
-                case TipoEvento.SelecionavelIntermanete:
+                case TipoEvento.SelecionavelInternamente:
                     botao.AtivarSobreMouse();
                     botao.Clicado += Clicou;
                     break;
@@ -219,10 +240,26 @@ namespace LANudo
                 {
                     if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
                     SelecionaBotao(botao);
+                    if (dropDown) { Fechou(); if (clicouDropDown != null && itemAtual != item) { clicouDropDown(item); } }
                     itemAtual = item;
                     botaoAtual = botao;
+                    botaoRotulo.Rotulo = itemAtual.Rotulo;
+                    return;
                 }
             }
+        }
+
+        private void Abriu(Botao botao)
+        {
+            botaoRotulo.DesativarSobreMouse();
+            botaoRotulo.Cores = coresSelecionado;
+            aberto = true;
+        }
+        private void Fechou()
+        {
+            botaoRotulo.AtivarSobreMouse();
+            botaoRotulo.Cores = coresDeselecionado;
+            aberto = false;
         }
 
         private void SelecionaBotao(Botao botao)
@@ -317,6 +354,10 @@ namespace LANudo
             float tamanho = 0f, posX = posicao.X, posY = posicao.Y;
             bool first = true;
             int contador = 1;
+
+            botaoRotulo.Redimensionado();
+            rotulo.Redimensionado();
+
             foreach (Botao botao in botoesTodos)
             {
                 if (botoesTodos.Count > 1)
@@ -371,7 +412,6 @@ namespace LANudo
                 }
                 contador++;
             }
-
         }
 
         void SetaCorSetaInferiorMouse(Botao botao)
@@ -396,10 +436,12 @@ namespace LANudo
         {
             if (ativo)
             {
+                if (dropDown) { botaoRotulo.Atualizar(); if (!aberto) { return; } }
                 foreach (Botao botao in botoesTodos)
                 {
                     botao.Atualizar();
                 }
+
             }
         }
 
@@ -407,7 +449,8 @@ namespace LANudo
         {
             if (ativo)
             {
-                if (dropDown) { botaoRotulo.Desenhar(); }
+                if (rotulo != null) { rotulo.Desenhar(); }
+                if (dropDown) { botaoRotulo.Desenhar(); if (!aberto) { return; } }
                 foreach (Botao botao in botoesTodos)
                 {
                     botao.Desenhar();

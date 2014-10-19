@@ -32,24 +32,24 @@ namespace LANudo
 
         public void Desativar() { ativo = true; }
 
-        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado, Vector2 _offSet)
+        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado, Vector2 _offSet, bool _ativo = false)
         {
             desenhista = _desenhista;
             ratoNormal = _ratoNormal;
             ratoPressionado = _ratoPressionado;
             offSet = _offSet;
             corAtual = Color.White;
-            ativo = false;
+            ativo = _ativo;
         }
 
-        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado)
+        public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado, bool _ativo = false)
         {
             desenhista = _desenhista;
             ratoNormal = _ratoNormal;
             ratoPressionado = _ratoPressionado;
             offSet = Vector2.Zero;
             corAtual = Color.White;
-            ativo = false;
+            ativo = _ativo;
         }
 
         public void Atualizar()
@@ -69,7 +69,7 @@ namespace LANudo
             }
         }
 
-        public void Redimensionado(){}
+        public void Redimensionado() { }
 
         public void Desenhar()
         {
