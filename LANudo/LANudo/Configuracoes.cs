@@ -55,18 +55,22 @@ namespace LANudo
         public void SetaRes(int x, int y, bool janela, bool primeira = false)
         {
             graficos.PreferredBackBufferWidth = x;
-            graficos.PreferredBackBufferHeight = y;
-            if (graficos.IsFullScreen)
-            { if (janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(true); } } }
-            else
-            { if (!janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(false); } } }
+            graficos.PreferredBackBufferHeight = y; 
+            if (!primeira)
+            {
+                if (graficos.IsFullScreen)
+                { if (janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(false); } }
+                else
+                { if (!janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(true); } }
+            }
+            else { graficos.IsFullScreen = !janela; }
             largura = x;
             altura = y;
             Configuracoes.janela = janela;
             if (!primeira)
             {
                 graficos.ApplyChanges();
-                //motor.Redimensionado(this, new EventArgs());
+                if (!janela) { motor.Redimensionado(this, new EventArgs()); }
             }
         }
         public void SetaRes(Vector2 vetor)
@@ -87,8 +91,7 @@ namespace LANudo
             else
             { if (!janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(false); } }
             graficos.ApplyChanges();
-           // motor.Redimensionado(this, new EventArgs());
-
+            if (!janela) { motor.Redimensionado(this, new EventArgs()); }
         }
 
         public void SetaIdioma(string iso6391, bool primeira = false)

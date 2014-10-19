@@ -24,13 +24,15 @@ namespace LANudo
             set { corAtual = value; }
         }
 
-        bool ativo;
+        bool ativo, interativo=true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
-        public void Desativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
 
         public Cursor(SpriteBatch _desenhista, Texture2D _ratoNormal, Texture2D _ratoPressionado, Vector2 _offSet, bool _ativo = false)
         {
@@ -54,7 +56,7 @@ namespace LANudo
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 MouseState rato = Mouse.GetState();
                 if (rato.LeftButton == ButtonState.Pressed)

@@ -17,6 +17,7 @@ namespace LANudo
         public static string caminho_seta() { return "Seta"; }
         public static string caminho_logo_intro() { return "LogoIntro"; }
         public static string caminho_idiomas() { return "Locale/"; }
+        public static string caminho_fundo() { return "Fundo"; }
 
         //***Conf***
 
@@ -69,7 +70,7 @@ namespace LANudo
         public static Vector2 pos_lista_res() { return new Vector2(0.5f, 0.4f); }
         public static float escala_setinha_conf() { return 0.5f; }
         public static float escala_rotulo_conf() { return 1f; }
-        public static float distancia_rotulo_conf() { return 0.3f; }
+        public static float distancia_rotulo_conf() { return 0.4f; }
         public static float escala_elementos_conf() { return 0.08f; }
         public static float escala_texto_elementos_conf() { return 0.8f; }
         //***GAME***

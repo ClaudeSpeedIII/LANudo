@@ -24,17 +24,17 @@ namespace LANudo
             get { return posRel; }
             set
             {
-                posPx = Recursos.RelTelaParaAbs(value) - pivotAbsoluto;
+                posPx = Recursos.RelTelaParaAbs(value);
                 posRel = value;
             }
         }
         Vector2 posPx;
         public Vector2 PosPx
         {
-            get { return posPx + new Vector2(bordas.Width / 2f, bordas.Height / 2f); }
+            get { return posPx; }
             set
             {
-                posPx = value - pivotAbsoluto;
+                posPx = value;
                 posRel = Recursos.AbsParaRelTela(value);
             }
         }
@@ -45,12 +45,14 @@ namespace LANudo
         float escalaInicial;
         float escalaAtual;
 
-        bool ativo;
+        bool ativo, interativo=true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
         public void Desativar() { ativo = false; }
 
         public Rotulo(SpriteBatch _desenhista, SpriteFont _fonte, string _rotulo, bool _xml, Vector3 _posicao, Color _cor, bool _ativo = true)
@@ -87,7 +89,7 @@ namespace LANudo
         public void Desenhar()
         {
 
-            if (ativo)
+            if (ativo && interativo)
             {
                 if (rotulo != null)
                 {

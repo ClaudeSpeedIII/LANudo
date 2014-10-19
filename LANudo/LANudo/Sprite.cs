@@ -15,7 +15,15 @@ namespace LANudo
         public event ManipuladorSprite MouseEmCima; public void ZeraMouseEmCima() { MouseEmCima = null; }
         public event ManipuladorSprite MouseEmVolta; public void ZeraMouseEmVolta() { MouseEmVolta = null; }
 
-        bool ativo;
+        bool ativo, interativo=true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
+
+        public bool Ativado() { return ativo; }
+        public void Ativar() { ativo = true; }
+        public void Desativar() { ativo = false; }
         SpriteBatch desenhista;
         MouseState ratoAnterior;
         bool temMouseSobre = false; public bool PodeMouseSobre { set { temMouseSobre = value; } }
@@ -66,13 +74,6 @@ namespace LANudo
         Color corAtual = Color.White; public Color Cor { get { return corAtual; } set { corAtual = value; } }
         EsquemaCores cores = new EsquemaCores(); public EsquemaCores Cores { get { return cores; } set { cores = value; } }
 
-
-
-        public bool Ativado() { return ativo; }
-
-        public void Ativar() { ativo = true; }
-
-        public void Desativar() { ativo = false; }
 
         public Sprite(SpriteBatch desenhista, Texture2D imagem, Rectangle pos, Color cor, bool ativo = true)
         {
@@ -136,7 +137,7 @@ namespace LANudo
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 if (dinamico)
                 {

@@ -8,7 +8,7 @@ using Idioma;
 
 namespace LANudo
 {
-    public class GUI
+    public class GUI : Elemento
     {
         SpriteBatch desenhista;
         SpriteFont fonte;
@@ -18,26 +18,62 @@ namespace LANudo
         Configuracoes conf;
 
 
+        bool ativo, interativo = true;
 
-        bool ativo;
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
         public void Desativar() { ativo = false; }
 
-        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Cursor _rato, Action _sair, Configuracoes _conf, bool _ativo = true)
+
+        static Color corFundo; public static Color CorFundo { get { return corFundo; } }
+        static Fundo background; public static Fundo ImgFundo { get { return background; } }
+
+        void SetaFundo()
+        {
+            switch (estado)
+            {
+                case GUI.EstadoGUI.intro:
+                    corFundo = Constantes.cor_de_fundo_Intro();
+                    background = null;
+                    break;
+                case GUI.EstadoGUI.inicial:
+                    corFundo = Constantes.cor_de_fundo_MenuInicial();
+                    background = fundoInicial;
+                    break;
+                case GUI.EstadoGUI.conf:
+                    corFundo = Constantes.cor_de_fundo_MenuConf();
+                    background = null;
+                    break;
+                case GUI.EstadoGUI.iniciar:
+                    corFundo = Constantes.cor_de_fundo_MenuNovoJogo();
+                    background = null;
+                    break;
+                case GUI.EstadoGUI.pausado:
+                    background = null;
+                    break;
+                case GUI.EstadoGUI.emJogo:
+                    background = null;
+                    break;
+            }
+        }
+
+        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Texture2D _fundoInicial, Cursor _rato, Action _sair, Configuracoes _conf, bool _ativo = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
-            logo = _logo;
-            intro = _intro;
-            botao = _botao;
-            seta = _seta;
+            imgLogo = _logo;
+            imgIntro = _intro;
+            imgBotao = _botao;
+            imgSeta = _seta;
             rato = _rato;
             sair = _sair;
             conf = _conf;
+
+            imgFundoInicial = _fundoInicial;
 
             InstanciaLogoIntro();
             InstanciaMenuInicial();
@@ -53,38 +89,51 @@ namespace LANudo
 
         //Texturas
 
-        Texture2D intro;
-        Texture2D logo;
-        Texture2D botao;
-        Texture2D seta;
+        Texture2D imgFundoInicial;
+
+        Texture2D imgIntro;
+        Texture2D imgLogo;
+        Texture2D imgBotao;
+        Texture2D imgSeta;
 
         //Intro
         Sprite logoIntro;
 
-        void InstanciaLogoIntro() { logoIntro = new Sprite(desenhista, intro, Recursos.RetanguloCentralizado(intro.Bounds, Constantes.escala_logo_intro())); }
+        void InstanciaLogoIntro()
+        {
+            logoIntro = new Sprite(desenhista, imgIntro, Recursos.RetanguloCentralizado(imgIntro.Bounds, Constantes.escala_logo_intro()));
+            estado = EstadoGUI.intro;
+            SetaFundo();
+        }
 
         void ContaLogoIntro()
         {
             if (estado == EstadoGUI.intro)
             {
                 if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { logoIntro.Desativar(); VaiMenuInicial(); rato.Ativar(); }
+                redimensionaTodos.Add(logoIntro);
             }
         }
 
         //Menu inicial
+        Fundo fundoInicial;
         Botoes menuInicial;
         Sprite logoInicial;
         List<Elemento> elementosMenuInicial = new List<Elemento>();
 
         void InstanciaMenuInicial()
         {
-            menuInicial = new Botoes(desenhista, fonte, botao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true, false);
+            fundoInicial = new Fundo(desenhista, imgFundoInicial);
+            menuInicial = new Botoes(desenhista, fonte, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true, false);
             menuInicial.AdicionaBotao("NEW_GAME", true, Jogar);
             menuInicial.AdicionaBotao("SETTINGS", true, Conf);
             menuInicial.AdicionaBotao("QUIT", true, Sair);
-            logoInicial = new Sprite(desenhista, logo, Recursos.RetanguloRelativamenteDeslocado(logo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial()), false);
+            logoInicial = new Sprite(desenhista, imgLogo, Recursos.RetanguloRelativamenteDeslocado(imgLogo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial()), false);
             elementosMenuInicial.Add(logoInicial);
             elementosMenuInicial.Add(menuInicial);
+            redimensionaTodos.Add(fundoInicial);
+            redimensionaTodos.AddRange(elementosMenuInicial);
+
         }
         void Sair(Botao remetente) { sair(); }
 
@@ -92,7 +141,7 @@ namespace LANudo
 
         void Conf(Botao remetente) { SaiMenuInicial(); VaiMenuConf(); }
 
-        void VaiMenuInicial() { estado = EstadoGUI.inicial; foreach (Elemento e in elementosMenuInicial) { e.Ativar(); } }
+        void VaiMenuInicial() { estado = EstadoGUI.inicial; foreach (Elemento e in elementosMenuInicial) { e.Ativar(); } SetaFundo(); }
         void SaiMenuInicial() { foreach (Elemento e in elementosMenuInicial) { e.Desativar(); } }
 
         //Configuracoes
@@ -103,7 +152,7 @@ namespace LANudo
 
         void InstanciaMenuConfiguracoes()
         {
-            saiConfVoltaInicial = new Botao(desenhista, botao, Constantes.esquema_cores_botao(), Constantes.pos_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
+            saiConfVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
             saiConfVoltaInicial.Clicado += SaiConfVoltaIniciar;
             saiConfVoltaInicial.AtivarSobreMouse();
 
@@ -112,7 +161,7 @@ namespace LANudo
             vetor = ElementoLista.CriaVariosElementoLista(Localizacao.Idiomas, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
             listaIdiomas = new Lista(desenhista, fonte, vetor,
                 Lista.TipoEvento.SelecionavelInternamente,
-                botao, null, botao, seta,
+                imgBotao, null, imgBotao, imgSeta,
                 Constantes.esquema_cores_lista_seta(),
                 Constantes.esquema_cores_lista_vazia(),
                 Constantes.esquema_cores_lista_inclicavel(),
@@ -133,7 +182,7 @@ namespace LANudo
             vetor = ElementoLista.CriaVariosElementoLista(conf.Resolucoes, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
             listaResolucoes = new Lista(desenhista, fonte, vetor,
                 Lista.TipoEvento.SelecionavelInternamente,
-                botao, null, botao, seta,
+                imgBotao, null, imgBotao, imgSeta,
                 Constantes.esquema_cores_lista_seta(),
                 Constantes.esquema_cores_lista_vazia(),
                 Constantes.esquema_cores_lista_inclicavel(),
@@ -143,50 +192,55 @@ namespace LANudo
                 Constantes.escala_elementos_conf(), 5,
                 Constantes.escala_texto_elementos_conf(),
                 Constantes.escala_setinha_conf(), true,
-                "RES",true,
+                "RES", true,
                 Constantes.escala_rotulo_conf(),
                 Constantes.distancia_rotulo_conf(),
                 resAtual,
                 false, true, true);
 
             listaIdiomas.BotaoRotulo.Clicado += AbriuListaIdiomas;
-            listaIdiomas.clicouDropDown += SetouListaIdioma;
+            listaIdiomas.NovaSelecaoDropDown += SetouListaIdioma;
+            listaIdiomas.SelecionouDropDown += FechouListaIdioma;
             listaResolucoes.BotaoRotulo.Clicado += AbriuListaResolucoes;
-            listaResolucoes.clicouDropDown += SetouListaResolucoes;
+            listaResolucoes.NovaSelecaoDropDown += SetouListaResolucoes;
+            listaResolucoes.SelecionouDropDown += FechouListaResolucoes;
 
             // A ordem diz quem desenha na frente
             elementosConfiguracoes.Add(listaResolucoes);
             elementosConfiguracoes.Add(listaIdiomas);
             elementosConfiguracoes.Add(saiConfVoltaInicial);
+            redimensionaTodos.AddRange(elementosConfiguracoes);
         }
 
-        void AbriuListaIdiomas(Botao origem) { listaResolucoes.Interativo = false; }
-        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); listaResolucoes.Interativo = true; }
-        void AbriuListaResolucoes(Botao origem) { listaIdiomas.Interativo = false; }
+        void AbriuListaIdiomas(Botao origem) { foreach (Elemento e in elementosConfiguracoes) { if (!e.Equals(listaIdiomas)) { e.DesativaInterativo(); } } }
+        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); FechouListaIdioma(elemento); }
+        void FechouListaIdioma(ElementoLista elemento) { foreach (Elemento e in elementosConfiguracoes) { if (!e.Equals(listaIdiomas)) { e.AtivaInterativo(); } } }
+        void AbriuListaResolucoes(Botao origem) { foreach (Elemento e in elementosConfiguracoes) { if (!e.Equals(listaResolucoes)) { e.DesativaInterativo(); } } }
         void SetouListaResolucoes(ElementoLista elemento)
         {
             Vector3 res = (Vector3)elemento.Payload;
-            conf.SetaRes((int)res.X, (int)res.Y, ((res.Z == 0) ? false : true)); Redimensionado(); listaIdiomas.Interativo = true;
+            conf.SetaRes((int)res.X, (int)res.Y, ((res.Z == 0) ? false : true));
+            FechouListaResolucoes(elemento);
         }
+        void FechouListaResolucoes(ElementoLista elemento) { foreach (Elemento e in elementosConfiguracoes) { if (!e.Equals(listaResolucoes)) { e.AtivaInterativo(); } } }
+
         void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
-        void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } }
+        void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } SetaFundo(); }
         void SaiMenuConf() { foreach (Elemento e in elementosConfiguracoes) { e.Desativar(); } }
 
 
 
 
+        List<Elemento> redimensionaTodos=new List<Elemento>();
         public void Redimensionado()
         {
-            logoIntro.Redimensionado();
-            foreach (Elemento e in elementosMenuInicial) { e.Redimensionado(); }
-            foreach (Elemento e in elementosConfiguracoes) { e.Redimensionado(); }
-
+            foreach (Elemento e in redimensionaTodos) { e.Redimensionado(); }
         }
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 ContaLogoIntro();
                 foreach (Elemento e in elementosMenuInicial) { e.Atualizar(); }
@@ -207,6 +261,7 @@ namespace LANudo
             }
 
         }
+
     }
 }
 

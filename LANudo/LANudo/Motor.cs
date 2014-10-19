@@ -42,31 +42,6 @@ namespace LANudo
             menu.Redimensionado();
         }
 
-        Color corFundo;
-
-        public Color ChecaCorFundo()
-        {
-            switch (GUI.Estado)
-            {
-                case GUI.EstadoGUI.intro:
-                    corFundo = Constantes.cor_de_fundo_Intro();
-                    break;
-                case GUI.EstadoGUI.inicial:
-                    corFundo = Constantes.cor_de_fundo_MenuInicial();
-                    break;
-                case GUI.EstadoGUI.conf:
-                    corFundo = Constantes.cor_de_fundo_MenuConf();
-                    break;
-                case GUI.EstadoGUI.iniciar:
-                    corFundo = Constantes.cor_de_fundo_MenuNovoJogo();
-                    break;
-                case GUI.EstadoGUI.pausado:
-                    break;
-                case GUI.EstadoGUI.emJogo:
-                    break;
-            }
-            return corFundo;
-        }
 
         void QUIT()
         {
@@ -124,11 +99,11 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_logo_intro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
+                Content.Load<Texture2D>(Constantes.caminho_fundo()),
                 rato,
                 QUIT,
                 Config
                 );
-            ChecaCorFundo();
             menu.Ativar();
             Redimensionado(this, new EventArgs());
         }
@@ -153,7 +128,6 @@ namespace LANudo
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            ChecaCorFundo();
             menu.Atualizar();
             rato.Atualizar();
 
@@ -163,11 +137,14 @@ namespace LANudo
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(corFundo);
-
-            //Sequencia de "joga na tela"
+            GraphicsDevice.Clear(GUI.CorFundo);
 
             desenhista.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+            if(GUI.ImgFundo != null) {
+                GUI.ImgFundo.Desenhar();}
+            //Sequencia de "joga na tela"
+
 
             menu.Desenhar();
 
