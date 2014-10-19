@@ -156,7 +156,7 @@ namespace LANudo
         }
 
         void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); }
-        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); }
+        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); Redimensionado(); }
         void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
         void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } }
