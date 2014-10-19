@@ -30,9 +30,12 @@ namespace LANudo
         float escalaTextoInicial;
         string rotulo;
         string val;
+        public string Rotulo { get { return rotulo; } set { rotulo = value; val = null; temTexto = (value != null); Redimensionado(); } }
+        public string Val { get { return val; } set { val = value; temTexto = (value != null); Redimensionado(); } }
+
+
         bool temTexto;
         Rectangle dimensoesTexto;
-
 
 
         bool mouseSobre; public bool MouseSobre { get { return mouseSobre; } }
@@ -66,16 +69,6 @@ namespace LANudo
         public Rectangle Cantos
         {
             get { return cantos; }
-        }
-        public string Rotulo
-        {
-            get { return rotulo; }
-            set
-            {
-                rotulo = value;
-                Redimensionado();
-                temTexto = true;
-            }
         }
         public Vector2 Posicao
         {

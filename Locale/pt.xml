@@ -11,5 +11,6 @@
 		<APPLY>Aplicar</APPLY>
 		<LOCALE>Idioma</LOCALE>
 		<FULLSCREEN>Tela inteira</FULLSCREEN>
+		<WINDOWED>Modo janela</WINDOWED>
 	</Strings>
 </Language>

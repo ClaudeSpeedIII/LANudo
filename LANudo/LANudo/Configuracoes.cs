@@ -21,10 +21,12 @@ namespace LANudo
 
         private static int largura;
         private static int altura;
+        private static bool janela;
 
         public static int Largura { get { return largura; } }
         public static int Altura { get { return altura; } }
         public static Vector2 Resolucao { get { return new Vector2(largura, altura); } }
+        public static bool Janela { get { return janela; } }
 
         public Configuracoes(Motor _motor, GraphicsDeviceManager _graficos, Localizacao idioma, string failLangISO6391)
         {
@@ -60,6 +62,7 @@ namespace LANudo
             { if (!janela) { graficos.ToggleFullScreen(); if (!primeira) { motor.Window.BeginScreenDeviceChange(false); } } }
             largura = x;
             altura = y;
+            Configuracoes.janela = janela;
             if (!primeira)
             {
                 graficos.ApplyChanges();
@@ -78,7 +81,7 @@ namespace LANudo
 
         public void ChaveiaJanela()
         {
-            bool janela = !graficos.IsFullScreen;
+            janela = !janela;
             if (graficos.IsFullScreen)
             { if (janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(true); } }
             else

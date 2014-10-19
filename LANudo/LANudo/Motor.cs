@@ -81,7 +81,7 @@ namespace LANudo
             this.IsFixedTimeStep = false;
             config = new Configuracoes(this, graphics, new Localizacao(Constantes.caminho_idiomas()), Constantes.idioma_emergencia());
             config.SetaRes(Constantes.resolucao_x(), Constantes.resolucao_y(), Constantes.janela(), true);
-            this.Window.AllowUserResizing = false;
+            this.Window.AllowUserResizing = true;
             this.Window.ClientSizeChanged += new EventHandler<EventArgs>(Redimensionado);
             Content.RootDirectory = "Content";
 

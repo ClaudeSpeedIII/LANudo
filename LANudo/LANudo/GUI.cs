@@ -128,6 +128,8 @@ namespace LANudo
                 Motor.Textos.ISO
                 , false, true, true);
 
+            object resAtual = ((object)new Vector3(Configuracoes.Resolucao.X, Configuracoes.Resolucao.Y, Configuracoes.Janela ? 1 : 0));
+
             vetor = ElementoLista.CriaVariosElementoLista(conf.Resolucoes, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
             listaResolucoes = new Lista(desenhista, fonte, vetor,
                 Lista.TipoEvento.SelecionavelInternamente,
@@ -141,10 +143,10 @@ namespace LANudo
                 Constantes.escala_elementos_conf(), 5,
                 Constantes.escala_texto_elementos_conf(),
                 Constantes.escala_setinha_conf(), true,
-                "RES", true,
+                "RES",true,
                 Constantes.escala_rotulo_conf(),
                 Constantes.distancia_rotulo_conf(),
-                Configuracoes.Resolucao,
+                resAtual,
                 false, true, true);
 
             listaIdiomas.BotaoRotulo.Clicado += AbriuListaIdiomas;
@@ -158,10 +160,14 @@ namespace LANudo
             elementosConfiguracoes.Add(saiConfVoltaInicial);
         }
 
-        void AbriuListaIdiomas(Botao origem) { listaResolucoes.Clicavel = false; }
-        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); listaResolucoes.Clicavel = true; }
-        void AbriuListaResolucoes(Botao origem) { listaIdiomas.Clicavel = false; }
-        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); Redimensionado(); listaIdiomas.Clicavel = true; }
+        void AbriuListaIdiomas(Botao origem) { listaResolucoes.Interativo = false; }
+        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); listaResolucoes.Interativo = true; }
+        void AbriuListaResolucoes(Botao origem) { listaIdiomas.Interativo = false; }
+        void SetouListaResolucoes(ElementoLista elemento)
+        {
+            Vector3 res = (Vector3)elemento.Payload;
+            conf.SetaRes((int)res.X, (int)res.Y, ((res.Z == 0) ? false : true)); Redimensionado(); listaIdiomas.Interativo = true;
+        }
         void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
         void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } }
@@ -174,12 +180,7 @@ namespace LANudo
         {
             logoIntro.Redimensionado();
             foreach (Elemento e in elementosMenuInicial) { e.Redimensionado(); }
-            foreach (Elemento e in elementosConfiguracoes)
-            {
-                e.Redimensionado(); listaResolucoes.Itens =
-ElementoLista.CriaVariosElementoLista(conf.Resolucoes, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada());
-                listaResolucoes.PayloadItemSelecionado = Configuracoes.Resolucao;
-            }
+            foreach (Elemento e in elementosConfiguracoes) { e.Redimensionado(); }
 
         }
 

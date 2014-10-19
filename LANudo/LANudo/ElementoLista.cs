@@ -20,25 +20,25 @@ namespace LANudo
         public static List<ElementoLista> CriaVariosElementoLista(List<Vector2> resolucoes, EsquemaCores coresDesel, EsquemaCores coresSel)
         {
             List<ElementoLista> listaRetornada = new List<ElementoLista>();
-            bool procuraResAtual = !resolucoes.Contains(Configuracoes.Resolucao);
-            ElementoLista resAtual = new ElementoLista(Configuracoes.Largura + " x " + Configuracoes.Altura, false, Constantes.esquema_cores_lista_deselecionada(), Constantes.esquema_cores_lista_selecionada(), (object)Configuracoes.Resolucao);
-            for (int i = 0; i < resolucoes.Count; i++)
+
+            listaRetornada.Add(
+            new ElementoLista(
+                "WINDOWED", true, coresDesel, coresSel,
+                ((object)new Vector3(Configuracoes.Resolucao.X, Configuracoes.Resolucao.Y, 1f))
+                )
+            );
+            foreach (Vector2 res in resolucoes)
             {
-                Vector2 res = resolucoes.ElementAt(i);
-                if (procuraResAtual && !listaRetornada.Contains(resAtual))
+                Vector3 resW = new Vector3(res.X, res.Y, 0f);
+                if (res.X >= Constantes.resolucao_minima_x())
                 {
-                    Vector2 proxRes;
-                    try { proxRes = resolucoes.ElementAt(i + 1); }
-                    catch (Exception) { proxRes = res; }
-                    if (Configuracoes.Resolucao.X >= res.X && Configuracoes.Resolucao.X <= proxRes.X)
+                    if (res.Y >= Constantes.resolucao_minima_y())
                     {
-                        if (Configuracoes.Resolucao.Y >= res.Y && Configuracoes.Resolucao.Y <= proxRes.Y)
-                        {
-                            listaRetornada.Add(resAtual);
-                        }
+                        listaRetornada.Add(new ElementoLista((res.X + " x " + res.Y), false, coresDesel, coresSel, (object)resW));
                     }
                 }
-                listaRetornada.Add(new ElementoLista((res.X + " x " + res.Y), false, coresDesel, coresSel, (object)res));
+
+
             }
             return listaRetornada;
         }

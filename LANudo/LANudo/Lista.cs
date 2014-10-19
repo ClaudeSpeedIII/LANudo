@@ -54,7 +54,7 @@ namespace LANudo
         EsquemaCores coresSelecionado;
         EsquemaCores coresDeselecionado;
 
-        bool ativo, clicavel;
+        bool ativo, interativo;
 
         public bool Ativado() { return ativo; }
 
@@ -62,7 +62,7 @@ namespace LANudo
 
         public void Desativar() { ativo = false; }
 
-        public bool Clicavel { get { return clicavel; } set { clicavel = value; } }
+        public bool Interativo { get { return interativo; } set { interativo = value; } }
 
         public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
         {
@@ -103,7 +103,7 @@ namespace LANudo
             AtualizaSelecao();
 
             ativo = false;
-            clicavel = true;
+            interativo = true;
         }
 
         private void InicializaBotoes()
@@ -136,9 +136,9 @@ namespace LANudo
             {
                 rotulo = new Rotulo(desenhista, fonte, txtRotulo, xml, new Vector3(posicao.X, posicao.Y, escalaTextoRotulo), coresSelecionado.CorTexto, true);
                 if (rotuloAcima)
-                { rotulo.PosRel -= new Vector2(0, distanciaRotulo + ((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura); }
+                { rotulo.PosRel -= new Vector2(0, distanciaRotulo - (((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura) / 2); }
                 else
-                { rotulo.PosRel -= new Vector2(distanciaRotulo + ((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura), 0); }
+                { rotulo.PosRel -= new Vector2(distanciaRotulo - (((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura) / 2), 0); }
             }
             for (int i = 1; i <= capacidade; i++)
             {
@@ -216,7 +216,8 @@ namespace LANudo
             botao.Cores = item.CoresDesel;
             if (item.Rotulo != null)
             {
-                botao.Rotulo = item.Rotulo; botao.MostraTexto();
+                if (item.XML) { botao.Val = item.Rotulo; } else { botao.Rotulo = item.Rotulo; }
+                botao.MostraTexto();
             }
             switch (tipo)
             {
@@ -254,7 +255,7 @@ namespace LANudo
 
         private void Abriu(Botao botao)
         {
-            if (clicavel)
+            if (interativo)
             {
                 botaoRotulo.DesativarSobreMouse();
                 botaoRotulo.Cores = coresSelecionado;
@@ -360,10 +361,7 @@ namespace LANudo
             float tamanho = 0f, posX = posicao.X, posY = posicao.Y;
             bool first = true;
             int contador = 1;
-
             botaoRotulo.Redimensionado();
-            rotulo.Redimensionado();
-
             foreach (Botao botao in botoesTodos)
             {
                 if (botoesTodos.Count > 1)
@@ -418,6 +416,12 @@ namespace LANudo
                 }
                 contador++;
             }
+            rotulo.PosRel = botaoRotulo.Posicao;
+            if (rotuloAcima)
+            { rotulo.PosRel -= new Vector2(0, distanciaRotulo - (((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura) / 2); }
+            else
+            { rotulo.PosRel -= new Vector2(distanciaRotulo - (((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura) / 2), 0); }
+            rotulo.Redimensionado();
         }
 
         void SetaCorSetaInferiorMouse(Botao botao)
@@ -440,7 +444,7 @@ namespace LANudo
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 if (dropDown) { botaoRotulo.Atualizar(); if (!aberto) { return; } }
                 foreach (Botao botao in botoesTodos)

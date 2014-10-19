@@ -20,9 +20,11 @@ namespace LANudo
 
         //***Conf***
 
-        public static int resolucao_x() { return 640; }
+        public static int resolucao_x() { return 800; }
         public static int resolucao_y() { return 480; }
         public static bool janela() { return true; }
+        public static int resolucao_minima_x() { return 640; }
+        public static int resolucao_minima_y() { return 480; }
 
         public static string idioma_inicial() { return "auto"; } //Código ISO 639-1 de dois digitos, ou então "auto" pra usar o do sistema
         public static string idioma_emergencia() { return "en"; } //Código ISO 639-1 de dois digitos, auto não é permitido visto que é usado na falha do auto
@@ -66,10 +68,10 @@ namespace LANudo
         public static Vector2 pos_lista_idiomas() { return new Vector2(0.5f, 0.2f); }
         public static Vector2 pos_lista_res() { return new Vector2(0.5f, 0.4f); }
         public static float escala_setinha_conf() { return 0.5f; }
-        public static float escala_rotulo_conf() { return 1.5f; }
-        public static float distancia_rotulo_conf() { return 0.15f; }
-        public static float escala_elementos_conf() { return 0.1f; }
-        public static float escala_texto_elementos_conf() { return 1f; }
+        public static float escala_rotulo_conf() { return 1f; }
+        public static float distancia_rotulo_conf() { return 0.3f; }
+        public static float escala_elementos_conf() { return 0.08f; }
+        public static float escala_texto_elementos_conf() { return 0.8f; }
         //***GAME***
 
     }

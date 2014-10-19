@@ -12,6 +12,10 @@ namespace LANudo
         SpriteBatch desenhista;
         SpriteFont fonte;
         Vector2 posRel;
+        Vector2 origem = new Vector2(0.5f, 0.5f); public Vector2 Pivot { get { return origem; } set { origem = value; ProcessaPivot(); } }
+        Vector2 pivotAbsoluto; public Vector2 PivotAbs { get { return pivotAbsoluto; } }
+        Vector2 pivotRelativo; public Vector2 PivotRel { get { return pivotRelativo; } }
+        void ProcessaPivot() { pivotAbsoluto = new Vector2(bordas.Width * origem.X, bordas.Height * origem.Y); pivotRelativo = Recursos.AbsParaRelTela(pivotAbsoluto); }
         SpriteEffects efeitos = SpriteEffects.None; public SpriteEffects Eff { get { return efeitos; } set { efeitos = value; } }
         float angulo = 0; public float Rot { get { return MathHelper.ToDegrees(angulo); } set { angulo = MathHelper.ToRadians(value); } }
 
@@ -20,7 +24,7 @@ namespace LANudo
             get { return posRel; }
             set
             {
-                posPx = Recursos.RelTelaParaAbs(value) - new Vector2(bordas.Width / 2, bordas.Height / 2);
+                posPx = Recursos.RelTelaParaAbs(value) - pivotAbsoluto;
                 posRel = value;
             }
         }
@@ -30,7 +34,7 @@ namespace LANudo
             get { return posPx + new Vector2(bordas.Width / 2f, bordas.Height / 2f); }
             set
             {
-                posPx = value - new Vector2(bordas.Width / 2, bordas.Height / 2);
+                posPx = value - pivotAbsoluto;
                 posRel = Recursos.AbsParaRelTela(value);
             }
         }
@@ -53,7 +57,7 @@ namespace LANudo
         {
             desenhista = _desenhista;
             fonte = _fonte;
-            if (_xml) { rotulo = Motor.Textos.Val(val = _rotulo); } else { rotulo = _rotulo; val = null;}
+            if (_xml) { rotulo = Motor.Textos.Val(val = _rotulo); } else { rotulo = _rotulo; val = null; }
             escalaInicial = _posicao.Z;
             escalaAtual = escalaInicial;
             cor = _cor;
@@ -75,17 +79,19 @@ namespace LANudo
         {
             if (val != null) { rotulo = Motor.Textos.Val(val); }
             AtualizaPosicoes();
+            ProcessaPivot();
             PosRel = PosRel;
         }
 
         public void Atualizar() { }
-        public void Desenhar() {
-        
+        public void Desenhar()
+        {
+
             if (ativo)
             {
                 if (rotulo != null)
                 {
-                    desenhista.DrawString(fonte, rotulo, posPx, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 0f);
+                    desenhista.DrawString(fonte, rotulo, posPx - pivotAbsoluto, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 0f);
                 }
             }
         }

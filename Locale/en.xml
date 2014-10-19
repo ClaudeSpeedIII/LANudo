@@ -11,5 +11,6 @@
 		<APPLY>Apply</APPLY>
 		<LOCALE>Language</LOCALE>
 		<FULLSCREEN>Fullscreen</FULLSCREEN>
+		<WINDOWED>Windowed</WINDOWED>
 	</Strings>
 </Language>
