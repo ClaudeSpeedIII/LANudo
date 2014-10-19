@@ -189,9 +189,10 @@ namespace LANudo
                             SetaBotao(botao, item);
                         }
 
-                        try { itens.ElementAt(contador + 1); }
-                        catch (Exception)
-                        { return Ponto.Fim; }
+                        if (contador >= itens.Count - 1)
+                            return Ponto.Fim;
+                        else
+                            itens.ElementAt(contador + 1);
                         contador++;
                     }
                 }
