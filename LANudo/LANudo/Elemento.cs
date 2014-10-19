@@ -7,6 +7,9 @@ namespace LANudo
 {
     public interface Elemento
     {
+        bool EstaInterativo();
+        void AtivaInterativo();
+        void DesativaInterativo();
         bool Ativado();
         void Desativar();
         void Ativar();

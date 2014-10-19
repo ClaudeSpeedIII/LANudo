@@ -11,7 +11,8 @@ namespace LANudo
     public delegate void ManipuladorDropDown(ElementoLista atual);
     public class Lista : Elemento
     {
-        public event ManipuladorDropDown clicouDropDown; public void ZeraClicouDropDown() { clicouDropDown = null; }
+        public event ManipuladorDropDown NovaSelecaoDropDown; public void ZeraNovaSelecaoDropDown() { NovaSelecaoDropDown = null; }
+        public event ManipuladorDropDown SelecionouDropDown; public void ZeraSelecionouDropDown() { SelecionouDropDown = null; }
         string txtRotulo;
         bool xml;
         Rotulo rotulo;
@@ -20,6 +21,7 @@ namespace LANudo
         List<Botao> botoesTodos = new List<Botao>();
         List<Botao> botoesDinamicos = new List<Botao>();
         Sprite setaSuperior;
+        Vector2 vetorDistanciaRotulo;
         Sprite setaInferior;
         Botao botaoSuperior;
         Botao botaoInferior;
@@ -54,12 +56,14 @@ namespace LANudo
         EsquemaCores coresSelecionado;
         EsquemaCores coresDeselecionado;
 
-        bool ativo, interativo;
+        bool ativo, interativo = true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
         public void Desativar() { ativo = false; }
 
         public bool Interativo { get { return interativo; } set { interativo = value; } }
@@ -128,7 +132,7 @@ namespace LANudo
             if (dropDown)
             {
                 botaoRotulo = new Botao(desenhista, fundo, coresDeselecionado, posicao, escala * 1.1f, fonte, null, usaXML, 1f, false);
-                if (itemAtual != null) { botaoRotulo.Rotulo = itemAtual.Rotulo; }
+                if (itemAtual != null) { if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; } }
                 botaoRotulo.Clicado += Abriu;
                 botaoRotulo.AtivarSobreMouse();
             }
@@ -136,15 +140,29 @@ namespace LANudo
             {
                 rotulo = new Rotulo(desenhista, fonte, txtRotulo, xml, new Vector3(posicao.X, posicao.Y, escalaTextoRotulo), coresSelecionado.CorTexto, true);
                 if (rotuloAcima)
-                { rotulo.PosRel -= new Vector2(0, distanciaRotulo - (((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura) / 2); }
+                { rotulo.Pivot = new Vector2(0.5f, 0f); rotulo.PosRel -= (vetorDistanciaRotulo = new Vector2(0, distanciaRotulo)); }
                 else
-                { rotulo.PosRel -= new Vector2(distanciaRotulo - (((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura) / 2), 0); }
+                { rotulo.Pivot = new Vector2(0f, 0.5f); rotulo.PosRel -= (vetorDistanciaRotulo = new Vector2(distanciaRotulo, 0)); }
             }
             for (int i = 1; i <= capacidade; i++)
             {
                 Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, null, usaXML, escalaTexto, false);
                 botao.OcultaTexto();
                 botao.DesativarSobreMouse();
+                switch (tipo)
+                {
+                    case TipoEvento.Setado:
+                        botao.AtivarSobreMouse();
+                        break;
+                    case TipoEvento.SelecionavelExternamente:
+                        botao.DesativarSobreMouse();
+                        botao.ZeraEventos();
+                        break;
+                    case TipoEvento.SelecionavelInternamente:
+                        botao.AtivarSobreMouse();
+                        botao.Clicado += Clicou;
+                        break;
+                }
                 botoesTodos.Add(botao);
                 botoesDinamicos.Add(botao);
             }
@@ -219,20 +237,9 @@ namespace LANudo
                 if (item.XML) { botao.Val = item.Rotulo; } else { botao.Rotulo = item.Rotulo; }
                 botao.MostraTexto();
             }
-            switch (tipo)
+            if (tipo == TipoEvento.Setado)
             {
-                case TipoEvento.Setado:
-                    botao.Clicado += item.Clicado;
-                    botao.AtivarSobreMouse();
-                    break;
-                case TipoEvento.SelecionavelExternamente:
-                    botao.DesativarSobreMouse();
-                    botao.ZeraEventos();
-                    break;
-                case TipoEvento.SelecionavelInternamente:
-                    botao.AtivarSobreMouse();
-                    botao.Clicado += Clicou;
-                    break;
+                botao.Clicado += item.Clicado;
             }
         }
 
@@ -240,14 +247,19 @@ namespace LANudo
         {
             foreach (ElementoLista item in itens)
             {
-                if (item.Rotulo == botao.Rotulo)
+                if (((item.XML) ? botao.Val : botao.Rotulo) == item.Rotulo)
                 {
                     if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
                     SelecionaBotao(botao);
-                    if (dropDown) { Fechou(); if (clicouDropDown != null && itemAtual != item) { clicouDropDown(item); } }
+                    if (dropDown)
+                    {
+                        Fechou();
+                        if (SelecionouDropDown != null) { SelecionouDropDown(item); }
+                        if (NovaSelecaoDropDown != null && itemAtual != item) { NovaSelecaoDropDown(item); }
+                    }
                     itemAtual = item;
                     botaoAtual = botao;
-                    botaoRotulo.Rotulo = itemAtual.Rotulo;
+                    if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo= itemAtual.Rotulo; }
                     return;
                 }
             }
@@ -284,7 +296,7 @@ namespace LANudo
                 if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
                 foreach (Botao botao in botoesDinamicos)
                 {
-                    if (itemAtual.Rotulo == botao.Rotulo)
+                    if (((itemAtual.XML) ? botao.Val : botao.Rotulo) == itemAtual.Rotulo)
                     {
                         botaoAtual = botao;
                         SelecionaBotao(botao);
@@ -361,7 +373,6 @@ namespace LANudo
             float tamanho = 0f, posX = posicao.X, posY = posicao.Y;
             bool first = true;
             int contador = 1;
-            botaoRotulo.Redimensionado();
             foreach (Botao botao in botoesTodos)
             {
                 if (botoesTodos.Count > 1)
@@ -416,11 +427,8 @@ namespace LANudo
                 }
                 contador++;
             }
-            rotulo.PosRel = botaoRotulo.Posicao;
-            if (rotuloAcima)
-            { rotulo.PosRel -= new Vector2(0, distanciaRotulo - (((float)rotulo.Dimensoes.Height) / (float)Configuracoes.Altura) / 2); }
-            else
-            { rotulo.PosRel -= new Vector2(distanciaRotulo - (((float)rotulo.Dimensoes.Width / (float)Configuracoes.Largura) / 2), 0); }
+            rotulo.PosRel = botaoRotulo.Posicao - vetorDistanciaRotulo;
+            botaoRotulo.Redimensionado();
             rotulo.Redimensionado();
         }
 

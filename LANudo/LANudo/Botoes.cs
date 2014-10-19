@@ -24,12 +24,14 @@ namespace LANudo
         float escalaTexto;
 
 
-        bool ativo;
+        bool ativo, interativo=true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
         public void Desativar() { ativo = false; }
 
 
@@ -121,7 +123,7 @@ namespace LANudo
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 foreach (Botao botao in botoes)
                 {

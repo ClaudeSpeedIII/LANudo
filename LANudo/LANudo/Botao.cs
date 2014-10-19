@@ -47,12 +47,14 @@ namespace LANudo
         Vector2 posicaoTexto;
 
 
-        bool ativo;
+        bool ativo, interativo = true;
+
+        public bool EstaInterativo() { return interativo; }
+        public void AtivaInterativo() { interativo = true; }
+        public void DesativaInterativo() { interativo = false; }
 
         public bool Ativado() { return ativo; }
-
         public void Ativar() { ativo = true; }
-
         public void Desativar() { ativo = false; }
 
         public bool TemTexto() { return temTexto; }
@@ -209,16 +211,16 @@ namespace LANudo
 
         public void Redimensionado()
         {
-            if (temTexto && rotulo != null) { if (val != null) { rotulo = Motor.Textos.Val(val); } MedeFonte(); }
-            cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
             escalaTextoAtual = Recursos.EscalaFonteRelativoTela(escalaTextoInicial);
+            if (temTexto) { if (val != null) { rotulo = Motor.Textos.Val(val); } if (rotulo != null) { MedeFonte(); } }
+            cantos = Recursos.RetanguloRelativamenteDeslocado(imagem.Bounds, tamanho, posicao);
             posicaoTexto = Recursos.RetanguloCentralizadoNoRetangulo(dimensoesTexto, cantos);
         }
 
 
         public void Atualizar()
         {
-            if (ativo)
+            if (ativo && interativo)
             {
                 MouseState rato = Mouse.GetState();
                 if (rato.X > cantos.Left && rato.X < cantos.Right && rato.Y > cantos.Top && rato.Y < cantos.Bottom)

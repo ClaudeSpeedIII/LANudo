@@ -112,9 +112,9 @@
     <Compile Include="Configuracoes.cs" />
     <Compile Include="Elemento.cs" />
     <Compile Include="ElementoLista.cs" />
-    <Compile Include="Engine.cs" />
     <Compile Include="Entrada.cs" />
     <Compile Include="EsquemaCores.cs" />
+    <Compile Include="Fundo.cs" />
     <Compile Include="Lista.cs" />
     <Compile Include="Constantes.cs" />
     <Compile Include="Cursor.cs" />
