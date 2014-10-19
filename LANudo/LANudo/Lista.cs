@@ -54,13 +54,15 @@ namespace LANudo
         EsquemaCores coresSelecionado;
         EsquemaCores coresDeselecionado;
 
-        bool ativo;
+        bool ativo, clicavel;
 
         public bool Ativado() { return ativo; }
 
         public void Ativar() { ativo = true; }
 
         public void Desativar() { ativo = false; }
+
+        public bool Clicavel { get { return clicavel; } set { clicavel = value; } }
 
         public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
         {
@@ -101,7 +103,7 @@ namespace LANudo
             AtualizaSelecao();
 
             ativo = false;
-
+            clicavel = true;
         }
 
         private void InicializaBotoes()
@@ -252,9 +254,12 @@ namespace LANudo
 
         private void Abriu(Botao botao)
         {
-            botaoRotulo.DesativarSobreMouse();
-            botaoRotulo.Cores = coresSelecionado;
-            aberto = true;
+            if (clicavel)
+            {
+                botaoRotulo.DesativarSobreMouse();
+                botaoRotulo.Cores = coresSelecionado;
+                aberto = true;
+            }
         }
         private void Fechou()
         {
@@ -461,5 +466,9 @@ namespace LANudo
             }
         }
 
+        public Botao BotaoRotulo
+        {
+            get { return botaoRotulo; }
+        }
     }
 }

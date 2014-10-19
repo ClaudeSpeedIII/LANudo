@@ -147,16 +147,21 @@ namespace LANudo
                 Configuracoes.Resolucao,
                 false, true, true);
 
+            listaIdiomas.BotaoRotulo.Clicado += AbriuListaIdiomas;
             listaIdiomas.clicouDropDown += SetouListaIdioma;
+            listaResolucoes.BotaoRotulo.Clicado += AbriuListaResolucoes;
             listaResolucoes.clicouDropDown += SetouListaResolucoes;
 
-            elementosConfiguracoes.Add(listaIdiomas);
+            // A ordem diz quem desenha na frente
             elementosConfiguracoes.Add(listaResolucoes);
+            elementosConfiguracoes.Add(listaIdiomas);
             elementosConfiguracoes.Add(saiConfVoltaInicial);
         }
 
-        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); }
-        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); Redimensionado(); }
+        void AbriuListaIdiomas(Botao origem) { listaResolucoes.Clicavel = false; }
+        void SetouListaIdioma(ElementoLista elemento) { conf.SetaIdioma((string)elemento.Payload); listaResolucoes.Clicavel = true; }
+        void AbriuListaResolucoes(Botao origem) { listaIdiomas.Clicavel = false; }
+        void SetouListaResolucoes(ElementoLista elemento) { Vector2 res = (Vector2)elemento.Payload; conf.SetaRes(res); Redimensionado(); listaIdiomas.Clicavel = true; }
         void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
         void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } }
