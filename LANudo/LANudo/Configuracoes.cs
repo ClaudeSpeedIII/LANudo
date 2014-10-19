@@ -91,7 +91,12 @@ namespace LANudo
             else
             { if (!janela) { graficos.ToggleFullScreen(); motor.Window.BeginScreenDeviceChange(false); } }
             graficos.ApplyChanges();
+<<<<<<< HEAD
             if (!janela) { motor.Redimensionado(this, new EventArgs()); }
+=======
+            // motor.Redimensionado(this, new EventArgs());
+
+>>>>>>> ed6f46bc12575598aa8000f482fdf171f26b1cd9
         }
 
         public void SetaIdioma(string iso6391, bool primeira = false)
