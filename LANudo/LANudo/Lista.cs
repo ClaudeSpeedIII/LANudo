@@ -54,6 +54,7 @@ namespace LANudo
         EsquemaCores coresVazio;
         EsquemaCores coresInclicavel;
         EsquemaCores coresSelecionado;
+        EsquemaCores coresRotulo;
         EsquemaCores coresDeselecionado;
 
         bool ativo, interativo = true;
@@ -68,7 +69,7 @@ namespace LANudo
 
         public bool Interativo { get { return interativo; } set { interativo = value; } }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado,EsquemaCores _coresRotulo, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -90,6 +91,7 @@ namespace LANudo
 
             coresDeselecionado = _coresDeselecionado;
             coresSelecionado = _coresSelecionado;
+            coresRotulo = _coresRotulo;
             coresVazio = _coresVazio;
             coresSeta = _coresSeta;
             coresInclicavel = _coresInclicavel;
@@ -131,14 +133,14 @@ namespace LANudo
             }
             if (dropDown)
             {
-                botaoRotulo = new Botao(desenhista, fundo, coresDeselecionado, posicao, escala * 1.1f, fonte, null, usaXML, 1f, false);
+                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, usaXML, 1f, false);
                 if (itemAtual != null) { if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; } }
                 botaoRotulo.Clicado += Abriu;
                 botaoRotulo.AtivarSobreMouse();
             }
             if (txtRotulo != null)
             {
-                rotulo = new Rotulo(desenhista, fonte, txtRotulo, xml, new Vector3(posicao.X, posicao.Y, escalaTextoRotulo), coresSelecionado.CorTexto, true);
+                rotulo = new Rotulo(desenhista, fonte, txtRotulo, xml, new Vector3(posicao.X, posicao.Y, escalaTextoRotulo), coresRotulo.CorTexto, true);
                 if (rotuloAcima)
                 { rotulo.Pivot = new Vector2(0.5f, 0f); rotulo.PosRel -= (vetorDistanciaRotulo = new Vector2(0, distanciaRotulo)); }
                 else
@@ -277,7 +279,7 @@ namespace LANudo
         private void Fechou()
         {
             botaoRotulo.AtivarSobreMouse();
-            botaoRotulo.Cores = coresDeselecionado;
+            botaoRotulo.Cores = coresRotulo;
             aberto = false;
         }
 

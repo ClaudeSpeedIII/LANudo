@@ -39,12 +39,13 @@ namespace LANudo
         //Fundos
         public static Color cor_de_fundo_Intro() { return Color.Black; }
         public static Color cor_de_fundo_MenuInicial() { return Color.LightPink; }
-        public static Color cor_de_fundo_MenuNovoJogo() { return Color.LightBlue; }
+        public static Color cor_de_fundo_MenuNovoJogo() { return Color.LightYellow; }
         public static Color cor_de_fundo_MenuConf() { return Color.LightBlue; }
 
         //Esquema Cores
         public static EsquemaCores esquema_cores_lista_deselecionada() { return new EsquemaCores(Color.DarkCyan, Color.Cyan); }
         public static EsquemaCores esquema_cores_lista_selecionada() { return new EsquemaCores(Color.DarkBlue, Color.DarkBlue); }
+        public static EsquemaCores esquema_cores_lista_rotulo() { return new EsquemaCores(Color.Black, Color.White,Color.Silver,Color.White); }
         public static EsquemaCores esquema_cores_lista_seta() { return new EsquemaCores(Color.ForestGreen, Color.DarkGreen, Color.Blue, Color.Red); }
         public static EsquemaCores esquema_cores_lista_vazia() { return new EsquemaCores(Color.LightGray); }
         public static EsquemaCores esquema_cores_lista_inclicavel() { return new EsquemaCores(Color.LightGreen); }
@@ -65,7 +66,7 @@ namespace LANudo
         public static float distancia_botoes_menu_inicial() { return 0.08f; }
 
         //Configuracoes
-        public static Vector2 pos_botao_voltar(){return new Vector2(0.2f,0.85f);}
+        public static Vector2 pos_conf_botao_voltar(){return new Vector2(0.2f,0.85f);}
         public static Vector2 pos_lista_idiomas() { return new Vector2(0.5f, 0.2f); }
         public static Vector2 pos_lista_res() { return new Vector2(0.5f, 0.4f); }
         public static float escala_setinha_conf() { return 0.5f; }
@@ -73,6 +74,12 @@ namespace LANudo
         public static float distancia_rotulo_conf() { return 0.4f; }
         public static float escala_elementos_conf() { return 0.08f; }
         public static float escala_texto_elementos_conf() { return 0.8f; }
+
+        //Novo Jogo
+        public static Vector2 pos_iniciar_botao_voltar() { return new Vector2(0.5f, 0.85f); }
+
+
+
         //***GAME***
 
     }

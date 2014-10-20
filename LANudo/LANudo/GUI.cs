@@ -78,6 +78,7 @@ namespace LANudo
             InstanciaLogoIntro();
             InstanciaMenuInicial();
             InstanciaMenuConfiguracoes();
+            InstanciaMenuNovoJogo();
 
             ativo = _ativo;
             estado = EstadoGUI.intro;
@@ -137,7 +138,7 @@ namespace LANudo
         }
         void Sair(Botao remetente) { sair(); }
 
-        void Jogar(Botao remetente) { }
+        void Jogar(Botao remetente) { SaiMenuInicial(); VaiMenuNovoJogo(); }
 
         void Conf(Botao remetente) { SaiMenuInicial(); VaiMenuConf(); }
 
@@ -152,8 +153,8 @@ namespace LANudo
 
         void InstanciaMenuConfiguracoes()
         {
-            saiConfVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
-            saiConfVoltaInicial.Clicado += SaiConfVoltaIniciar;
+            saiConfVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_conf_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
+            saiConfVoltaInicial.Clicado += SaiConfVoltaInicial;
             saiConfVoltaInicial.AtivarSobreMouse();
 
             List<ElementoLista> vetor;
@@ -167,6 +168,7 @@ namespace LANudo
                 Constantes.esquema_cores_lista_inclicavel(),
                 Constantes.esquema_cores_lista_selecionada(),
                 Constantes.esquema_cores_lista_deselecionada(),
+                Constantes.esquema_cores_lista_rotulo(),
                 Constantes.pos_lista_idiomas(),
                 Constantes.escala_elementos_conf(), 5,
                 Constantes.escala_texto_elementos_conf(),
@@ -188,6 +190,7 @@ namespace LANudo
                 Constantes.esquema_cores_lista_inclicavel(),
                 Constantes.esquema_cores_lista_selecionada(),
                 Constantes.esquema_cores_lista_deselecionada(),
+                Constantes.esquema_cores_lista_rotulo(),
                 Constantes.pos_lista_res(),
                 Constantes.escala_elementos_conf(), 5,
                 Constantes.escala_texto_elementos_conf(),
@@ -224,12 +227,32 @@ namespace LANudo
         }
         void FechouListaResolucoes(ElementoLista elemento) { foreach (Elemento e in elementosConfiguracoes) { if (!e.Equals(listaResolucoes)) { e.AtivaInterativo(); } } }
 
-        void SaiConfVoltaIniciar(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
+        void SaiConfVoltaInicial(Botao remetente) { SaiMenuConf(); VaiMenuInicial(); }
 
         void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } SetaFundo(); }
         void SaiMenuConf() { foreach (Elemento e in elementosConfiguracoes) { e.Desativar(); } }
 
+        //Novo jogo
 
+        Botao saiIniciarVoltaInicial;
+        List<Elemento> elementosNovoJogo = new List<Elemento>();
+
+        void InstanciaMenuNovoJogo()
+        {
+            saiIniciarVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_iniciar_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
+            saiIniciarVoltaInicial.Clicado += SaiIniciarVoltaInicial;
+            saiIniciarVoltaInicial.AtivarSobreMouse();
+            elementosNovoJogo.Add(saiIniciarVoltaInicial);
+
+
+
+            redimensionaTodos.AddRange(elementosNovoJogo);
+        }
+
+        void SaiIniciarVoltaInicial(Botao remetente) { SaiMenuNovoJogo(); VaiMenuInicial(); }
+
+        void VaiMenuNovoJogo() { estado = EstadoGUI.iniciar; foreach (Elemento e in elementosNovoJogo) { e.Ativar(); } SetaFundo(); }
+        void SaiMenuNovoJogo() { foreach (Elemento e in elementosNovoJogo) { e.Desativar(); } }
 
 
         List<Elemento> redimensionaTodos=new List<Elemento>();
@@ -245,6 +268,7 @@ namespace LANudo
                 ContaLogoIntro();
                 foreach (Elemento e in elementosMenuInicial) { e.Atualizar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Atualizar(); }
+                foreach (Elemento e in elementosNovoJogo) { e.Atualizar(); }
 
             }
         }
@@ -257,6 +281,7 @@ namespace LANudo
 
                 foreach (Elemento e in elementosMenuInicial) { e.Desenhar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Desenhar(); }
+                foreach (Elemento e in elementosNovoJogo) { e.Desenhar(); }
 
             }
 
