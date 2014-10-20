@@ -16,7 +16,7 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>40208c8a-f343-4043-a1a5-682e315a9031</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Icone.ico</ApplicationIcon>
     <Thumbnail>Thumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -131,10 +131,6 @@
     <Compile Include="Tabuleiro.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon.ico" />
-    <Content Include="Thumbnail.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Idioma\Idioma.csproj">
       <Project>{1AB1A7E6-8745-4A6C-9D65-52DA468F8A1F}</Project>
       <Name>Idioma</Name>
@@ -172,7 +168,10 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icone.ico" />
+    <Content Include="Thumbnail.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
