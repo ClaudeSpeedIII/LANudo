@@ -109,7 +109,9 @@
   <ItemGroup>
     <Compile Include="Botao.cs" />
     <Compile Include="Botoes.cs" />
+    <Compile Include="Casa.cs" />
     <Compile Include="Configuracoes.cs" />
+    <Compile Include="CoresLudo.cs" />
     <Compile Include="Elemento.cs" />
     <Compile Include="ElementoLista.cs" />
     <Compile Include="Entrada.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Constantes.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GUI.cs" />
+    <Compile Include="ParametrosCasa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raiz.cs" />
     <Compile Include="Motor.cs" />
