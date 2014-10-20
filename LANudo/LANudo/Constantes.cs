@@ -11,7 +11,7 @@ namespace LANudo
         //***Caminhos***
 
         //Fonte
-        public static string caminho_fonte() { return "Arial"; }
+        public static string caminho_fonte() { return "Fonte"; }
 
         //Cursor
         public static string caminho_rato() { return "Cursor"; }
@@ -74,15 +74,19 @@ namespace LANudo
 
         //Tela Inicial
         public static Vector3 pos_logo_inicial() { return new Vector3(0.85f, 0.7f, 0.32f); }
-        public static Vector3 pos_dado_esq_inicial() { return new Vector3(0.18f, 0.14f, 0.23f); }
-        public static Vector3 pos_dado_dir_inicial() { return new Vector3(0.82f, 0.14f, 0.23f); }
-        public static Vector3 pos_tab_inicial() { return new Vector3(0.15f, 0.7f, 0.32f); }
+        public static Vector3 pos_dado_esq_inicial() { return new Vector3(0.18f, 0.17f, 0.23f); }
+        public static Vector3 pos_dado_dir_inicial() { return new Vector3(0.82f, 0.17f, 0.23f); }
+        public static Vector3 pos_tab_inicial() { return new Vector3(0f, 1f, 0.45f); }
+
+        public static Vector2 pivot_logo_inicial() { return new Vector2(0.8f, 0.5f); }
+        public static Vector2 pivot_dado_esq_inicial() { return new Vector2(0.5f, 0.5f); }
+        public static Vector2 pivot_dado_dir_inicial() { return new Vector2(0.5f, 0.5f); }
+        public static Vector2 pivot_tab_inicial() { return new Vector2(0.3f, 0.7f); }
 
 
-
-        public static Vector2 pos_menu_inicial() { return new Vector2(0.5f, 0.6f); }
+        public static Vector2 pos_menu_inicial() { return new Vector2(0.5f, 0.5f); }
         public static float escala_menu_inicial() { return 0.1f; }
-        public static float escala_texto_menu_inicial() { return 1f; }
+        public static float escala_texto_menu_inicial() { return 0.35f; }
         public static float distancia_botoes_menu_inicial() { return 0.08f; }
 
         //Configuracoes
@@ -90,11 +94,11 @@ namespace LANudo
         public static Vector2 pos_lista_idiomas() { return new Vector2(0.5f, 0.2f); }
         public static Vector2 pos_lista_res() { return new Vector2(0.5f, 0.4f); }
         public static float escala_setinha_conf() { return 0.5f; }
-        public static float escala_rotulo_conf() { return 1f; }
+        public static float escala_rotulo_conf() { return 0.4f; }
         public static float distancia_rotulo_conf() { return 0.4f; }
         public static float distancia_dropdown_conf() { return 0.08f; }
         public static float escala_elementos_conf() { return 0.08f; }
-        public static float escala_texto_elementos_conf() { return 0.8f; }
+        public static float escala_texto_elementos_conf() { return 0.25f; }
 
         //Novo Jogo
         public static Vector2 pos_iniciar_botao_voltar() { return new Vector2(0.5f, 0.85f); }

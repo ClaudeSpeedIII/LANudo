@@ -10,7 +10,7 @@ namespace LANudo
     public static class Recursos
     {
 
-        public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception ) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
+        public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
 
         public static float RegraDeTres(float A, float B, float C)
         {
@@ -115,7 +115,12 @@ namespace LANudo
         {
             return new Vector2((cantosExternos.Left + cantosExternos.Width / 2) - (cantosInternos.Width / 2), (cantosExternos.Top + cantosExternos.Height / 2) - (cantosInternos.Height / 2));
         }
-
+        public static Rectangle RetanguloRelativamenteDeslocado(Rectangle dimensoes, Vector3 pos, Vector2 pivotAbsoluto)
+        {
+            Point escalado = EscalaRelativoTela(dimensoes, pos.Z);
+            Vector2 posicionado = RelTelaParaAbs(new Vector2(pos.X, pos.Y));
+            return new Rectangle(Convert.ToInt16(posicionado.X - pivotAbsoluto.X), Convert.ToInt16(posicionado.Y - pivotAbsoluto.Y), Convert.ToInt16(escalado.X), Convert.ToInt16(escalado.Y));
+        }
 
     }
 }

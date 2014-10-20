@@ -152,11 +152,11 @@ namespace LANudo
             fundoInicial = new Fundo(desenhista, imgFundoInicial);
             redimensionaTodos.Add(fundoInicial);
 
-            logoInicial = new Sprite(desenhista, imgLogoInicial, Constantes.pos_logo_inicial(), false);
-            dadoInicialEsq = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_esq_inicial(), false);
+            logoInicial = new Sprite(desenhista, imgLogoInicial, Constantes.pos_logo_inicial(),Constantes.pivot_logo_inicial(), false);
+            dadoInicialEsq = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_esq_inicial(), Constantes.pivot_dado_esq_inicial(), false);
             dadoInicialEsq.Eff = SpriteEffects.FlipHorizontally;
-            dadoInicialDir = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_dir_inicial(), false);
-            tabuleiroInicial = new Sprite(desenhista, imgTabuleiroInicial, Constantes.pos_tab_inicial(), false);
+            dadoInicialDir = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_dir_inicial(), Constantes.pivot_dado_dir_inicial(), false);
+            tabuleiroInicial = new Sprite(desenhista, imgTabuleiroInicial, Constantes.pos_tab_inicial(), Constantes.pivot_tab_inicial(), false);
 
 
             menuInicial = new Botoes(desenhista, fonte, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true, false);

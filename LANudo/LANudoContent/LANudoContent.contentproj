@@ -56,10 +56,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arial.spritefont">
-      <Name>Arial</Name>
+    <Compile Include="Fonte.spritefont">
+      <Name>Fonte</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

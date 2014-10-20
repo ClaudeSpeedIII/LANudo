@@ -135,7 +135,7 @@ namespace LANudo
             }
             if (dropDown)
             {
-                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, usaXML, 1f, false);
+                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, usaXML, escalaTexto*1.1f, false);
                 if (itemAtual != null) { if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; } }
                 botaoRotulo.Clicado += Abriu;
                 botaoRotulo.AtivarSobreMouse();
