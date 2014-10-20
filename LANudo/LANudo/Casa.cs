@@ -7,41 +7,42 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
-    class Casa : Elemento
+    public class Casa : Elemento
     {
         public enum Tipos { Garagem, Saida, Pista, Entrada, Final, Chegada }
         public enum Jogadores { Publico, P1, P2, P3, P4 }
         private Tipos tipoCasa; public Tipos Tipo { get { return tipoCasa; } }
         private Jogadores donoCasa; public Jogadores Dono { get { return donoCasa; } }
-        private CoresLudo cores;
-        private Color cor;
+        private CoresLudo cores; public CoresLudo Cores { get { return cores; } }
+        private Color cor; public Color Cor { get { return cor; } }
 
         List<Sprite> sprites;
         Vector2 tamanhoBase;
 
 
-        public Casa(SpriteBatch desenhista, ParametrosCasa parm, CoresLudo cores, Jogadores dono, Vector3 pos, bool _ativo = true)
+        public Casa(SpriteBatch desenhista, ParametrosCasa parm, CoresLudo esquemaCor, Jogadores dono, Vector3 pos, bool _ativo = true)
         {
             tipoCasa = parm.TipoCasa;
             bool first = true;
             sprites = new List<Sprite>();
-            dono = donoCasa;
+            donoCasa = dono;
+            cores = esquemaCor;
             switch (dono)
             {
                 case Jogadores.Publico:
-                    cor = tipoCasa == Tipos.Entrada ? cores.PublicoAlternativo : cores.Publico;
+                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.PublicoAlternativo : esquemaCor.Publico;
                     break;
                 case Jogadores.P1:
-                    cor = tipoCasa == Tipos.Entrada ? cores.P1Alternativo : cores.P1;
+                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P1Alternativo : esquemaCor.P1;
                     break;
                 case Jogadores.P2:
-                    cor = tipoCasa == Tipos.Entrada ? cores.P2Alternativo : cores.P2;
+                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P2Alternativo : esquemaCor.P2;
                     break;
                 case Jogadores.P3:
-                    cor = tipoCasa == Tipos.Entrada ? cores.P3Alternativo : cores.P3;
+                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P3Alternativo : esquemaCor.P3;
                     break;
                 case Jogadores.P4:
-                    cor = tipoCasa == Tipos.Entrada ? cores.P4Alternativo : cores.P4;
+                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P4Alternativo : esquemaCor.P4;
                     break;
             }
 

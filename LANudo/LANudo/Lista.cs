@@ -42,6 +42,7 @@ namespace LANudo
         float escala;
         Vector2 posicao;
         float distanciaRotulo;
+        float distanciaDropDown;
         bool rotuloAcima;
         bool temSetas;
         bool vertical;
@@ -69,7 +70,7 @@ namespace LANudo
 
         public bool Interativo { get { return interativo; } set { interativo = value; } }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado,EsquemaCores _coresRotulo, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado,EsquemaCores _coresRotulo, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo,float _distanciaDropDown, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -88,6 +89,7 @@ namespace LANudo
             tipo = _selecionavel;
             temSetas = _temSetas;
             rotuloAcima = _rotuloAcima;
+            distanciaDropDown = _distanciaDropDown;
 
             coresDeselecionado = _coresDeselecionado;
             coresSelecionado = _coresSelecionado;
@@ -388,7 +390,7 @@ namespace LANudo
 
                             if (dropDown)
                             {
-                                posY -= tamanho / 2;
+                                posY += distanciaDropDown;
                             }
                             else
                             {

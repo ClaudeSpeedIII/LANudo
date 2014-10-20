@@ -54,9 +54,6 @@
     <Compile Include="LogoIntro.jpg">
       <Name>LogoIntro</Name>
     </Compile>
-    <Compile Include="LogoMenu.jpg">
-      <Name>LogoMenu</Name>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arial.spritefont">
@@ -73,8 +70,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fundo.png">
-      <Name>Fundo</Name>
+    <Compile Include="MenuDado.png">
+      <Name>MenuDado</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuFundo.png">
+      <Name>MenuFundo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuLogo.png">
+      <Name>MenuLogo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuTab.png">
+      <Name>MenuTab</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -29,11 +29,12 @@ namespace LANudo
 
         Rectangle TelaToda(Texture2D imagem)
         {
-            float propLag = imagem.Width / imagem.Height;
-            float propAlt = imagem.Height / imagem.Width;
+            float propLag = (float)imagem.Width / (float)imagem.Height;
+            float propAlt = (float)imagem.Height / (float)imagem.Width;
+            float propTela = (float)Configuracoes.Largura / (float)Configuracoes.Altura;
             int x = 0;
             int y = 0;
-            if (Configuracoes.Altura > Configuracoes.Largura)
+            if (propLag > propTela)
             {
                 y = Convert.ToInt32(Configuracoes.Altura);
                 x = Convert.ToInt32(y * propLag);

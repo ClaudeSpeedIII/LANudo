@@ -95,11 +95,13 @@ namespace LANudo
             menu = new GUI(
                 desenhista,
                 escritor,
-                Content.Load<Texture2D>(Constantes.caminho_logo_menu()),
-                Content.Load<Texture2D>(Constantes.caminho_logo_intro()),
+                Content.Load<Texture2D>(Constantes.caminho_splash_screen()),
+                Content.Load<Texture2D>(Constantes.caminho_menu_fundo()),
+                Content.Load<Texture2D>(Constantes.caminho_menu_logo()),
+                Content.Load<Texture2D>(Constantes.caminho_menu_dado()),
+                Content.Load<Texture2D>(Constantes.caminho_menu_tabuleiro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
-                Content.Load<Texture2D>(Constantes.caminho_fundo()),
                 rato,
                 QUIT,
                 Config

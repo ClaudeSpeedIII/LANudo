@@ -61,19 +61,38 @@ namespace LANudo
             }
         }
 
-        public GUI(SpriteBatch _desenhista, SpriteFont _fonte, Texture2D _logo, Texture2D _intro, Texture2D _botao, Texture2D _seta, Texture2D _fundoInicial, Cursor _rato, Action _sair, Configuracoes _conf, bool _ativo = true)
+        public GUI(SpriteBatch _desenhista,
+            SpriteFont _fonte,
+            Texture2D _splash,
+            Texture2D _menuFundo,
+            Texture2D _menuLogo,
+            Texture2D _menuDado,
+            Texture2D _menuTab,
+            Texture2D _botao,
+            Texture2D _seta,
+            Cursor _rato,
+            Action _sair,
+            Configuracoes _conf,
+            bool _ativo = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
-            imgLogo = _logo;
-            imgIntro = _intro;
+
+            imgSplash = _splash;
+
+            imgFundoInicial = _menuFundo;
+            imgLogoInicial = _menuLogo;
+            imgDadoInicial = _menuDado;
+            imgTabuleiroInicial = _menuTab;
+
             imgBotao = _botao;
             imgSeta = _seta;
+
+
             rato = _rato;
             sair = _sair;
             conf = _conf;
 
-            imgFundoInicial = _fundoInicial;
 
             InstanciaLogoIntro();
             InstanciaMenuInicial();
@@ -91,18 +110,20 @@ namespace LANudo
         //Texturas
 
         Texture2D imgFundoInicial;
+        Texture2D imgLogoInicial;
+        Texture2D imgDadoInicial;
+        Texture2D imgTabuleiroInicial;
 
-        Texture2D imgIntro;
-        Texture2D imgLogo;
+        Texture2D imgSplash;
         Texture2D imgBotao;
         Texture2D imgSeta;
 
         //Intro
-        Sprite logoIntro;
+        Sprite splash;
 
         void InstanciaLogoIntro()
         {
-            logoIntro = new Sprite(desenhista, imgIntro, Recursos.RetanguloCentralizado(imgIntro.Bounds, Constantes.escala_logo_intro()));
+            splash = new Sprite(desenhista, imgSplash, Recursos.RetanguloCentralizado(imgSplash.Bounds, Constantes.escala_logo_intro()));
             estado = EstadoGUI.intro;
             SetaFundo();
         }
@@ -111,28 +132,44 @@ namespace LANudo
         {
             if (estado == EstadoGUI.intro)
             {
-                if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { logoIntro.Desativar(); VaiMenuInicial(); rato.Ativar(); }
-                redimensionaTodos.Add(logoIntro);
+                if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { splash.Desativar(); VaiMenuInicial(); rato.Ativar(); }
+                redimensionaTodos.Add(splash);
             }
         }
 
         //Menu inicial
         Fundo fundoInicial;
-        Botoes menuInicial;
         Sprite logoInicial;
+        Sprite dadoInicialEsq;
+        Sprite dadoInicialDir;
+        Sprite tabuleiroInicial;
+
+        Botoes menuInicial;
         List<Elemento> elementosMenuInicial = new List<Elemento>();
 
         void InstanciaMenuInicial()
         {
             fundoInicial = new Fundo(desenhista, imgFundoInicial);
+            redimensionaTodos.Add(fundoInicial);
+
+            logoInicial = new Sprite(desenhista, imgLogoInicial, Constantes.pos_logo_inicial(), false);
+            dadoInicialEsq = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_esq_inicial(), false);
+            dadoInicialEsq.Eff = SpriteEffects.FlipHorizontally;
+            dadoInicialDir = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_dir_inicial(), false);
+            tabuleiroInicial = new Sprite(desenhista, imgTabuleiroInicial, Constantes.pos_tab_inicial(), false);
+
+
             menuInicial = new Botoes(desenhista, fonte, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_menu_inicial(), Constantes.escala_menu_inicial(), Constantes.escala_texto_menu_inicial(), Constantes.distancia_botoes_menu_inicial(), true, false);
             menuInicial.AdicionaBotao("NEW_GAME", true, Jogar);
             menuInicial.AdicionaBotao("SETTINGS", true, Conf);
             menuInicial.AdicionaBotao("QUIT", true, Sair);
-            logoInicial = new Sprite(desenhista, imgLogo, Recursos.RetanguloRelativamenteDeslocado(imgLogo.Bounds, Constantes.escala_logo_inicial(), Constantes.pos_logo_inicial()), false);
+
+            elementosMenuInicial.Add(dadoInicialEsq);
+            elementosMenuInicial.Add(dadoInicialDir);
+            elementosMenuInicial.Add(tabuleiroInicial);
             elementosMenuInicial.Add(logoInicial);
             elementosMenuInicial.Add(menuInicial);
-            redimensionaTodos.Add(fundoInicial);
+
             redimensionaTodos.AddRange(elementosMenuInicial);
 
         }
@@ -176,6 +213,7 @@ namespace LANudo
                 "LOCALE", true,
                 Constantes.escala_rotulo_conf(),
                 Constantes.distancia_rotulo_conf(),
+                Constantes.distancia_dropdown_conf(),
                 Motor.Textos.ISO
                 , false, true, true);
 
@@ -198,6 +236,7 @@ namespace LANudo
                 "RES", true,
                 Constantes.escala_rotulo_conf(),
                 Constantes.distancia_rotulo_conf(),
+                Constantes.distancia_dropdown_conf(),
                 resAtual,
                 false, true, true);
 
@@ -255,7 +294,7 @@ namespace LANudo
         void SaiMenuNovoJogo() { foreach (Elemento e in elementosNovoJogo) { e.Desativar(); } }
 
 
-        List<Elemento> redimensionaTodos=new List<Elemento>();
+        List<Elemento> redimensionaTodos = new List<Elemento>();
         public void Redimensionado()
         {
             foreach (Elemento e in redimensionaTodos) { e.Redimensionado(); }
@@ -277,7 +316,7 @@ namespace LANudo
         {
             if (ativo)
             {
-                logoIntro.Desenhar();
+                splash.Desenhar();
 
                 foreach (Elemento e in elementosMenuInicial) { e.Desenhar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Desenhar(); }
