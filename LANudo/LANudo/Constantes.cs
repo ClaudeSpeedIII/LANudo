@@ -47,10 +47,10 @@ namespace LANudo
 
         public static string idioma_inicial() { return "auto"; } //Código ISO 639-1 de dois digitos, ou então "auto" pra usar o do sistema
         public static string idioma_emergencia() { return "en"; } //Código ISO 639-1 de dois digitos, auto não é permitido visto que é usado na falha do auto
-        public static Color cor_P1() { return Color.Blue; }
-        public static Color cor_P2() { return Color.Yellow; }
-        public static Color cor_P3() { return Color.Green; }
-        public static Color cor_P4() { return Color.Red; }
+        public static Color cor_P1() { return Color.Red; }
+        public static Color cor_P2() { return Color.Blue; }
+        public static Color cor_P3() { return Color.Yellow; }
+        public static Color cor_P4() { return Color.Green; }
 
         //***GUI***
 
@@ -72,7 +72,7 @@ namespace LANudo
         public static EsquemaCores esquema_cores_botao() { return new EsquemaCores(Color.Silver, Color.Cyan, Color.White, Color.Silver); }
 
         //Intro
-        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0, 2); }
+        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0, 0); }//para fins de facilitar o debug
         public static float escala_logo_intro() { return 0.8f; }
 
         //Tela Inicial

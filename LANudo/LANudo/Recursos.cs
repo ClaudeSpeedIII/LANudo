@@ -31,13 +31,13 @@ namespace LANudo
             switch (sentido)
             {
                 case Direcao.Sobe:
-                    return new Vector2(quanto / 2, quanto / 2);
+                    return new Vector2(quanto, quanto);
                 case Direcao.Direita:
-                    return new Vector2(quanto / 2, -(quanto / 2));
+                    return new Vector2(quanto, -quanto);
                 case Direcao.Desce:
-                    return new Vector2(-(quanto / 2), -(quanto / 2));
+                    return new Vector2(-quanto, -quanto);
                 case Direcao.Esquerda:
-                    return new Vector2(-(quanto / 2), quanto / 2);
+                    return new Vector2(-quanto, quanto);
             }
             return new Vector2(0f, 0f);
         }
@@ -150,7 +150,7 @@ namespace LANudo
         {
             Point escalado = EscalaRelativoTela(dimensoes, pos.Z);
             Vector2 posicionado = RelTelaParaAbs(new Vector2(pos.X, pos.Y));
-            return new Rectangle(Convert.ToInt16(posicionado.X - pivotAbsoluto.X), Convert.ToInt16(posicionado.Y - pivotAbsoluto.Y), Convert.ToInt16(escalado.X), Convert.ToInt16(escalado.Y));
+            return new Rectangle(Convert.ToInt32(posicionado.X - pivotAbsoluto.X), Convert.ToInt32(posicionado.Y - pivotAbsoluto.Y), Convert.ToInt32(escalado.X), Convert.ToInt32(escalado.Y));
         }
 
     }

@@ -42,9 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Botao.jpg">
-      <Name>Botao</Name>
-    </Compile>
     <Compile Include="Cursor.jpg">
       <Name>Cursor</Name>
     </Compile>
@@ -101,6 +98,11 @@
     </Compile>
     <Compile Include="TabTile.png">
       <Name>TabTile</Name>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Botao.png">
+      <Name>Botao</Name>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

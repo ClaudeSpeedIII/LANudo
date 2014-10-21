@@ -14,7 +14,9 @@ namespace LANudo
         private Tipos tipoCasa; public Tipos Tipo { get { return tipoCasa; } }
         private int rotacao = 0; public int Rotacao { get { return rotacao; } set { rotacao = value; foreach (Sprite s in sprites) { s.Rot = value; } } }
 
-        public Vector2 Posicao { get { return new Vector2(spriteBase.PosRel.X, spriteBase.PosRel.Y); } set { foreach (Sprite s in sprites) { s.PosRel = new Vector3(value.X, value.Y, s.PosRel.Z); } } }
+        //public Vector2 PosicaoPx { get { return new Vector2(spriteBase.PosPx.X, spriteBase.PosPx.Y); } set { foreach (Sprite s in sprites) { s.PosPx = new Vector3(value.X, value.Y, s.PosPx.Z); } } }
+        public Vector2 PosicaoRel { get { return new Vector2(spriteBase.PosRel.X, spriteBase.PosRel.Y); } set { foreach (Sprite s in sprites) { s.PosRel = new Vector3(value.X, value.Y, s.PosRel.Z); } } }
+        public Vector2 Tamanho { get { return new Vector2(spriteBase.Img.Height, spriteBase.Img.Width); } }
         private Jogadores donoCasa; public Jogadores Dono { get { return donoCasa; } }
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } }
         private Color cor; public Color Cor { get { return cor; } }
@@ -60,8 +62,8 @@ namespace LANudo
                 }
                 else
                 {
-                    Vector3 posEscalada = new Vector3(pos.X, pos.Y, Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height)); //Chegar depois se ficou legal
-                    sprites.Add(new Sprite(desenhista, img, posEscalada, cor));
+                    float escalado = Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height); //Chegar depois se ficou legal
+                    sprites.Add(new Sprite(desenhista, img,new Vector3(pos.X,pos.Y,escalado),cor));
                 }
             }
             ativo = _ativo;

@@ -23,7 +23,8 @@ namespace LANudo
         List<Casa.Jogadores> jogadores;
 
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } set { cores = value; } }
-        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; } }
+        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; posPx = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y)); } }
+        private Vector2 posPx;
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
         private int inicio = -2; public int CasaInicio { get { return inicio; } set { inicio = value; } }
         private int fim = 0; public int CasaFim { get { return fim; } set { fim = value; } }
@@ -84,7 +85,7 @@ namespace LANudo
             casaEntrada = _casaEntrada;
             casaFinal = _casaFinal;
             casaChegada = _casaChegada;
-            posicao = _posicao;
+            Posicao = _posicao;
             cores = _cores;
             RotacaoPista = 0;
 
@@ -99,29 +100,39 @@ namespace LANudo
         {
             foreach (Casa.Jogadores p in jogadores)
             {
-                centro.Add(new Casa(desenhista, casaChegada, cores, p, new Vector3(10f, 10f, (posicao.Z * 3)), true));
+                Casa tile;
+                tile = new Casa(desenhista, casaChegada, cores, p, new Vector3(posPx.X, posPx.Y, 1f), true);
+                tile.PosicaoRel = new Vector2(posicao.X,posicao.Y);
+                centro.Add(tile);
+                
             }
         }
 
         void PosicionaCentro()
         {
-            Vector2 comeco = new Vector2(posicao.X, posicao.Y + centro.ElementAt(0).Base.TamanhoRelativo.Y);
-            bool first = true;
             int rot = 0;
-            int praOnde = 1;
+            int praOnde = 0;
             foreach (Casa peca in centro)
             {
-                if (first)
+                switch (praOnde)
                 {
-                    peca.Posicao = comeco;
-                }
-                else
-                {
-                    peca.Rotacao = rot;
-                    peca.Posicao += Recursos.DirecionaLosango((Recursos.Direcao)praOnde, (float)centro.ElementAt(0).Base.TamanhoRelativo.X * (float)0.25);
+                    case 0:
+                        peca.Base.Pivot = new Vector2(0.5f, 1f);
+                        break;
+                    case 1:
+                        peca.Base.Pivot = new Vector2(0f, 0.5f);
+                        peca.Base.Rot = rot;
+                        break;
+                    case 2:
+                        peca.Base.Pivot = new Vector2(0.5f, 0f);
+                        peca.Base.Rot = rot;
+                        break;
+                    case 3:
+                        peca.Base.Pivot = new Vector2(1f, 0.5f);
+                        peca.Base.Rot = rot;
+                        break;
                 }
                 praOnde++;
-                if (praOnde >= 4) { praOnde = 0; }
                 rot += 90;
             }
         }
@@ -130,6 +141,7 @@ namespace LANudo
 
         public void Redimensionado()
         {
+            Posicao = posicao;
             if (centro.Count == 4) { PosicionaCentro(); }
         }
 

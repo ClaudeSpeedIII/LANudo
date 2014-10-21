@@ -38,11 +38,14 @@ namespace LANudo
         SpriteEffects efeitos = SpriteEffects.None; public SpriteEffects Eff { get { return efeitos; } set { efeitos = value; } }
 
         Rectangle retangulo;
-        Vector3 pixel;
+        //Vector3 pixel;
         Vector3 relativo;
         Vector2 origin = new Vector2(0.5f, 0.5f);
         Vector2 pivotRel;
         Vector2 pivotAbs;
+        float escalaAbs;
+
+
         public Rectangle PosRect
         {
             get { return retangulo; }
@@ -50,37 +53,40 @@ namespace LANudo
             {
                 retangulo = value;
                 origin = new Vector2(0, 0);
-                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.Center.X, retangulo.Center.Y, (float)retangulo.Height) / (float)Configuracoes.Altura);
-                pixel = new Vector3((float)retangulo.X, (float)retangulo.Y, relativo.Z);
-                ProcessaPivot(relativo.Z);
+                escalaAbs=(Configuracoes.Altura>Configuracoes.Largura)?((float)retangulo.Height) / ((float)Configuracoes.Altura):((float)retangulo.Width)/((float)Configuracoes.Largura);
+                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.Center.X, retangulo.Center.Y, escalaAbs));
+                //pixel = new Vector3((float)retangulo.X, (float)retangulo.Y, relativo.Z);
+                pivotRel = new Vector2(0f, 0f);
+                pivotAbs = new Vector2(0f, 0f);
+                CalculaTamanhoRelativo();
             }
         }
-        public Vector3 PosPx
+       /* public Vector3 PosPx
         {
             get { return pixel; }
             set
             {
                 pixel = value;
-                if (value.Z != relativo.Z)
-                {
-                    ProcessaPivot(value.Z);
-                }
+                ProcessaPivotAbs(value.Z);
                 retangulo = new Rectangle(Convert.ToInt32(value.X - pivotAbs.X), Convert.ToInt32(value.Y - pivotAbs.Y), Convert.ToInt32(imagemAtual.Width * value.Z), Convert.ToInt32(imagemAtual.Height * value.Z));
-                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X - pivotAbs.Y, retangulo.Y - pivotAbs.Y, value.Z));
+                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X - pivotAbs.X, retangulo.Y - pivotAbs.Y, ((float)retangulo.Height) / ((float)Configuracoes.Altura)));
+                ProcessaPivotRel(relativo.Z);
+
+                CalculaTamanhoRelativo();
             }
-        }
+        }*/
         public Vector3 PosRel
         {
             get { return relativo; }
             set
             {
                 relativo = value;
-                if (value.Z != pixel.Z)
-                {
-                    ProcessaPivot(value.Z);
-                }
-                retangulo = Recursos.RetanguloRelativamenteDeslocado(imagemAtual.Bounds, value, pivotRel);
-                pixel = new Vector3(retangulo.X - pivotRel.X, retangulo.Y - pivotRel.Y, value.Z);
+                escalaAbs = (Configuracoes.Altura > Configuracoes.Largura) ? Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).X : Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).Y;
+                ProcessaPivotRel(value.Z);
+                ProcessaPivotAbs(escalaAbs);
+                retangulo = Recursos.RetanguloRelativamenteDeslocado(imagemAtual.Bounds, value, pivotAbs);
+                //pixel = new Vector3(retangulo.X - pivotRel.X, retangulo.Y - pivotRel.Y, escalaAbs);
+                CalculaTamanhoRelativo();
             }
         }
         public Vector2 Pivot
@@ -89,21 +95,30 @@ namespace LANudo
             set
             {
                 origin = value;
-                ProcessaPivot(relativo.Z);
+                ProcessaPivotRel(relativo.Z);
+                ProcessaPivotAbs(escalaAbs);
                 PosRel = PosRel;
             }
         }
-        void ProcessaPivot(float escala)
+        void ProcessaPivotAbs(float escalaAbs)
         {
-            Point escaladoRel = Recursos.EscalaRelativoTela(imagemAtual.Bounds, escala);
+            pivotAbs = new Vector2((imagemAtual.Width * escalaAbs) * origin.X, (imagemAtual.Height * escalaAbs) * origin.Y);
+        }
+
+        void ProcessaPivotRel(float escalaRel)
+        {
+            Point escaladoRel = Recursos.EscalaRelativoTela(imagemAtual.Bounds, escalaRel);
             pivotRel = new Vector2(escaladoRel.X * origin.X, escaladoRel.Y * origin.Y);
-            pivotAbs = new Vector2(imagemAtual.Height * escala, imagemAtual.Width * escala);
         }
 
         Vector2 tamanhoRelativo;
-        public Vector2 TamanhoRelativo
+        public Vector2 TamanhoRel
         {
             get { return tamanhoRelativo; }
+        }
+        public Vector2 TamanhoAbs
+        {
+            get { return new Vector2(imagem.Width, imagem.Height); }
         }
 
         void CalculaTamanhoRelativo()
@@ -125,7 +140,6 @@ namespace LANudo
             this.desenhista = desenhista;
             this.imagemAtual = imagem;
             this.imagem = imagem;
-            CalculaTamanhoRelativo();
             this.corAtual = cor;
             this.cores = new EsquemaCores(cor, cor, cor, cor);
             this.PosRect = pos;
@@ -136,7 +150,6 @@ namespace LANudo
             this.desenhista = desenhista;
             this.imagemAtual = imagem;
             this.imagem = imagem;
-            CalculaTamanhoRelativo();
             this.PosRect = pos;
             this.ativo = ativo;
         }
@@ -146,7 +159,6 @@ namespace LANudo
             this.desenhista = desenhista;
             this.imagemAtual = imagem;
             this.imagem = imagem;
-            CalculaTamanhoRelativo();
             this.corAtual = cor;
             this.cores = new EsquemaCores(cor, cor, cor, cor);
             this.PosRel = pos;
@@ -157,7 +169,6 @@ namespace LANudo
             this.desenhista = desenhista;
             this.imagemAtual = imagem;
             this.imagem = imagem;
-            CalculaTamanhoRelativo();
             this.PosRel = pos;
             this.ativo = ativo;
         }
@@ -181,6 +192,27 @@ namespace LANudo
             this.Pivot = pivot;
             this.ativo = ativo;
         }
+        /*
+        public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector2 posPx, float escala, Vector2 pivot, Color cor, bool ativo = true)
+        {
+            this.desenhista = desenhista;
+            this.imagemAtual = imagem;
+            this.imagem = imagem;
+            this.corAtual = cor;
+            this.cores = new EsquemaCores(cor, cor, cor, cor);
+            this.PosPx = new Vector3(posPx.X, posPx.Y, escala);
+            this.Pivot = pivot;
+            this.ativo = ativo;
+        }
+        public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector2 posPx, float escala, Vector2 pivot, bool ativo = true)
+        {
+            this.desenhista = desenhista;
+            this.imagemAtual = imagem;
+            this.imagem = imagem;
+            this.PosPx = new Vector3(posPx.X, posPx.Y, escala);
+            this.Pivot = pivot;
+            this.ativo = ativo;
+        }*/
         public void CursorEmCima()
         {
             clicouDentro = false;
@@ -201,8 +233,6 @@ namespace LANudo
 
         public void Redimensionado()
         {
-            ProcessaPivot(relativo.Z);
-            CalculaTamanhoRelativo();
             PosRel = PosRel;
         }
 
