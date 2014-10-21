@@ -26,6 +26,14 @@ namespace LANudo
             return new Vector2(0f, 0f);
         }
 
+
+        public static float Truncate(this float value, int digits) //COPIEI DA INTERNET MESMO, E DAI?
+        {
+            double mult = Math.Pow(10.0, digits);
+            double result = Math.Truncate(mult * value) / mult;
+            return (float)result;
+        }
+
         public static Vector2 DirecionaLosango(Direcao sentido, float quanto)
         {
             switch (sentido)
@@ -151,6 +159,13 @@ namespace LANudo
             Point escalado = EscalaRelativoTela(dimensoes, pos.Z);
             Vector2 posicionado = RelTelaParaAbs(new Vector2(pos.X, pos.Y));
             return new Rectangle(Convert.ToInt32(posicionado.X - pivotAbsoluto.X), Convert.ToInt32(posicionado.Y - pivotAbsoluto.Y), Convert.ToInt32(escalado.X), Convert.ToInt32(escalado.Y));
+        }
+
+        public static Rectangle RotacionaRetangulo(Rectangle original, float radianos)
+        {
+            double novaLargura = original.Width * Math.Abs(Math.Cos(radianos)) + original.Height * Math.Abs(Math.Sin(radianos));
+            double novaAltura = original.Width * Math.Abs(Math.Sin(radianos)) + original.Height * Math.Abs(Math.Cos(radianos));
+            return new Rectangle(original.X, original.Y, Convert.ToInt32(novaLargura), Convert.ToInt32(novaAltura));
         }
 
     }

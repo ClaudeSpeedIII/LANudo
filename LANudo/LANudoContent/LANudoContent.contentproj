@@ -42,17 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cursor.jpg">
-      <Name>Cursor</Name>
-    </Compile>
-    <Compile Include="CursorApertado.jpg">
-      <Name>CursorApertado</Name>
-    </Compile>
-    <Compile Include="LogoIntro.jpg">
-      <Name>LogoIntro</Name>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Fonte.spritefont">
       <Name>Fonte</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -103,6 +92,19 @@
   <ItemGroup>
     <Compile Include="Botao.png">
       <Name>Botao</Name>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CursorApertado.png">
+      <Name>CursorApertado</Name>
+    </Compile>
+    <Compile Include="LogoIntro.png">
+      <Name>LogoIntro</Name>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cursor.png">
+      <Name>Cursor</Name>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

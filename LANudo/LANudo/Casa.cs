@@ -59,6 +59,7 @@ namespace LANudo
                 {
                     spriteBase = new Sprite(desenhista, img, pos, cor);
                     sprites.Add(spriteBase);
+                    first = false;
                 }
                 else
                 {

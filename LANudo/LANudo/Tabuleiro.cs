@@ -23,8 +23,7 @@ namespace LANudo
         List<Casa.Jogadores> jogadores;
 
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } set { cores = value; } }
-        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; posPx = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y)); } }
-        private Vector2 posPx;
+        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; } }
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
         private int inicio = -2; public int CasaInicio { get { return inicio; } set { inicio = value; } }
         private int fim = 0; public int CasaFim { get { return fim; } set { fim = value; } }
@@ -90,7 +89,7 @@ namespace LANudo
             RotacaoPista = 0;
 
             InicializaCentro();
-            PosicionaCentro();
+        //    PosicionaCentro();
 
         }
 
@@ -101,10 +100,9 @@ namespace LANudo
             foreach (Casa.Jogadores p in jogadores)
             {
                 Casa tile;
-                tile = new Casa(desenhista, casaChegada, cores, p, new Vector3(posPx.X, posPx.Y, 1f), true);
-                tile.PosicaoRel = new Vector2(posicao.X,posicao.Y);
+                tile = new Casa(desenhista, casaChegada, cores, p, posicao, true);
                 centro.Add(tile);
-                
+
             }
         }
 
@@ -120,16 +118,16 @@ namespace LANudo
                         peca.Base.Pivot = new Vector2(0.5f, 1f);
                         break;
                     case 1:
-                        peca.Base.Pivot = new Vector2(0f, 0.5f);
                         peca.Base.Rot = rot;
+                        peca.Base.Pivot = new Vector2(0f, 0.5f);
                         break;
                     case 2:
-                        peca.Base.Pivot = new Vector2(0.5f, 0f);
                         peca.Base.Rot = rot;
+                        peca.Base.Pivot = new Vector2(0.5f, 0f);
                         break;
                     case 3:
-                        peca.Base.Pivot = new Vector2(1f, 0.5f);
                         peca.Base.Rot = rot;
+                        peca.Base.Pivot = new Vector2(1f, 0.5f);
                         break;
                 }
                 praOnde++;
