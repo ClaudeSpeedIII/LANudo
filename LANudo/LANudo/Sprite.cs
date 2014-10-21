@@ -43,7 +43,7 @@ namespace LANudo
         Vector2 origin = new Vector2(0.5f, 0.5f);
         Vector2 pivotRel;
         Vector2 pivotAbs;
-        float escalaAbs;
+        float escalaRel;
 
 
         public Rectangle PosRect
@@ -53,37 +53,37 @@ namespace LANudo
             {
                 retangulo = value;
                 origin = new Vector2(0, 0);
-                escalaAbs=(Configuracoes.Altura>Configuracoes.Largura)?((float)retangulo.Height) / ((float)Configuracoes.Altura):((float)retangulo.Width)/((float)Configuracoes.Largura);
-                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.Center.X, retangulo.Center.Y, escalaAbs));
+                escalaRel = (Configuracoes.Altura < Configuracoes.Largura) ? ((float)retangulo.Height) / ((float)Configuracoes.Altura) : ((float)retangulo.Width) / ((float)Configuracoes.Largura);
+                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X, retangulo.Y, escalaRel));
                 //pixel = new Vector3((float)retangulo.X, (float)retangulo.Y, relativo.Z);
                 pivotRel = new Vector2(0f, 0f);
                 pivotAbs = new Vector2(0f, 0f);
                 CalculaTamanhoRelativo();
             }
         }
-       /* public Vector3 PosPx
-        {
-            get { return pixel; }
-            set
-            {
-                pixel = value;
-                ProcessaPivotAbs(value.Z);
-                retangulo = new Rectangle(Convert.ToInt32(value.X - pivotAbs.X), Convert.ToInt32(value.Y - pivotAbs.Y), Convert.ToInt32(imagemAtual.Width * value.Z), Convert.ToInt32(imagemAtual.Height * value.Z));
-                relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X - pivotAbs.X, retangulo.Y - pivotAbs.Y, ((float)retangulo.Height) / ((float)Configuracoes.Altura)));
-                ProcessaPivotRel(relativo.Z);
+        /* public Vector3 PosPx
+         {
+             get { return pixel; }
+             set
+             {
+                 pixel = value;
+                 ProcessaPivotAbs(value.Z);
+                 retangulo = new Rectangle(Convert.ToInt32(value.X - pivotAbs.X), Convert.ToInt32(value.Y - pivotAbs.Y), Convert.ToInt32(imagemAtual.Width * value.Z), Convert.ToInt32(imagemAtual.Height * value.Z));
+                 relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X - pivotAbs.X, retangulo.Y - pivotAbs.Y, ((float)retangulo.Height) / ((float)Configuracoes.Altura)));
+                 ProcessaPivotRel(relativo.Z);
 
-                CalculaTamanhoRelativo();
-            }
-        }*/
+                 CalculaTamanhoRelativo();
+             }
+         }*/
         public Vector3 PosRel
         {
             get { return relativo; }
             set
             {
                 relativo = value;
-                escalaAbs = (Configuracoes.Altura > Configuracoes.Largura) ? Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).X : Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).Y;
+                escalaRel = (Configuracoes.Altura > Configuracoes.Largura) ? Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).X / ((float)Configuracoes.Largura) : Recursos.EscalaRelativoTela(imagemAtual.Bounds, value.Z).Y / ((float)Configuracoes.Altura);
                 ProcessaPivotRel(value.Z);
-                ProcessaPivotAbs(escalaAbs);
+                ProcessaPivotAbs();
                 retangulo = Recursos.RetanguloRelativamenteDeslocado(imagemAtual.Bounds, value, pivotAbs);
                 //pixel = new Vector3(retangulo.X - pivotRel.X, retangulo.Y - pivotRel.Y, escalaAbs);
                 CalculaTamanhoRelativo();
@@ -96,13 +96,13 @@ namespace LANudo
             {
                 origin = value;
                 ProcessaPivotRel(relativo.Z);
-                ProcessaPivotAbs(escalaAbs);
+                ProcessaPivotAbs();
                 PosRel = PosRel;
             }
         }
-        void ProcessaPivotAbs(float escalaAbs)
+        void ProcessaPivotAbs()
         {
-            pivotAbs = new Vector2((imagemAtual.Width * escalaAbs) * origin.X, (imagemAtual.Height * escalaAbs) * origin.Y);
+            pivotAbs = new Vector2((imagemAtual.Width * escalaRel) * origin.X, (imagemAtual.Height * escalaRel) * origin.Y);
         }
 
         void ProcessaPivotRel(float escalaRel)

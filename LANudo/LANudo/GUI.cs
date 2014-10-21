@@ -131,6 +131,7 @@ namespace LANudo
         void InstanciaLogoIntro()
         {
             splash = new Sprite(desenhista, imgSplash, Recursos.RetanguloCentralizado(imgSplash.Bounds, Constantes.escala_logo_intro()));
+            redimensionaTodos.Add(splash);
             estado = EstadoGUI.intro;
             SetaFundo();
         }
@@ -140,7 +141,6 @@ namespace LANudo
             if (estado == EstadoGUI.intro)
             {
                 if (Motor.Tempo.TotalGameTime.TotalMilliseconds > Constantes.duracao_intro().TotalMilliseconds) { splash.Desativar(); VaiMenuInicial(); rato.Ativar(); }
-                redimensionaTodos.Add(splash);
             }
         }
 

@@ -26,6 +26,8 @@ namespace LANudo
         public static int Largura { get { return largura; } }
         public static int Altura { get { return altura; } }
         public static Vector2 Resolucao { get { return new Vector2(largura, altura); } }
+        public void PermiteRedimensionar() { motor.Window.AllowUserResizing = true; }
+        public void ProibeRedimensionar() { motor.Window.AllowUserResizing = false; }
         public static bool Janela { get { return janela; } }
 
         public Configuracoes(Motor _motor, GraphicsDeviceManager _graficos, Localizacao idioma, string failLangISO6391)

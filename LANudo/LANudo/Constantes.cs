@@ -72,7 +72,7 @@ namespace LANudo
         public static EsquemaCores esquema_cores_botao() { return new EsquemaCores(Color.Silver, Color.Cyan, Color.White, Color.Silver); }
 
         //Intro
-        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0, 0); }//para fins de facilitar o debug
+        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0,2); }//para fins de facilitar o debug
         public static float escala_logo_intro() { return 0.8f; }
 
         //Tela Inicial
