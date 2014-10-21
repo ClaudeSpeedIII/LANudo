@@ -12,12 +12,15 @@ namespace LANudo
         public enum Tipos { Garagem, Saida, Pista, Entrada, Final, Chegada }
         public enum Jogadores { Publico, P1, P2, P3, P4 }
         private Tipos tipoCasa; public Tipos Tipo { get { return tipoCasa; } }
+        private int rotacao = 0; public int Rotacao { get { return rotacao; } set { rotacao = value; foreach (Sprite s in sprites) { s.Rot = value; } } }
+
+        public Vector2 Posicao { get { return new Vector2(spriteBase.PosRel.X, spriteBase.PosRel.Y); } set { foreach (Sprite s in sprites) { s.PosRel = new Vector3(value.X, value.Y, s.PosRel.Z); } } }
         private Jogadores donoCasa; public Jogadores Dono { get { return donoCasa; } }
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } }
         private Color cor; public Color Cor { get { return cor; } }
 
         List<Sprite> sprites;
-        Vector2 tamanhoBase;
+        Sprite spriteBase; public Sprite Base { get { return spriteBase; } }
 
 
         public Casa(SpriteBatch desenhista, ParametrosCasa parm, CoresLudo esquemaCor, Jogadores dono, Vector3 pos, bool _ativo = true)
@@ -27,6 +30,7 @@ namespace LANudo
             sprites = new List<Sprite>();
             donoCasa = dono;
             cores = esquemaCor;
+
             switch (dono)
             {
                 case Jogadores.Publico:
@@ -51,13 +55,13 @@ namespace LANudo
             {
                 if (first)
                 {
-                    tamanhoBase = new Vector2(img.Width,img.Height);
-                    sprites.Add(new Sprite(desenhista, img, pos, cor));
+                    spriteBase = new Sprite(desenhista, img, pos, cor);
+                    sprites.Add(spriteBase);
                 }
                 else
                 {
-                    Vector3 posEscalada = new Vector3(pos.X,pos.Y,Recursos.RegraDeTres(tamanhoBase.Y,pos.Z,img.Height)); //Chegar depois se ficou legal
-                    sprites.Add(new Sprite(desenhista, img, posEscalada,cor));
+                    Vector3 posEscalada = new Vector3(pos.X, pos.Y, Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height)); //Chegar depois se ficou legal
+                    sprites.Add(new Sprite(desenhista, img, posEscalada, cor));
                 }
             }
             ativo = _ativo;

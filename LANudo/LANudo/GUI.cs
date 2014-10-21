@@ -18,6 +18,7 @@ namespace LANudo
         Configuracoes conf;
 
 
+
         bool ativo, interativo = true;
 
         public bool EstaInterativo() { return interativo; }
@@ -70,11 +71,17 @@ namespace LANudo
             Texture2D _menuTab,
             Texture2D _botao,
             Texture2D _seta,
+        Texture2D tempTabCentro,
+        Texture2D tempTabTile,
+        Texture2D tempTabSeta,
             Cursor _rato,
             Action _sair,
             Configuracoes _conf,
             bool _ativo = true)
         {
+            this.tempTabCentro = tempTabCentro;
+            this.tempTabTile = tempTabTile;
+            this.tempTabSeta = tempTabSeta;
             desenhista = _desenhista;
             fonte = _fonte;
 
@@ -152,7 +159,7 @@ namespace LANudo
             fundoInicial = new Fundo(desenhista, imgFundoInicial);
             redimensionaTodos.Add(fundoInicial);
 
-            logoInicial = new Sprite(desenhista, imgLogoInicial, Constantes.pos_logo_inicial(),Constantes.pivot_logo_inicial(), false);
+            logoInicial = new Sprite(desenhista, imgLogoInicial, Constantes.pos_logo_inicial(), Constantes.pivot_logo_inicial(), false);
             dadoInicialEsq = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_esq_inicial(), Constantes.pivot_dado_esq_inicial(), false);
             dadoInicialEsq.Eff = SpriteEffects.FlipHorizontally;
             dadoInicialDir = new Sprite(desenhista, imgDadoInicial, Constantes.pos_dado_dir_inicial(), Constantes.pivot_dado_dir_inicial(), false);
@@ -273,6 +280,12 @@ namespace LANudo
 
         //Novo jogo
 
+        Tabuleiro temp;
+        Texture2D tempTabCentro;
+        Texture2D tempTabTile;
+        Texture2D tempTabSeta;
+
+
         Botao saiIniciarVoltaInicial;
         List<Elemento> elementosNovoJogo = new List<Elemento>();
 
@@ -283,7 +296,31 @@ namespace LANudo
             saiIniciarVoltaInicial.AtivarSobreMouse();
             elementosNovoJogo.Add(saiIniciarVoltaInicial);
 
+            //inicio só pra testes
+            CoresLudo cores = new CoresLudo(
+                Constantes.cor_P1(),
+                Constantes.cor_P2(),
+                Constantes.cor_P3(),
+                Constantes.cor_P4(),
+                Color.White,
+                55
+                );
 
+            ParametrosCasa centro = new ParametrosCasa(tempTabCentro, Casa.Tipos.Chegada);
+            ParametrosCasa final = new ParametrosCasa(tempTabTile, Casa.Tipos.Final);
+
+            List<Texture2D> vetor = new List<Texture2D>();
+            vetor.Add(tempTabTile);
+            vetor.Add(tempTabSeta);
+            ParametrosCasa entrada = new ParametrosCasa(vetor, Casa.Tipos.Entrada);
+
+            ParametrosCasa pista = new ParametrosCasa(tempTabTile, Casa.Tipos.Pista);
+            ParametrosCasa saida = new ParametrosCasa(tempTabTile, Casa.Tipos.Saida);
+            ParametrosCasa garagem = new ParametrosCasa(tempTabTile, Casa.Tipos.Garagem);
+
+            temp = new Tabuleiro(desenhista, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.08f));
+            elementosNovoJogo.Add(temp);
+            //fim só pra testes
 
             redimensionaTodos.AddRange(elementosNovoJogo);
         }
@@ -317,7 +354,6 @@ namespace LANudo
             if (ativo)
             {
                 splash.Desenhar();
-
                 foreach (Elemento e in elementosMenuInicial) { e.Desenhar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Desenhar(); }
                 foreach (Elemento e in elementosNovoJogo) { e.Desenhar(); }

@@ -25,7 +25,10 @@ namespace LANudo
         public static string caminho_menu_dado() { return "MenuDado"; }
         public static string caminho_menu_tabuleiro() { return "MenuTab"; }
 
-
+        //Tabuleiro
+        public static string caminho_tabuleiro_centro() { return "TabCentro"; }
+        public static string caminho_tabuleiro_tile() { return "TabTile"; }
+        public static string caminho_tabuleiro_seta() { return "TabSeta"; }
 
 
         //A organizar

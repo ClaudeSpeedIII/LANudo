@@ -92,6 +92,17 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TabCentro.png">
+      <Name>TabCentro</Name>
+    </Compile>
+    <Compile Include="TabSeta.png">
+      <Name>TabSeta</Name>
+    </Compile>
+    <Compile Include="TabTile.png">
+      <Name>TabTile</Name>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

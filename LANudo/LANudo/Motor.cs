@@ -102,6 +102,9 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_menu_tabuleiro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_tile()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_seta()),
                 rato,
                 QUIT,
                 Config

@@ -9,7 +9,38 @@ namespace LANudo
 {
     public static class Recursos
     {
+        public enum Direcao { Sobe, Direita, Desce, Esquerda }
+        public static Vector2 DirecionaQuadrado(Direcao sentido, float quanto)
+        {
+            switch (sentido)
+            {
+                case Direcao.Sobe:
+                    return new Vector2(0f, quanto);
+                case Direcao.Direita:
+                    return new Vector2(quanto, 0f);
+                case Direcao.Desce:
+                    return new Vector2(0f, -quanto);
+                case Direcao.Esquerda:
+                    return new Vector2(-quanto, 0f);
+            }
+            return new Vector2(0f, 0f);
+        }
 
+        public static Vector2 DirecionaLosango(Direcao sentido, float quanto)
+        {
+            switch (sentido)
+            {
+                case Direcao.Sobe:
+                    return new Vector2(quanto / 2, quanto / 2);
+                case Direcao.Direita:
+                    return new Vector2(quanto / 2, -(quanto / 2));
+                case Direcao.Desce:
+                    return new Vector2(-(quanto / 2), -(quanto / 2));
+                case Direcao.Esquerda:
+                    return new Vector2(-(quanto / 2), quanto / 2);
+            }
+            return new Vector2(0f, 0f);
+        }
         public static string VerificaTexto(string texto) { try { Motor.MedeTexto(texto); return texto; } catch (Exception) { Console.WriteLine("Entrou caracter impróprio no XML"); return "INVALID CHAR"; } }
 
         public static float RegraDeTres(float A, float B, float C)
