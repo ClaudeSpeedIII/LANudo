@@ -71,6 +71,7 @@ namespace LANudo
             Texture2D _menuTab,
             Texture2D _botao,
             Texture2D _seta,
+            Texture2D tempTabFundo,
         Texture2D tempTabCentro,
         Texture2D tempTabTile,
         Texture2D tempTabSeta,
@@ -79,6 +80,7 @@ namespace LANudo
             Configuracoes _conf,
             bool _ativo = true)
         {
+            this.tempTabFundo = tempTabFundo;
             this.tempTabCentro = tempTabCentro;
             this.tempTabTile = tempTabTile;
             this.tempTabSeta = tempTabSeta;
@@ -281,6 +283,7 @@ namespace LANudo
         //Novo jogo
 
         Tabuleiro temp;
+        Texture2D tempTabFundo;
         Texture2D tempTabCentro;
         Texture2D tempTabTile;
         Texture2D tempTabSeta;
@@ -302,8 +305,7 @@ namespace LANudo
                 Constantes.cor_P2(),
                 Constantes.cor_P3(),
                 Constantes.cor_P4(),
-                Color.White,
-                55
+                Color.White
                 );
 
             ParametrosCasa centro = new ParametrosCasa(tempTabCentro, Casa.Tipos.Chegada);
@@ -312,13 +314,13 @@ namespace LANudo
             List<Texture2D> vetor = new List<Texture2D>();
             vetor.Add(tempTabTile);
             vetor.Add(tempTabSeta);
-            ParametrosCasa entrada = new ParametrosCasa(vetor, Casa.Tipos.Entrada);
+            ParametrosCasa entrada = new ParametrosCasa(vetor, Casa.Tipos.Entrada,-100);
 
             ParametrosCasa pista = new ParametrosCasa(tempTabTile, Casa.Tipos.Pista);
             ParametrosCasa saida = new ParametrosCasa(tempTabTile, Casa.Tipos.Saida);
             ParametrosCasa garagem = new ParametrosCasa(tempTabTile, Casa.Tipos.Garagem);
 
-            temp = new Tabuleiro(desenhista, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.2f));
+            temp = new Tabuleiro(desenhista, tempTabFundo, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.8f));
             elementosNovoJogo.Add(temp);
             //fim só pra testes
 

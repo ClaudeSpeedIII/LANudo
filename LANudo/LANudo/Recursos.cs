@@ -26,6 +26,14 @@ namespace LANudo
             return new Vector2(0f, 0f);
         }
 
+        public static Color Saturacao(Color cor, int sat)
+        {
+            return new Color(cor.R + sat, cor.G + sat, cor.B + sat, cor.A);
+        }
+        public static Color Alpha(Color cor, int alp)
+        {
+            return new Color(cor.R,cor.G,cor.B, cor.A + alp);
+        }
 
         public static float Truncate(this float value, int digits) //COPIEI DA INTERNET MESMO, E DAI?
         {

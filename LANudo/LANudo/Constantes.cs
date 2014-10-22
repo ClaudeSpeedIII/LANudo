@@ -26,10 +26,7 @@ namespace LANudo
         public static string caminho_menu_tabuleiro() { return "MenuTab"; }
 
         //Tabuleiro
-        public static string caminho_tabuleiro_centro_sobe() { return "TabSobe"; }
-        public static string caminho_tabuleiro_centro_direita() { return "TabDireita"; }
-        public static string caminho_tabuleiro_centro_desce() { return "TabDesce"; }
-        public static string caminho_tabuleiro_centro_esquerda() { return "TabEsquerda"; }
+        public static string caminho_tabuleiro_fundo() { return "TabFundo"; }
         public static string caminho_tabuleiro_centro() { return "TabCentro"; }
         public static string caminho_tabuleiro_tile() { return "TabTile"; }
         public static string caminho_tabuleiro_seta() { return "TabSeta"; }

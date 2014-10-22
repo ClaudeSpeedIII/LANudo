@@ -36,33 +36,23 @@ namespace LANudo
             donoCasa = dono;
             cores = esquemaCor;
 
-            switch (dono)
+            switch (parm.TipoCasa)
             {
-                case Jogadores.Publico:
-                    corBase = tipoCasa == Tipos.Saida ? esquemaCor.PublicoAlternativo : esquemaCor.Publico;
+                case Tipos.Saida:
+                    corBase = cores.CorJogador(dono);
+                    corResto = Color.White;
                     break;
-                case Jogadores.P1:
-                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P1Alternativo; corResto = Color.White; }
-                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P1; }
-                    else { corBase = esquemaCor.P1; corResto = Color.White; }
+                case Tipos.Entrada:
+                    corBase = Recursos.Saturacao(cores.Publico, parm.ClareadaCor);
+                    corResto = cores.CorJogador(dono);
                     break;
-                case Jogadores.P2:
-                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P2Alternativo; corResto = Color.White; }
-                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P2; }
-                    else { corBase = esquemaCor.P2; corResto = Color.White; }
-                    break;
-                case Jogadores.P3:
-                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P3Alternativo; corResto = Color.White; }
-                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P3; }
-                    else { corBase = esquemaCor.P3; corResto = Color.White; }
-                    break;
-                case Jogadores.P4:
-                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P4Alternativo; corResto = Color.White; }
-                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P4; }
-                    else { corBase = esquemaCor.P4; corResto = Color.White; }
+                default:
+                    corBase = cores.CorJogador(dono);
+                    corResto = Color.White;
                     break;
             }
-
+            corBase = Recursos.Alpha(corBase, -100);
+            corResto = Recursos.Alpha(corResto, -20);
 
             foreach (Texture2D img in parm.Sprites)
             {
@@ -103,7 +93,7 @@ namespace LANudo
                     float escalado = (Configuracoes.Largura > Configuracoes.Altura) ?
                         Recursos.RegraDeTres(spriteBase.Img.Height, spriteBase.PosRel.Z, spr.Img.Height) :
                         Recursos.RegraDeTres(spriteBase.Img.Width, spriteBase.PosRel.Z, spr.Img.Width); //Chegar depois se ficou legal
-                    spr.PosRel= new Vector3(spriteBase.PosRel.X, spriteBase.PosRel.Y, escalado);
+                    spr.PosRel = new Vector3(spriteBase.PosRel.X, spriteBase.PosRel.Y, escalado);
                 }
             }
         }

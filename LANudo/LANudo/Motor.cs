@@ -36,7 +36,7 @@ namespace LANudo
 
 
 
-       public void Redimensionado(object sender, EventArgs e)
+        public void Redimensionado(object sender, EventArgs e)
         {
             config.AtualizaDimensoes();
             menu.Redimensionado();
@@ -85,7 +85,7 @@ namespace LANudo
             desenhista = new SpriteBatch(GraphicsDevice);
             escritor = Content.Load<SpriteFont>(Constantes.caminho_fonte());
 
-            config.SetaIdioma(Constantes.idioma_inicial(),true);
+            config.SetaIdioma(Constantes.idioma_inicial(), true);
             rato = new Cursor(
                 desenhista,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
@@ -107,6 +107,7 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_menu_tabuleiro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_fundo()),
                 Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro()),
                 Content.Load<Texture2D>(Constantes.caminho_tabuleiro_tile()),
                 Content.Load<Texture2D>(Constantes.caminho_tabuleiro_seta()),
@@ -151,8 +152,10 @@ namespace LANudo
 
             desenhista.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
-            if(GUI.ImgFundo != null) {
-                GUI.ImgFundo.Desenhar();}
+            if (GUI.ImgFundo != null)
+            {
+                GUI.ImgFundo.Desenhar();
+            }
             //Sequencia de "joga na tela"
 
 
