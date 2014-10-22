@@ -20,7 +20,8 @@ namespace LANudo
         public Vector2 TamanhoAbs { get { return new Vector2(spriteBase.Img.Height, spriteBase.Img.Width); } }
         private Jogadores donoCasa; public Jogadores Dono { get { return donoCasa; } }
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } }
-        private Color cor; public Color Cor { get { return cor; } }
+        private Color corBase; public Color CorBase { get { return corBase; } }
+        private Color corResto; public Color CorResto { get { return corResto; } }
         public Vector2 TamanhoRel { get { return spriteBase.TamanhoRel; } }
 
         List<Sprite> sprites;
@@ -38,19 +39,27 @@ namespace LANudo
             switch (dono)
             {
                 case Jogadores.Publico:
-                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.PublicoAlternativo : esquemaCor.Publico;
+                    corBase = tipoCasa == Tipos.Saida ? esquemaCor.PublicoAlternativo : esquemaCor.Publico;
                     break;
                 case Jogadores.P1:
-                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P1Alternativo : esquemaCor.P1;
+                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P1Alternativo; corResto = Color.White; }
+                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P1; }
+                    else { corBase = esquemaCor.P1; corResto = Color.White; }
                     break;
                 case Jogadores.P2:
-                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P2Alternativo : esquemaCor.P2;
+                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P2Alternativo; corResto = Color.White; }
+                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P2; }
+                    else { corBase = esquemaCor.P2; corResto = Color.White; }
                     break;
                 case Jogadores.P3:
-                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P3Alternativo : esquemaCor.P3;
+                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P3Alternativo; corResto = Color.White; }
+                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P3; }
+                    else { corBase = esquemaCor.P3; corResto = Color.White; }
                     break;
                 case Jogadores.P4:
-                    cor = tipoCasa == Tipos.Entrada ? esquemaCor.P4Alternativo : esquemaCor.P4;
+                    if (tipoCasa == Tipos.Saida) { corBase = esquemaCor.P4Alternativo; corResto = Color.White; }
+                    else if (tipoCasa == Tipos.Entrada) { corBase = esquemaCor.PublicoAlternativo; corResto = esquemaCor.P4; }
+                    else { corBase = esquemaCor.P4; corResto = Color.White; }
                     break;
             }
 
@@ -59,14 +68,14 @@ namespace LANudo
             {
                 if (first)
                 {
-                    spriteBase = new Sprite(desenhista, img, pos, cor);
+                    spriteBase = new Sprite(desenhista, img, pos, corBase);
                     sprites.Add(spriteBase);
                     first = false;
                 }
                 else
                 {
                     float escalado = Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height); //Chegar depois se ficou legal
-                    sprites.Add(new Sprite(desenhista, img, new Vector3(pos.X, pos.Y, escalado), cor));
+                    sprites.Add(new Sprite(desenhista, img, new Vector3(pos.X, pos.Y, escalado), corResto));
                 }
             }
             ativo = _ativo;

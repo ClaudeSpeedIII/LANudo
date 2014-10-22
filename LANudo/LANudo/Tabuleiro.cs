@@ -148,14 +148,17 @@ namespace LANudo
         void PosicionaPista()
         {
             int count = 0;
+            int direcao = 0;
             Vector2 absolutoEscalado = pista.ElementAt(0).TamanhoAbs * pista.ElementAt(0).Base.EscalaAbs;
-            Vector2 ultimo = posicaoPx - absolutoEscalado;
-            ultimo.Y -= absolutoEscalado.Y;
+            Vector2 L = new Vector2(absolutoEscalado.X, absolutoEscalado.Y*2);
+            Vector2 ultimo = posicaoPx - L;
             foreach (Casa peca in pista)
             {
+                if (count >= (tamanho + 1 + tamanho)) { count = 0; direcao++; ultimo = (posicaoPx + Recursos.Direciona((Recursos.Direcao)direcao, L)); }
                 if (count == 0) { peca.PosicaoAbs = ultimo; }
-                else if (count < tamanho) { peca.PosicaoAbs = (ultimo -= new Vector2(0f, absolutoEscalado.Y)); }
-                else if (count >= tamanho && count < tamanho + 2) { peca.PosicaoAbs = (ultimo += new Vector2(absolutoEscalado.Y, 0f)); }
+                else if (count < tamanho) { peca.PosicaoAbs = (ultimo += Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(0f, absolutoEscalado.Y))); }
+                else if (count >= tamanho && count < tamanho + 2) { peca.PosicaoAbs = (ultimo -= Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(absolutoEscalado.Y, 0f))); }
+                else if (count >= (tamanho + 2) && count < (tamanho + 1 + tamanho)) { peca.PosicaoAbs = (ultimo -= Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(0f, absolutoEscalado.Y))); }
                 count++;
             }
         }
@@ -188,6 +191,7 @@ namespace LANudo
         {
             Posicao = posicao;
             foreach (Casa peca in centro) { peca.Redimensionado(); }
+            foreach (Casa peca in pista) { peca.Redimensionado(); }
             try { PosicionaPista(); }
             catch (Exception) { }
             foreach (Casa peca in pista) { peca.Redimensionado(); }
