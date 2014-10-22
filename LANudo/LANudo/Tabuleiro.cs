@@ -92,8 +92,8 @@ namespace LANudo
             InicializaCentro();
             PosicionaCentro();
             InicializaPista();
-            PosicionaPista();
-            //    PosicionaCentro();
+            InicializaFinal();
+            InicializaGaragem();
 
         }
 
@@ -150,16 +150,18 @@ namespace LANudo
             int total = ((tamanho * 2) + 3);
             int count = 1;
             int direcao = 0;
+            int rot = 0;
             Vector2 absolutoEscalado = pista.ElementAt(0).TamanhoAbs * pista.ElementAt(0).Base.EscalaAbs;
             Vector2 L = new Vector2(absolutoEscalado.X, absolutoEscalado.Y * 2);
             Vector2 ultimo = posicaoPx - L;
             foreach (Casa peca in pista)
             {
-                if (count > total) { count = 1; direcao++; ultimo = (posicaoPx + Recursos.Direciona((Recursos.Direcao)direcao, L)); }
+                if (count > total) { count = 1; rot += 90; direcao++; ultimo = (posicaoPx + Recursos.Direciona((Recursos.Direcao)direcao, L)); }
                 if (count == 1) { peca.PosicaoAbs = ultimo; }
                 else if (count <= (tamanho + 1)) { peca.PosicaoAbs = (ultimo += Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(0f, absolutoEscalado.Y))); }
                 else if (count > (tamanho + 1) && count <= (tamanho + 3)) { peca.PosicaoAbs = (ultimo -= Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(absolutoEscalado.Y, 0f))); }
                 else if (count >= tamanho + 3 && count <= total) { peca.PosicaoAbs = (ultimo -= Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(0f, absolutoEscalado.Y))); }
+                peca.Rotacao = rot;
                 count++;
             }
         }
@@ -171,20 +173,71 @@ namespace LANudo
             //bool first = true;
             foreach (Casa.Jogadores p in jogadores)
             {
-                for (int i = 0; i < tamanho; i++)
+                for (int i = 1; i <= tamanho; i++)
                 {
-                    final.Add(new Casa(desenhista, casaPista, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
+                    final.Add(new Casa(desenhista, casaFinal, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
                 }
             }
         }
 
         void PosicionaFinal()
         {
-            int count = 0;
-            Vector2 pos = new Vector2(posicao.X, posicao.Y);
+            int count = 1;
+            int direcao = 0;
+            int rot = 0;
+            Vector2 absolutoEscalado = final.ElementAt(0).TamanhoAbs * final.ElementAt(0).Base.EscalaAbs;
+            Vector2 I = new Vector2(0f, absolutoEscalado.Y * 2);
+            Vector2 ultimo = posicaoPx - I;
             foreach (Casa peca in final)
             {
+                if (count > tamanho) { count = 1; rot += 90; direcao++; ultimo = (posicaoPx + Recursos.Direciona((Recursos.Direcao)direcao, I)); }
+                if (count == 1) { peca.PosicaoAbs = ultimo; }
+                else if (count <= tamanho) { peca.PosicaoAbs = (ultimo += Recursos.Direciona((Recursos.Direcao)direcao, new Vector2(0f, absolutoEscalado.Y))); }
+                peca.Rotacao = rot;
+                count++;
+            }
+        }
 
+
+        List<Casa> garagem = new List<Casa>();
+
+        void InicializaGaragem()
+        {
+            //bool first = true;
+            foreach (Casa.Jogadores p in jogadores)
+            {
+                for (int i = 0; i <= 4; i++)
+                {
+                    Casa peca = new Casa(desenhista, casaGaragem, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 2), true);
+                    peca.Base.Pivot= new Vector2(0f,0f);
+                    garagem.Add(peca);
+                }
+            }
+        }
+
+        void PosicionaGaragem()
+        {
+            int count = 0;
+            int direcao = 0;
+            int subDirecao = 0;
+            int rot = 0;
+            Vector2 pistaAbs = pista.ElementAt(0).TamanhoAbs * pista.ElementAt(0).Base.EscalaAbs;
+            Vector2 chegadaAbs = garagem.ElementAt(0).TamanhoAbs * garagem.ElementAt(0).Base.EscalaAbs;
+            Vector2 canto = new Vector2(((pistaAbs.X * (tamanho + 2)) + (pistaAbs.X / 2))-chegadaAbs.X, ((pistaAbs.Y * (tamanho + 2)) + (pistaAbs.Y / 2))-chegadaAbs.Y);
+            Vector2 ultimo = posicaoPx - canto;
+            foreach (Casa peca in garagem)
+            {
+                if (count > 4) { count = 0; subDirecao=0; rot += 90; direcao++; ultimo = (posicaoPx + Recursos.Direciona((Recursos.Direcao)direcao, canto)); }
+                if (count == 0) { peca.PosicaoAbs = ultimo; }
+                else if (count <= 4)
+                {
+                    peca.PosicaoAbs = (ultimo += Recursos.Direciona((Recursos.Direcao)direcao,
+                        Recursos.Direciona((Recursos.Direcao)subDirecao++, new Vector2(-chegadaAbs.X, 0f)))
+                        );
+                    if (subDirecao > 3) { subDirecao = 0; }
+                }
+                peca.Rotacao = rot;
+                count++;
             }
         }
 
@@ -193,9 +246,13 @@ namespace LANudo
             Posicao = posicao;
             foreach (Casa peca in centro) { peca.Redimensionado(); }
             foreach (Casa peca in pista) { peca.Redimensionado(); }
-            try { PosicionaPista(); }
+            foreach (Casa peca in final) { peca.Redimensionado(); }
+            foreach (Casa peca in garagem) { peca.Redimensionado(); }
+            try { PosicionaPista(); PosicionaFinal(); PosicionaGaragem(); }
             catch (Exception) { }
             foreach (Casa peca in pista) { peca.Redimensionado(); }
+            foreach (Casa peca in final) { peca.Redimensionado(); }
+            foreach (Casa peca in garagem) { peca.Redimensionado(); }
         }
 
         public void Atualizar()
@@ -204,6 +261,8 @@ namespace LANudo
             {
                 foreach (Casa peca in centro) { peca.Atualizar(); }
                 foreach (Casa peca in pista) { peca.Atualizar(); }
+                foreach (Casa peca in final) { peca.Atualizar(); }
+                foreach (Casa peca in garagem) { peca.Atualizar(); }
             }
         }
 
@@ -213,6 +272,8 @@ namespace LANudo
             {
                 foreach (Casa peca in centro) { peca.Desenhar(); }
                 foreach (Casa peca in pista) { peca.Desenhar(); }
+                foreach (Casa peca in final) { peca.Desenhar(); }
+                foreach (Casa peca in garagem) { peca.Desenhar(); }
             }
         }
     }

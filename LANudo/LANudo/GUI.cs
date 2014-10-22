@@ -318,7 +318,7 @@ namespace LANudo
             ParametrosCasa saida = new ParametrosCasa(tempTabTile, Casa.Tipos.Saida);
             ParametrosCasa garagem = new ParametrosCasa(tempTabTile, Casa.Tipos.Garagem);
 
-            temp = new Tabuleiro(desenhista, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.15f));
+            temp = new Tabuleiro(desenhista, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.2f));
             elementosNovoJogo.Add(temp);
             //fim só pra testes
 

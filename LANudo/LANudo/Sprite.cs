@@ -30,6 +30,7 @@ namespace LANudo
         bool mouseSobre = false; public bool MouseSobre { get { return mouseSobre; } }
         bool dinamico = false; public bool Dinamico { get { return dinamico; } set { dinamico = value; } }
         bool clicouDentro;
+        bool desenhaRetangulo;
 
         Texture2D imagemAtual;
         Texture2D imagem; public Texture2D Img { get { return imagem; } set { imagem = value; Redimensionado(); } }
@@ -58,7 +59,7 @@ namespace LANudo
                 escalaRel = escalaRel = Recursos.Truncate(escalaRel, 2);
                 relativo = Recursos.AbsParaRelTela(new Vector3(retangulo.X, retangulo.Y, escalaRel));
                 escalaAbs = (Configuracoes.Altura < Configuracoes.Largura) ? (escalaRel * Configuracoes.Altura) / imagem.Height : (escalaRel * Configuracoes.Largura) / imagem.Width;
-
+                desenhaRetangulo = true;
                 //pixel = new Vector3((float)retangulo.X, (float)retangulo.Y, relativo.Z);
                 pivotRel = new Vector2(0f, 0f);
                 pivotAbs = new Vector2(0f, 0f);
@@ -72,7 +73,9 @@ namespace LANudo
             set
             {
                 pixel = value;
-                retangulo = new Rectangle(Convert.ToInt32(value.X), Convert.ToInt32(value.Y), Convert.ToInt32(imagemAtual.Width * escalaAbs), Convert.ToInt32(imagemAtual.Height * escalaAbs));
+
+                desenhaRetangulo = false;
+                //retangulo = new Rectangle(Convert.ToInt32(value.X), Convert.ToInt32(value.Y), Convert.ToInt32(imagemAtual.Width * escalaAbs), Convert.ToInt32(imagemAtual.Height * escalaAbs));
                 relativo = Recursos.AbsParaRelTela(new Vector3(value.X, value.Y, relativo.Z));
 
                 CalculaTamanhoRelativo();
@@ -96,7 +99,7 @@ namespace LANudo
 
 
                 //retangulo = /*Recursos.RotacionaRetangulo(*/Recursos.RetanguloRelativamenteDeslocado(imagemAtual.Bounds, value.Z,new Vector2(value.X,value.Y));//pivotAbs);//), 0);
-                retangulo = new Rectangle(-666, -666, 66666, 66666);
+                desenhaRetangulo = false; 
                 pixel = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y));
                 //pixel = new Vector3(retangulo.X - pivotRel.X, retangulo.Y - pivotRel.Y, escalaAbs);
                 CalculaTamanhoRelativo();
@@ -140,7 +143,7 @@ namespace LANudo
             get { return new Vector2(imagemAtual.Width, imagemAtual.Height); }
         }
 
-        void CalculaTamanhoRelativo()
+        public void CalculaTamanhoRelativo()
         {
             float propLag = (float)imagemAtual.Width / (float)imagemAtual.Height;
             float propAlt = (float)imagemAtual.Height / (float)imagemAtual.Width;
@@ -291,7 +294,7 @@ namespace LANudo
         {
             if (ativo)
             {
-                if (retangulo != new Rectangle(-666, -666, 66666, 66666)) { desenhista.Draw(imagemAtual, retangulo, null, corAtual, angulo, Vector2.Zero, efeitos, 0f); }
+                if (desenhaRetangulo) { desenhista.Draw(imagemAtual, retangulo, null, corAtual, angulo, Vector2.Zero, efeitos, 0f); }
                 else
                 {
                     desenhista.Draw(imagemAtual, pixel, null, corAtual, angulo, pivotAbsSemEscala, escalaAbs, efeitos, 0f);

@@ -74,8 +74,8 @@ namespace LANudo
                 }
                 else
                 {
-                    float escalado = Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height); //Chegar depois se ficou legal
-                    sprites.Add(new Sprite(desenhista, img, new Vector3(pos.X, pos.Y, escalado), corResto));
+                    //float escalado = Recursos.RegraDeTres(spriteBase.Img.Height, pos.Z, img.Height); //Chegar depois se ficou legal
+                    sprites.Add(new Sprite(desenhista, img, pos/*new Vector3(pos.X, pos.Y, escalado)*/, corResto));
                 }
             }
             ativo = _ativo;
@@ -94,7 +94,18 @@ namespace LANudo
 
         public void Redimensionado()
         {
-            foreach (Sprite spr in sprites) { spr.Redimensionado(); }
+            bool first = true;
+            foreach (Sprite spr in sprites)
+            {
+                if (first) { spr.Redimensionado(); first = false; }
+                else
+                {
+                    float escalado = (Configuracoes.Largura > Configuracoes.Altura) ?
+                        Recursos.RegraDeTres(spriteBase.Img.Height, spriteBase.PosRel.Z, spr.Img.Height) :
+                        Recursos.RegraDeTres(spriteBase.Img.Width, spriteBase.PosRel.Z, spr.Img.Width); //Chegar depois se ficou legal
+                    spr.PosRel= new Vector3(spriteBase.PosRel.X, spriteBase.PosRel.Y, escalado);
+                }
+            }
         }
 
         public void Atualizar()
