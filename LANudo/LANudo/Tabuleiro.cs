@@ -23,7 +23,7 @@ namespace LANudo
         List<Casa.Jogadores> jogadores;
 
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } set { cores = value; } }
-        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; posicaoPx = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y)); } }
+        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value;  ReInstancia(); Redimensionado(); } }
         private float escalaIndividual;
         Vector2 posicaoPx;
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
@@ -57,6 +57,7 @@ namespace LANudo
                         jogadores.Add(Casa.Jogadores.P2); jogadores.Add(Casa.Jogadores.P3); jogadores.Add(Casa.Jogadores.P4); jogadores.Add(Casa.Jogadores.P1);
                         break;
                 }
+                ReInstancia();
                 Redimensionado();
             }
         }
@@ -79,7 +80,8 @@ namespace LANudo
         ParametrosCasa _casaEntrada,
         ParametrosCasa _casaFinal,
         ParametrosCasa _casaChegada,
-            Vector3 _posicao)
+            Vector3 _posicao,
+        int _rotacao)
         {
             desenhista = _desenhista;
             tabuleiro = _tabuleiro;
@@ -89,11 +91,14 @@ namespace LANudo
             casaEntrada = _casaEntrada;
             casaFinal = _casaFinal;
             casaChegada = _casaChegada;
-            Posicao = _posicao;
+            posicao = _posicao;
             cores = _cores;
-            RotacaoPista = 0;
-            escalaIndividual = _posicao.Z / ((tamanho * 2) + 9);
+            RotacaoPista = _rotacao;
+        }
 
+        void ReInstancia()
+        {
+            escalaIndividual = posicao.Z / ((tamanho * 2) + 9);
             InicializaFundo();
             InicializaCentro();
             PosicionaCentro();
@@ -102,6 +107,7 @@ namespace LANudo
             InicializaGaragem();
 
         }
+
 
         List<Casa> centro = new List<Casa>();
 
@@ -263,7 +269,7 @@ namespace LANudo
 
         public void Redimensionado()
         {
-            Posicao = posicao;
+            posicaoPx = Recursos.RelTelaParaAbs(new Vector2(posicao.X, posicao.Y));
             foreach (Casa peca in centro) { peca.Redimensionado(); }
             foreach (Casa peca in pista) { peca.Redimensionado(); }
             foreach (Casa peca in final) { peca.Redimensionado(); }
