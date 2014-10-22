@@ -107,6 +107,20 @@
       <Name>Cursor</Name>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TabDesce.png">
+      <Name>TabDesce</Name>
+    </Compile>
+    <Compile Include="TabDireita.png">
+      <Name>TabDireita</Name>
+    </Compile>
+    <Compile Include="TabEsquerda.png">
+      <Name>TabEsquerda</Name>
+    </Compile>
+    <Compile Include="TabSobe.png">
+      <Name>TabSobe</Name>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

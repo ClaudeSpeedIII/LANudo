@@ -26,7 +26,10 @@ namespace LANudo
         public static string caminho_menu_tabuleiro() { return "MenuTab"; }
 
         //Tabuleiro
-        public static string caminho_tabuleiro_centro() { return "TabCentro"; }
+        public static string caminho_tabuleiro_centro_sobe() { return "TabSobe"; }
+        public static string caminho_tabuleiro_centro_direita() { return "TabDireita"; }
+        public static string caminho_tabuleiro_centro_desce() { return "TabDesce"; }
+        public static string caminho_tabuleiro_centro_esquerda() { return "TabEsquerda"; }
         public static string caminho_tabuleiro_tile() { return "TabTile"; }
         public static string caminho_tabuleiro_seta() { return "TabSeta"; }
 
@@ -39,7 +42,7 @@ namespace LANudo
 
         //***Conf***
 
-        public static int resolucao_x() { return 800; }
+        public static int resolucao_x() { return 960; }
         public static int resolucao_y() { return 480; }
         public static bool janela() { return true; }
         public static int resolucao_minima_x() { return 640; }
@@ -72,7 +75,7 @@ namespace LANudo
         public static EsquemaCores esquema_cores_botao() { return new EsquemaCores(Color.Silver, Color.Cyan, Color.White, Color.Silver); }
 
         //Intro
-        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0,2); }//para fins de facilitar o debug
+        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0,0); }//para fins de facilitar o debug
         public static float escala_logo_intro() { return 0.8f; }
 
         //Tela Inicial

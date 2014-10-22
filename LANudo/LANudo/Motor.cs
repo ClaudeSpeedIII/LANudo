@@ -92,6 +92,11 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_rato_apertado())
                 );
             //Precisamos de uma interface
+            List<Texture2D> centro = new List<Texture2D>();
+            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_sobe()));
+            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_direita()));
+            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_desce()));
+            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_esquerda()));
             menu = new GUI(
                 desenhista,
                 escritor,
@@ -102,7 +107,7 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_menu_tabuleiro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
-                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro()),
+                centro,
                 Content.Load<Texture2D>(Constantes.caminho_tabuleiro_tile()),
                 Content.Load<Texture2D>(Constantes.caminho_tabuleiro_seta()),
                 rato,
@@ -144,7 +149,7 @@ namespace LANudo
         {
             GraphicsDevice.Clear(GUI.CorFundo);
 
-            desenhista.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            desenhista.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
             if(GUI.ImgFundo != null) {
                 GUI.ImgFundo.Desenhar();}

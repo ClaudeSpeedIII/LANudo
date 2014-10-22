@@ -71,7 +71,7 @@ namespace LANudo
             Texture2D _menuTab,
             Texture2D _botao,
             Texture2D _seta,
-        Texture2D tempTabCentro,
+        List<Texture2D> tempTabCentro,
         Texture2D tempTabTile,
         Texture2D tempTabSeta,
             Cursor _rato,
@@ -281,7 +281,7 @@ namespace LANudo
         //Novo jogo
 
         Tabuleiro temp;
-        Texture2D tempTabCentro;
+        List<Texture2D> tempTabCentro;
         Texture2D tempTabTile;
         Texture2D tempTabSeta;
 
