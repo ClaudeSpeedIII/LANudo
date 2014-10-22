@@ -132,6 +132,20 @@ namespace LANudo
             pivotRel = new Vector2(escaladoRel.X * origin.X, escaladoRel.Y * origin.Y);
         }
 
+         public Vector2 PosicaoAbsPivoteada(Vector2 pivot)
+        {
+            Rectangle novo = imagemAtual.Bounds;//Recursos.RotacionaRetangulo(imagem.Bounds, angulo);
+            pivotAbs = new Vector2((novo.Width * escalaAbs) * pivot.X, (novo.Height * escalaAbs) * pivot.Y);
+            return pixel + new Vector2(novo.Width * pivot.X, novo.Height * pivot.Y);
+
+        }
+
+        public Vector2 PosicaoRelPivoteada(Vector2 pivot)
+         {
+            Point escaladoRel = Recursos.EscalaRelativoTela(imagemAtual.Bounds, relativo.Z);
+            return Recursos.AbsParaRelTela(new Vector2(escaladoRel.X * pivot.X, escaladoRel.Y * pivot.Y) + pixel);
+
+        }
 
         Vector2 tamanhoRelativo;
         public Vector2 TamanhoRel

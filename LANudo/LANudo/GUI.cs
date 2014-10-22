@@ -75,6 +75,7 @@ namespace LANudo
         Texture2D tempTabCentro,
         Texture2D tempTabTile,
         Texture2D tempTabSeta,
+        Texture2D tempPeao,
             Cursor _rato,
             Action _sair,
             Configuracoes _conf,
@@ -84,6 +85,7 @@ namespace LANudo
             this.tempTabCentro = tempTabCentro;
             this.tempTabTile = tempTabTile;
             this.tempTabSeta = tempTabSeta;
+            this.tempPeao = tempPeao;
             desenhista = _desenhista;
             fonte = _fonte;
 
@@ -287,7 +289,7 @@ namespace LANudo
         Texture2D tempTabCentro;
         Texture2D tempTabTile;
         Texture2D tempTabSeta;
-
+        Texture2D tempPeao;
 
         Botao saiIniciarVoltaInicial;
         List<Elemento> elementosNovoJogo = new List<Elemento>();
@@ -320,7 +322,7 @@ namespace LANudo
             ParametrosCasa saida = new ParametrosCasa(tempTabTile, Casa.Tipos.Saida);
             ParametrosCasa garagem = new ParametrosCasa(tempTabTile, Casa.Tipos.Garagem);
 
-            temp = new Tabuleiro(desenhista, tempTabFundo, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.8f),90);
+            temp = new Tabuleiro(desenhista, tempPeao,tempTabFundo, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.8f),90);
             elementosNovoJogo.Add(temp);
             //fim só pra testes
 

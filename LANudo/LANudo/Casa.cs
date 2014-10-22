@@ -9,10 +9,13 @@ namespace LANudo
 {
     public class Casa : Elemento
     {
+        private SpriteBatch desenhista;
+
         public enum Tipos { Garagem, Saida, Pista, Entrada, Final, Chegada }
         public enum Jogadores { Publico, P1, P2, P3, P4 }
         private Tipos tipoCasa; public Tipos Tipo { get { return tipoCasa; } }
         private int rotacao = 0; public int Rotacao { get { return rotacao; } set { rotacao = value; foreach (Sprite s in sprites) { s.Rot = value; } } }
+
 
         //public Vector2 PosicaoPx { get { return new Vector2(spriteBase.PosPx.X, spriteBase.PosPx.Y); } set { foreach (Sprite s in sprites) { s.PosPx = new Vector3(value.X, value.Y, s.PosPx.Z); } } }
         public Vector2 PosicaoRel { get { return new Vector2(spriteBase.PosRel.X, spriteBase.PosRel.Y); } set { foreach (Sprite s in sprites) { s.PosRel = new Vector3(value.X, value.Y, s.PosRel.Z); } } }
@@ -27,9 +30,27 @@ namespace LANudo
         List<Sprite> sprites;
         Sprite spriteBase; public Sprite Base { get { return spriteBase; } }
 
+        //List<Sprite> peoes = new List<Sprite>();
+        private Peao peoesAqui = new Peao(Jogadores.P3,2); public Peao Peoes { get { return peoesAqui; } set { peoesAqui = value; } }
+        /*private Vector2 offsetEmpilha; public Vector2 OffsetEmpilhamento { get { return offsetEmpilha; } set { offsetEmpilha = value; AtualizaPeoes(); } }
+        private Vector2 pivotPeao; public Vector2 PivotPeao { get { return pivotPeao; } set { value = pivotPeao; AtualizaPeoes(); } }
+        void AtualizaPeoes()
+        {
+            peoes = new List<Sprite>();
+            for (int i = 1; i <= peoesAqui.Quantidade; i++)
+            {
+                Sprite spr = new Sprite(desenhista, imgPeao, spriteBase.PosRel);
+                spr.Pivot = pivotPeao;
+                spr.PosRel += new Vector3(offsetEmpilha.X,offsetEmpilha.Y,spr.PosRel.Z);
 
+                peoes.Add(spr);
+            }
+        }
+        */
         public Casa(SpriteBatch desenhista, ParametrosCasa parm, CoresLudo esquemaCor, Jogadores dono, Vector3 pos, bool _ativo = true)
         {
+            this.desenhista = desenhista;
+
             tipoCasa = parm.TipoCasa;
             bool first = true;
             sprites = new List<Sprite>();
@@ -92,7 +113,7 @@ namespace LANudo
                 {
                     float escalado = (Configuracoes.Largura > Configuracoes.Altura) ?
                         Recursos.RegraDeTres(spriteBase.Img.Height, spriteBase.PosRel.Z, spr.Img.Height) :
-                        Recursos.RegraDeTres(spriteBase.Img.Width, spriteBase.PosRel.Z, spr.Img.Width); //Chegar depois se ficou legal
+                        Recursos.RegraDeTres(spriteBase.Img.Width, spriteBase.PosRel.Z, spr.Img.Width);
                     spr.PosRel = new Vector3(spriteBase.PosRel.X, spriteBase.PosRel.Y, escalado);
                 }
             }
