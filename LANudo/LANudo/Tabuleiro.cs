@@ -23,7 +23,7 @@ namespace LANudo
         List<Casa.Jogadores> jogadores;
 
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } set { cores = value; } }
-        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; posicaoPx = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y)); Redimensionado(); } }
+        private Vector3 posicao; public Vector3 Posicao { get { return posicao; } set { posicao = value; posicaoPx = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y)); } }
         Vector2 posicaoPx;
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
         private int inicio = -2; public int CasaInicio { get { return inicio; } set { inicio = value; } }
@@ -90,21 +90,31 @@ namespace LANudo
             RotacaoPista = 0;
 
             InicializaCentro();
+            PosicionaCentro();
             InicializaPista();
+            PosicionaPista();
             //    PosicionaCentro();
 
         }
 
-        Casa centro;
+        List<Casa> centro = new List<Casa>();
 
         void InicializaCentro()
         {
-            centro = new Casa(desenhista, casaChegada, cores, jogadores.ElementAt(0), posicao);
+            foreach (Casa.Jogadores p in jogadores)
+            {
+                centro.Add(new Casa(desenhista, casaChegada, cores, p, posicao));
+            }
         }
 
         void PosicionaCentro()
         {
-            centro.Redimensionado();
+            int rot = 0;
+            foreach (Casa peca in centro)
+            {
+                peca.Base.Rot = rot;
+                rot += 90;
+            }
         }
 
         HashSet<Casa> pista = new HashSet<Casa>();
@@ -113,22 +123,22 @@ namespace LANudo
         {
             //bool first = true;
             int total = (tamanho * 2) + 3;
-            int zero = (int) (total / 2f);
+            int zero = (int)(total / 2f);
             foreach (Casa.Jogadores p in jogadores)
             {
                 for (int i = 1; i < total; i++)
                 {
                     if (i == zero + inicio)
                     {
-                        pista.Add(new Casa(desenhista, casaPista, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z * 3), true));
+                        pista.Add(new Casa(desenhista, casaSaida, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
                     }
                     else if (i == zero + fim)
                     {
-                        pista.Add(new Casa(desenhista, casaPista, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z * 3), true));
+                        pista.Add(new Casa(desenhista, casaEntrada, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
                     }
                     else
                     {
-                        pista.Add(new Casa(desenhista, casaPista, cores, Casa.Jogadores.Publico, new Vector3(posicao.X, posicao.Y, posicao.Z * 3), true));
+                        pista.Add(new Casa(desenhista, casaPista, cores, Casa.Jogadores.Publico, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
                     }
                 }
 
@@ -138,10 +148,15 @@ namespace LANudo
         void PosicionaPista()
         {
             int count = 0;
-            Vector2 pos = new Vector2(posicao.X, posicao.Y);
+            Vector2 absolutoEscalado = pista.ElementAt(0).TamanhoAbs * pista.ElementAt(0).Base.EscalaAbs;
+            Vector2 ultimo = posicaoPx - absolutoEscalado;
+            ultimo.Y -= absolutoEscalado.Y;
             foreach (Casa peca in pista)
             {
-
+                if (count == 0) { peca.PosicaoAbs = ultimo; }
+                else if (count < tamanho) { peca.PosicaoAbs = (ultimo -= new Vector2(0f, absolutoEscalado.Y)); }
+                else if (count >= tamanho && count < tamanho + 2) { peca.PosicaoAbs = (ultimo += new Vector2(absolutoEscalado.Y, 0f)); }
+                count++;
             }
         }
 
@@ -154,7 +169,7 @@ namespace LANudo
             {
                 for (int i = 0; i < tamanho; i++)
                 {
-                    final.Add(new Casa(desenhista, casaPista, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z * 3), true));
+                    final.Add(new Casa(desenhista, casaPista, cores, p, new Vector3(posicao.X, posicao.Y, posicao.Z / 3), true));
                 }
             }
         }
@@ -171,20 +186,19 @@ namespace LANudo
 
         public void Redimensionado()
         {
-            PosicionaFinal();
-            PosicionaPista();
-            if (centro != null) { PosicionaCentro(); }
-            //foreach (Casa peca in centro)
-            //{
-            //    peca.Redimensionado();
-            //}
+            Posicao = posicao;
+            foreach (Casa peca in centro) { peca.Redimensionado(); }
+            try { PosicionaPista(); }
+            catch (Exception) { }
+            foreach (Casa peca in pista) { peca.Redimensionado(); }
         }
 
         public void Atualizar()
         {
             if (ativo && interativo)
             {
-                centro.Atualizar();
+                foreach (Casa peca in centro) { peca.Atualizar(); }
+                foreach (Casa peca in pista) { peca.Atualizar(); }
             }
         }
 
@@ -192,7 +206,8 @@ namespace LANudo
         {
             if (ativo)
             {
-                centro.Desenhar();
+                foreach (Casa peca in centro) { peca.Desenhar(); }
+                foreach (Casa peca in pista) { peca.Desenhar(); }
             }
         }
     }

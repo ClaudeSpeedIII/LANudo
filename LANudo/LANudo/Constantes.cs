@@ -30,6 +30,7 @@ namespace LANudo
         public static string caminho_tabuleiro_centro_direita() { return "TabDireita"; }
         public static string caminho_tabuleiro_centro_desce() { return "TabDesce"; }
         public static string caminho_tabuleiro_centro_esquerda() { return "TabEsquerda"; }
+        public static string caminho_tabuleiro_centro() { return "TabCentro"; }
         public static string caminho_tabuleiro_tile() { return "TabTile"; }
         public static string caminho_tabuleiro_seta() { return "TabSeta"; }
 
@@ -107,7 +108,8 @@ namespace LANudo
         public static float escala_texto_elementos_conf() { return 0.25f; }
 
         //Novo Jogo
-        public static Vector2 pos_iniciar_botao_voltar() { return new Vector2(0.5f, 0.85f); }
+        public static Vector2 pos_iniciar_botao_voltar() { return new Vector2(0.1f, 0.90f); }
+        public static float escala_iniciar_botao_voltar() { return 0.05f; }
 
 
 

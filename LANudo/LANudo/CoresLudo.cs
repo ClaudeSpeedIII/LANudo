@@ -22,15 +22,15 @@ namespace LANudo
         public CoresLudo(Color _P1, Color _P2, Color _P3, Color _P4, Color _publico, int diferenca)
         {
             publico = _publico;
-            publicoAlt = new Color((float)_publico.R - diferenca, (float)_publico.G - diferenca, (float)_publico.B - diferenca, (float)_publico.A);
+            publicoAlt = new Color((byte)_publico.R - diferenca, (byte)_publico.G - diferenca, (byte)_publico.B - diferenca, (byte)_publico.A);
             p1 = _P1;
-            p1Alt = new Color((float)_P1.R - diferenca, (float)_P1.G - diferenca, (float)_P1.B - diferenca, (float)_P1.A);
+            p1Alt = new Color((byte)_P1.R - diferenca, (byte)_P1.G - diferenca, (byte)_P1.B - diferenca, (byte)_P1.A);
             p2 = _P2;
-            p2Alt = new Color((float)_P2.R - diferenca, (float)_P2.G - diferenca, (float)_P2.B - diferenca, (float)_P2.A);
+            p2Alt = new Color((byte)_P2.R - diferenca, (byte)_P2.G - diferenca, (byte)_P2.B - diferenca, (byte)_P2.A);
             p3 = _P3;
-            p3Alt = new Color((float)_P3.R - diferenca, (float)_P3.G - diferenca, (float)_P3.B - diferenca, (float)_P3.A);
+            p3Alt = new Color((byte)_P3.R - diferenca, (byte)_P3.G - diferenca, (byte)_P3.B - diferenca, (byte)_P3.A);
             p4 = _P4;
-            p4Alt = new Color((float)_P4.R - diferenca, (float)_P4.G - diferenca, (float)_P4.B - diferenca, (float)_P4.A);
+            p4Alt = new Color((byte)_P4.R - diferenca, (byte)_P4.G - diferenca, (byte)_P4.B - diferenca, (byte)_P4.A);
         }
     }
 }

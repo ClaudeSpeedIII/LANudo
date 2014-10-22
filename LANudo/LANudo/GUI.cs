@@ -71,7 +71,7 @@ namespace LANudo
             Texture2D _menuTab,
             Texture2D _botao,
             Texture2D _seta,
-        List<Texture2D> tempTabCentro,
+        Texture2D tempTabCentro,
         Texture2D tempTabTile,
         Texture2D tempTabSeta,
             Cursor _rato,
@@ -281,7 +281,7 @@ namespace LANudo
         //Novo jogo
 
         Tabuleiro temp;
-        List<Texture2D> tempTabCentro;
+        Texture2D tempTabCentro;
         Texture2D tempTabTile;
         Texture2D tempTabSeta;
 
@@ -291,7 +291,7 @@ namespace LANudo
 
         void InstanciaMenuNovoJogo()
         {
-            saiIniciarVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_iniciar_botao_voltar(), Constantes.escala_menu_inicial(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
+            saiIniciarVoltaInicial = new Botao(desenhista, imgBotao, Constantes.esquema_cores_botao(), Constantes.pos_iniciar_botao_voltar(), Constantes.escala_iniciar_botao_voltar(), fonte, "BACK", true, Constantes.escala_texto_menu_inicial(), false, false);
             saiIniciarVoltaInicial.Clicado += SaiIniciarVoltaInicial;
             saiIniciarVoltaInicial.AtivarSobreMouse();
             elementosNovoJogo.Add(saiIniciarVoltaInicial);

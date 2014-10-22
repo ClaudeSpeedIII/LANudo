@@ -76,15 +76,15 @@ namespace LANudo
         public static Vector2 RelTelaParaAbs(Vector2 pos)
         {
             return new Vector2(
-                Convert.ToInt32(Configuracoes.Largura * pos.X / 1f),
-                Convert.ToInt32(Configuracoes.Altura * pos.Y / 1f)
+                Configuracoes.Largura * pos.X / 1f,
+                Configuracoes.Altura * pos.Y / 1f
             );
         }
         public static Vector3 RelTelaParaAbs(Vector3 pos)
         {
             return new Vector3(
-                Convert.ToInt16(Configuracoes.Largura * pos.X / 1f),
-                Convert.ToInt16(Configuracoes.Altura * pos.Y / 1f),
+                Configuracoes.Largura * pos.X / 1f,
+                Configuracoes.Altura * pos.Y / 1f,
                 pos.Z
             );
         }
