@@ -12,5 +12,8 @@
 		<LOCALE>Idioma</LOCALE>
 		<FULLSCREEN>Tela inteira</FULLSCREEN>
 		<WINDOWED>Modo janela</WINDOWED>
+		<NEW_ROOM>Nova sala</NEW_ROOM>
+		<CONNECT>Conectar</CONNECT>
+		<SERVER_LIST>Lista de servidores</SERVER_LIST>
 	</Strings>
 </Language>

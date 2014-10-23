@@ -13,9 +13,10 @@ namespace LANudo
         SpriteBatch desenhista;
         SpriteFont fonte;
 
-        Cursor rato;
         Action sair;
+        Cursor rato;
         Configuracoes conf;
+        Jogo ludo;
 
 
 
@@ -49,7 +50,7 @@ namespace LANudo
                     corFundo = Constantes.cor_de_fundo_MenuConf();
                     background = null;
                     break;
-                case GUI.EstadoGUI.iniciar:
+                case GUI.EstadoGUI.servers:
                     corFundo = Constantes.cor_de_fundo_MenuNovoJogo();
                     background = null;
                     break;
@@ -70,22 +71,26 @@ namespace LANudo
             Texture2D _menuDado,
             Texture2D _menuTab,
             Texture2D _botao,
+            Texture2D _botaoAlargado,
             Texture2D _seta,
-            Texture2D tempTabFundo,
-        Texture2D tempTabCentro,
-        Texture2D tempTabTile,
-        Texture2D tempTabSeta,
-        Texture2D tempPeao,
-            Cursor _rato,
+            /* Texture2D tempTabFundo,
+         Texture2D tempTabCentro,
+         Texture2D tempTabTile,
+         Texture2D tempTabSeta,
+         Texture2D tempPeao,*/
             Action _sair,
+            Cursor _rato,
             Configuracoes _conf,
+            Jogo _ludo,
             bool _ativo = true)
         {
+            /*
             this.tempTabFundo = tempTabFundo;
             this.tempTabCentro = tempTabCentro;
             this.tempTabTile = tempTabTile;
             this.tempTabSeta = tempTabSeta;
             this.tempPeao = tempPeao;
+             */
             desenhista = _desenhista;
             fonte = _fonte;
 
@@ -97,24 +102,28 @@ namespace LANudo
             imgTabuleiroInicial = _menuTab;
 
             imgBotao = _botao;
+            imgBotaoAlargado = _botaoAlargado;
             imgSeta = _seta;
 
 
-            rato = _rato;
             sair = _sair;
+            rato = _rato;
             conf = _conf;
+            ludo = _ludo;
 
 
             InstanciaLogoIntro();
             InstanciaMenuInicial();
             InstanciaMenuConfiguracoes();
-            InstanciaMenuNovoJogo();
+            InstanciaListaServidores();
+
+            //temporariamente desativado InstanciaMenuNovoJogo();
 
             ativo = _ativo;
             estado = EstadoGUI.intro;
         }
 
-        public enum EstadoGUI { intro, inicial, conf, iniciar, pausado, emJogo };
+        public enum EstadoGUI { intro, inicial, conf, servers, lobby, criar, pausado, emJogo };
         static EstadoGUI estado;
         public static EstadoGUI Estado { get { return estado; } }
 
@@ -127,6 +136,7 @@ namespace LANudo
 
         Texture2D imgSplash;
         Texture2D imgBotao;
+        Texture2D imgBotaoAlargado;
         Texture2D imgSeta;
 
         //Intro
@@ -186,7 +196,7 @@ namespace LANudo
         }
         void Sair(Botao remetente) { sair(); }
 
-        void Jogar(Botao remetente) { SaiMenuInicial(); VaiMenuNovoJogo(); }
+        void Jogar(Botao remetente) { SaiMenuInicial(); VaiListaServidores(); }
 
         void Conf(Botao remetente) { SaiMenuInicial(); VaiMenuConf(); }
 
@@ -282,14 +292,70 @@ namespace LANudo
         void VaiMenuConf() { estado = EstadoGUI.conf; foreach (Elemento e in elementosConfiguracoes) { e.Ativar(); } SetaFundo(); }
         void SaiMenuConf() { foreach (Elemento e in elementosConfiguracoes) { e.Desativar(); } }
 
-        //Novo jogo
+        //Lista de servidores
 
-        Tabuleiro temp;
-        Texture2D tempTabFundo;
-        Texture2D tempTabCentro;
-        Texture2D tempTabTile;
-        Texture2D tempTabSeta;
-        Texture2D tempPeao;
+        List<Elemento> elementosServers = new List<Elemento>();
+
+        void InstanciaListaServidores()
+        {
+
+            Lista listaServers = new Lista(desenhista, fonte, null,
+                Lista.TipoEvento.SelecionavelInternamente,
+                imgBotaoAlargado, null, imgBotaoAlargado, imgSeta,
+                Constantes.esquema_cores_lista_seta(),
+                Constantes.esquema_cores_lista_vazia(),
+                Constantes.esquema_cores_lista_inclicavel(),
+                Constantes.esquema_cores_lista_selecionada(),
+                Constantes.esquema_cores_lista_deselecionada(),
+                Constantes.esquema_cores_lista_rotulo(),
+                Constantes.pos_servers_lista(),
+                Constantes.escala_servers_lista(), 5,
+                Constantes.escala_texto_servers(),
+                Constantes.escala_setinha_servers(), false,
+                "SERVER_LIST", true,
+                Constantes.escala_rotulo_servers(),
+                Constantes.distancia_servers_rotulo(),
+                0f,
+                null,
+                true, true, true);
+
+            Botoes botoesServers = new Botoes(desenhista, fonte, imgBotao,
+                Constantes.esquema_cores_botao(),
+                Constantes.pos_servers_botoes(),
+                Constantes.escala_servers_botoes(),
+                Constantes.escala_texto_servers(),
+                Constantes.distancia_servers_botoes(),
+                false, false);
+
+            botoesServers.AdicionaBotao("BACK", true, SaiListaServidoresVoltaInicial);
+            botoesServers.AdicionaBotao("NEW_ROOM", true, CriaServidor);
+            botoesServers.AdicionaBotao("CONNECT", true, ConectaServidor);
+
+            elementosServers.Add(botoesServers);
+            elementosServers.Add(listaServers);
+            redimensionaTodos.AddRange(elementosServers);
+        }
+
+        void ConectaServidor(Botao remetente) { SaiListaServidores(); ludo.NovoJogo(); }
+        void CriaServidor(Botao remetente) { /*SaiListaServidores(); */ }
+        void SaiListaServidoresVoltaInicial(Botao remetente) { SaiListaServidores(); VaiMenuInicial(); }
+
+        void VaiListaServidores() { estado = EstadoGUI.servers; foreach (Elemento e in elementosServers) { e.Ativar(); } SetaFundo(); }
+        void SaiListaServidores() { foreach (Elemento e in elementosServers) { e.Desativar(); } }
+
+        //Criar sala
+
+
+        //Lobby
+
+
+
+
+
+
+
+        //Novo jogo
+        /*
 
 
         Botao saiIniciarVoltaInicial;
@@ -330,7 +396,7 @@ namespace LANudo
             Peao[] peoes = new Peao[temp.QuantidadeLinear];
             for (int i = 0; i < temp.QuantidadeLinear; i++)
             {
-                peoes[i] = new Peao(Casa.Jogadores.Publico, 2);
+                peoes[i] = new Peao(Casa.Jogadores.Publico, 0);
             }
             peoes[6] = new Peao(Casa.Jogadores.P2, 1);
 
@@ -348,6 +414,8 @@ namespace LANudo
         void VaiMenuNovoJogo() { estado = EstadoGUI.iniciar; foreach (Elemento e in elementosNovoJogo) { e.Ativar(); } SetaFundo(); }
         void SaiMenuNovoJogo() { foreach (Elemento e in elementosNovoJogo) { e.Desativar(); } }
 
+        */
+
 
         List<Elemento> redimensionaTodos = new List<Elemento>();
         public void Redimensionado()
@@ -362,7 +430,7 @@ namespace LANudo
                 ContaLogoIntro();
                 foreach (Elemento e in elementosMenuInicial) { e.Atualizar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Atualizar(); }
-                foreach (Elemento e in elementosNovoJogo) { e.Atualizar(); }
+                foreach (Elemento e in elementosServers) { e.Atualizar(); }
 
             }
         }
@@ -374,7 +442,7 @@ namespace LANudo
                 splash.Desenhar();
                 foreach (Elemento e in elementosMenuInicial) { e.Desenhar(); }
                 foreach (Elemento e in elementosConfiguracoes) { e.Desenhar(); }
-                foreach (Elemento e in elementosNovoJogo) { e.Desenhar(); }
+                foreach (Elemento e in elementosServers) { e.Desenhar(); }
 
             }
 

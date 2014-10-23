@@ -12,5 +12,8 @@
 		<LOCALE>Language</LOCALE>
 		<FULLSCREEN>Fullscreen</FULLSCREEN>
 		<WINDOWED>Windowed</WINDOWED>
+		<NEW_ROOM>New room</NEW_ROOM>
+		<CONNECT>Connect</CONNECT>
+		<SERVER_LIST>Server list</SERVER_LIST>
 	</Strings>
 </Language>

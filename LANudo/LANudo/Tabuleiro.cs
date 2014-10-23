@@ -19,7 +19,6 @@ namespace LANudo
         public void Ativar() { ativo = true; }
         public void Desativar() { ativo = false; }
 
-
         List<Casa.Jogadores> jogadores;
 
         private CoresLudo cores; public CoresLudo Cores { get { return cores; } set { cores = value; } }
@@ -29,7 +28,7 @@ namespace LANudo
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
         private int inicio = -2; public int CasaInicio { get { return inicio; } set { inicio = value; } }
         private int fim = 0; public int CasaFim { get { return fim; } set { fim = value; } }
-        private int tamanho = 5; public int TamanhoPista { get { return tamanho; } set { tamanho = value; tamanhoTotal = (32 + (value * 12)) - 1; } }
+        private int tamanho = 10; public int TamanhoPista { get { return tamanho; } set { tamanho = value; tamanhoTotal = (32 + (value * 12)) - 1; } }
 
         private int rotacao = 0;
         public int RotacaoPista
@@ -98,6 +97,7 @@ namespace LANudo
             cores = _cores;
             RotacaoPista = _rotacao;
             tamanhoTotal = (32 + (tamanho * 12));
+            ativo = true;
         }
 
         void ReInstancia()

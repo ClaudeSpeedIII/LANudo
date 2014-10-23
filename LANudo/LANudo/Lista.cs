@@ -70,7 +70,35 @@ namespace LANudo
 
         public bool Interativo { get { return interativo; } set { interativo = value; } }
 
-        public Lista(SpriteBatch _desenhista, SpriteFont _fonte, List<ElementoLista> _elementos, TipoEvento _selecionavel, Texture2D _fundo, Texture2D _fundoMouseOver, Texture2D _fundoSeta, Texture2D _seta, EsquemaCores _coresSeta, EsquemaCores _coresVazio, EsquemaCores _coresInclicavel, EsquemaCores _coresSelecionado, EsquemaCores _coresDeselecionado,EsquemaCores _coresRotulo, Vector2 _posicao, float _escala, int _capacidade, float _escalaTexto, float _escalaSetinha, bool _dropDown, string _txtRotulo, bool _xml, float _escalaTextoRotulo, float _distanciaRotulo,float _distanciaDropDown, object _payloadSelecao, bool _rotuloAcima = true, bool _vertical = true, bool _temSetas = true)
+        public Lista(SpriteBatch _desenhista,
+            SpriteFont _fonte,
+            List<ElementoLista> _elementos,
+            TipoEvento _selecionavel,
+            Texture2D _fundo,
+            Texture2D _fundoMouseOver,
+            Texture2D _fundoSeta,
+            Texture2D _seta,
+            EsquemaCores _coresSeta,
+            EsquemaCores _coresVazio,
+            EsquemaCores _coresInclicavel,
+            EsquemaCores _coresSelecionado,
+            EsquemaCores _coresDeselecionado,
+            EsquemaCores _coresRotulo,
+            Vector2 _posicao,
+            float _escala,
+            int _capacidade,
+            float _escalaTexto,
+            float _escalaSetinha,
+            bool _dropDown,
+            string _txtRotulo,
+            bool _xml,
+            float _escalaTextoRotulo,
+            float _distanciaRotulo,
+            float _distanciaDropDown,
+            object _payloadSelecao,
+            bool _rotuloAcima = true,
+            bool _vertical = true,
+            bool _temSetas = true)
         {
             desenhista = _desenhista;
             fonte = _fonte;
@@ -84,7 +112,7 @@ namespace LANudo
             dropDown = _dropDown;
             xml = _xml;
             txtRotulo = _txtRotulo;
-            foreach (ElementoLista item in itens) { if (item.Payload.Equals(_payloadSelecao)) { itemAtual = item; } }
+            if (itens != null) { foreach (ElementoLista item in itens) { if (item.Payload.Equals(_payloadSelecao)) { itemAtual = item; } } } else { pontoAtual = Ponto.Travado; }
             vertical = _vertical;
             tipo = _selecionavel;
             temSetas = _temSetas;
@@ -134,7 +162,7 @@ namespace LANudo
             }
             if (dropDown)
             {
-                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, true, escalaTexto*1.1f, false);
+                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, true, escalaTexto * 1.1f, false);
                 if (itemAtual != null) { if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; } }
                 botaoRotulo.Clicado += Abriu;
                 botaoRotulo.AtivarSobreMouse();
@@ -177,7 +205,7 @@ namespace LANudo
         public void InicializaItens()
         {
             Rolagem(rolagem);
-            if (itens.Count <= botoesDinamicos.Count) { pontoAtual = Ponto.Travado; } else { pontoAtual = Ponto.Inicio; }
+            if (itens != null) { if (itens.Count <= botoesDinamicos.Count) { pontoAtual = Ponto.Travado; } else { pontoAtual = Ponto.Inicio; } } else { pontoAtual = Ponto.Travado; }
             SetaSetas();
         }
 
@@ -192,7 +220,7 @@ namespace LANudo
                 int contador = scroll;
                 foreach (Botao botao in botoesDinamicos)
                 {
-                    if (semMais)
+                    if (semMais || itens == null)
                     {
                         EsvaziaBotao(botao);
                     }
@@ -248,22 +276,25 @@ namespace LANudo
 
         private void Clicou(Botao botao)
         {
-            foreach (ElementoLista item in itens)
+            if (itens != null)
             {
-                if (((item.XML) ? botao.Val : botao.Rotulo) == item.Rotulo)
+                foreach (ElementoLista item in itens)
                 {
-                    if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
-                    SelecionaBotao(botao);
-                    if (dropDown)
+                    if (((item.XML) ? botao.Val : botao.Rotulo) == item.Rotulo)
                     {
-                        Fechou();
-                        if (SelecionouDropDown != null) { SelecionouDropDown(item); }
-                        if (NovaSelecaoDropDown != null && itemAtual != item) { NovaSelecaoDropDown(item); }
+                        if (botaoAtual != null) { DeselecionaBotao(botaoAtual); }
+                        SelecionaBotao(botao);
+                        if (dropDown)
+                        {
+                            Fechou();
+                            if (SelecionouDropDown != null) { SelecionouDropDown(item); }
+                            if (NovaSelecaoDropDown != null && itemAtual != item) { NovaSelecaoDropDown(item); }
+                        }
+                        itemAtual = item;
+                        botaoAtual = botao;
+                        if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; }
+                        return;
                     }
-                    itemAtual = item;
-                    botaoAtual = botao;
-                    if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo= itemAtual.Rotulo; }
-                    return;
                 }
             }
         }
@@ -430,8 +461,15 @@ namespace LANudo
                 }
                 contador++;
             }
-            rotulo.PosRel = botaoRotulo.Posicao - vetorDistanciaRotulo;
-            botaoRotulo.Redimensionado();
+            if (botaoRotulo == null)
+            {
+                rotulo.PosRel = botoesTodos.ElementAt(0).Posicao - vetorDistanciaRotulo;
+            }
+            else
+            {
+                rotulo.PosRel = botaoRotulo.Posicao - vetorDistanciaRotulo;
+                botaoRotulo.Redimensionado();
+            }
             rotulo.Redimensionado();
         }
 
@@ -470,7 +508,8 @@ namespace LANudo
         {
             if (ativo)
             {
-                if (rotulo != null) { rotulo.Desenhar(); }
+                if (rotulo != null) { 
+                    rotulo.Desenhar(); }
                 if (dropDown) { botaoRotulo.Desenhar(); if (!aberto) { return; } }
                 foreach (Botao botao in botoesTodos)
                 {

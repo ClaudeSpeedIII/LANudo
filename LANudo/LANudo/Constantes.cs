@@ -35,6 +35,7 @@ namespace LANudo
 
         //A organizar
         public static string caminho_botao() { return "Botao"; }
+        public static string caminho_botao_alargado() { return "BotaoAlargado"; }
         public static string caminho_seta() { return "Seta"; }
         public static string caminho_splash_screen() { return "LogoIntro"; }
         public static string caminho_idiomas() { return "Locale/"; }
@@ -74,7 +75,7 @@ namespace LANudo
         public static EsquemaCores esquema_cores_botao() { return new EsquemaCores(Color.Silver, Color.Cyan, Color.White, Color.Silver); }
 
         //Intro
-        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0,0); }//para fins de facilitar o debug
+        public static TimeSpan duracao_intro() { return new TimeSpan(0, 0, 2); }//para fins de facilitar o debug
         public static float escala_logo_intro() { return 0.8f; }
 
         //Tela Inicial
@@ -108,6 +109,20 @@ namespace LANudo
         //Novo Jogo
         public static Vector2 pos_iniciar_botao_voltar() { return new Vector2(0.1f, 0.90f); }
         public static float escala_iniciar_botao_voltar() { return 0.05f; }
+
+        //Lista de servidores
+        public static Vector2 pos_servers_lista() { return new Vector2(0.5f, 0.45f); }
+        public static Vector2 pos_servers_botoes() { return new Vector2(0.5f, 0.9f); }
+        
+        public static float distancia_servers_rotulo() { return 0.13f; }
+        public static float distancia_servers_botoes() { return 0.04f; }
+        public static float distancia_servers_lista() { return 0.08f; }
+
+        public static float escala_servers_lista() { return 0.095f; }
+        public static float escala_servers_botoes() { return 0.08f; }
+        public static float escala_rotulo_servers() { return 0.4f; }
+        public static float escala_texto_servers() { return 0.35f; }
+        public static float escala_setinha_servers() { return 0.5f; }
 
 
 

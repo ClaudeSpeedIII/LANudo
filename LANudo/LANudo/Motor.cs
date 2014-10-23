@@ -32,6 +32,7 @@ namespace LANudo
 
         //Todo jogo possui um logo e precisa escrever tralha na tela, certo?
         private static GUI menu;
+        private static Jogo ludo;
         private Cursor rato;
 
 
@@ -40,6 +41,7 @@ namespace LANudo
         {
             config.AtualizaDimensoes();
             menu.Redimensionado();
+            ludo.Redimensionado();
         }
 
 
@@ -85,18 +87,22 @@ namespace LANudo
             desenhista = new SpriteBatch(GraphicsDevice);
             escritor = Content.Load<SpriteFont>(Constantes.caminho_fonte());
 
+
+
             config.SetaIdioma(Constantes.idioma_inicial(), true);
             rato = new Cursor(
                 desenhista,
                 Content.Load<Texture2D>(Constantes.caminho_rato()),
                 Content.Load<Texture2D>(Constantes.caminho_rato_apertado())
                 );
-            //Precisamos de uma interface
-            /*List<Texture2D> centro = new List<Texture2D>();
-            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_sobe()));
-            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_direita()));
-            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_desce()));
-            centro.Add(Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro_esquerda()));*/
+
+            ludo = new Jogo(desenhista,
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_fundo()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_tile()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_seta()),
+                Content.Load<Texture2D>(Constantes.caminho_peao())
+                );
             menu = new GUI(
                 desenhista,
                 escritor,
@@ -106,15 +112,12 @@ namespace LANudo
                 Content.Load<Texture2D>(Constantes.caminho_menu_dado()),
                 Content.Load<Texture2D>(Constantes.caminho_menu_tabuleiro()),
                 Content.Load<Texture2D>(Constantes.caminho_botao()),
+                Content.Load<Texture2D>(Constantes.caminho_botao_alargado()),
                 Content.Load<Texture2D>(Constantes.caminho_seta()),
-                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_fundo()),
-                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_centro()),
-                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_tile()),
-                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_seta()),
-                Content.Load<Texture2D>(Constantes.caminho_peao()),
-                rato,
                 QUIT,
-                Config
+                rato,
+                Config,
+                ludo
                 );
             menu.Ativar();
             Redimensionado(this, new EventArgs());
@@ -140,6 +143,7 @@ namespace LANudo
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            ludo.Atualizar();
             menu.Atualizar();
             rato.Atualizar();
 
@@ -159,11 +163,11 @@ namespace LANudo
             }
             //Sequencia de "joga na tela"
 
-
             menu.Desenhar();
 
             rato.Desenhar();
 
+            ludo.Desenhar();
             desenhista.End();
 
 
