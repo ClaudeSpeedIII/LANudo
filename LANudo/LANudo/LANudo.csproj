@@ -118,6 +118,9 @@
     <Compile Include="Entrada.cs" />
     <Compile Include="EsquemaCores.cs" />
     <Compile Include="Fundo.cs" />
+    <Compile Include="Jogador.cs" />
+    <Compile Include="JogadorLocal.cs" />
+    <Compile Include="JogadorRemoto.cs" />
     <Compile Include="Jogo.cs" />
     <Compile Include="Lista.cs" />
     <Compile Include="Constantes.cs" />
