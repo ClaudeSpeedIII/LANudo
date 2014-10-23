@@ -29,7 +29,7 @@ namespace LANudo
         private bool direcao = true; public bool Direcao { get { return direcao; } set { direcao = value; } }
         private int inicio = -2; public int CasaInicio { get { return inicio; } set { inicio = value; } }
         private int fim = 0; public int CasaFim { get { return fim; } set { fim = value; } }
-        private int tamanho = 5; public int TamanhoPista { get { return tamanho; } set { tamanho = value; } }
+        private int tamanho = 5; public int TamanhoPista { get { return tamanho; } set { tamanho = value; tamanhoTotal = (32 + (value * 12)) - 1; } }
 
         private int rotacao = 0;
         public int RotacaoPista
@@ -97,6 +97,7 @@ namespace LANudo
             posicao = _posicao;
             cores = _cores;
             RotacaoPista = _rotacao;
+            tamanhoTotal = (32 + (tamanho * 12));
         }
 
         void ReInstancia()
@@ -132,7 +133,7 @@ namespace LANudo
             }
         }
 
-        HashSet<Casa> pista = new HashSet<Casa>();
+        List<Casa> pista = new List<Casa>();
 
         void InicializaPista()
         {
@@ -269,6 +270,32 @@ namespace LANudo
             fundo.PosRel = posicao;//new Vector3(posicao.X, posicao.Y, escalado);
         }
 
+        int tamanhoTotal; public int QuantidadeLinear { get { return tamanhoTotal; } }
+
+        public bool PreenchePeao(Peao[] lista)
+        {
+            if (lista.Length != tamanhoTotal)
+            {
+                return false;
+            }
+            else
+            {
+                List<Casa> todasAsCasas = new List<Casa>();
+                todasAsCasas.AddRange(garagem);
+                todasAsCasas.AddRange(pista);
+                todasAsCasas.AddRange(final);
+                todasAsCasas.AddRange(centro);
+                int contador = 0;
+                foreach (Casa tile in todasAsCasas)
+                {
+                    tile.Peoes = lista[contador];
+                    contador++;
+                }
+            }
+            AtualizaPeoes();
+            return true;
+        }
+
         List<Sprite> peoes = new List<Sprite>(); private Vector2 pivotPeao = new Vector2(0.5f, 0.75f); public Vector2 PivotPeao { get { return pivotPeao; } set { value = pivotPeao; AtualizaPeoes(); } }
 
         public void AtualizaPeoes()
@@ -296,7 +323,7 @@ namespace LANudo
                 for (int i = 0; i < central.Peoes.Quantidade; i++)
                 {
                     Sprite spr = new Sprite(desenhista, peao, new Vector3(central.Base.PosRel.X, central.Base.PosRel.Y, escalado), corPeca, true, true);
-                    Vector2 offsetChegada = new Vector2((spr.Img.Width * spr.EscalaAbs)*0.65f, 0f);
+                    Vector2 offsetChegada = new Vector2((spr.Img.Width * spr.EscalaAbs) * 0.65f, 0f);
                     spr.Pivot = pivotPeao;
                     if (first) { px = new Vector2((((spr.Img.Width * spr.EscalaAbs) / 3) * 3), ((spr.Img.Height * spr.EscalaAbs) / 3) * 3); first = false; }
                     else

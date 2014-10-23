@@ -291,6 +291,7 @@ namespace LANudo
         Texture2D tempTabSeta;
         Texture2D tempPeao;
 
+
         Botao saiIniciarVoltaInicial;
         List<Elemento> elementosNovoJogo = new List<Elemento>();
 
@@ -316,13 +317,26 @@ namespace LANudo
             List<Texture2D> vetor = new List<Texture2D>();
             vetor.Add(tempTabTile);
             vetor.Add(tempTabSeta);
-            ParametrosCasa entrada = new ParametrosCasa(vetor, Casa.Tipos.Entrada,-100);
+            ParametrosCasa entrada = new ParametrosCasa(vetor, Casa.Tipos.Entrada, -100);
 
             ParametrosCasa pista = new ParametrosCasa(tempTabTile, Casa.Tipos.Pista);
             ParametrosCasa saida = new ParametrosCasa(tempTabTile, Casa.Tipos.Saida);
             ParametrosCasa garagem = new ParametrosCasa(tempTabTile, Casa.Tipos.Garagem);
 
-            temp = new Tabuleiro(desenhista, tempPeao,tempTabFundo, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.8f),90);
+
+            temp = new Tabuleiro(desenhista, tempPeao, tempTabFundo, cores, garagem, saida, pista, entrada, final, centro, new Vector3(0.5f, 0.5f, 0.8f),0);
+
+
+            Peao[] peoes = new Peao[temp.QuantidadeLinear];
+            for (int i = 0; i < temp.QuantidadeLinear; i++)
+            {
+                peoes[i] = new Peao(Casa.Jogadores.Publico, 2);
+            }
+            peoes[6] = new Peao(Casa.Jogadores.P2, 1);
+
+            temp.PreenchePeao(peoes);
+
+
             elementosNovoJogo.Add(temp);
             //fim só pra testes
 

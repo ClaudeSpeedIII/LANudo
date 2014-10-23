@@ -31,7 +31,7 @@ namespace LANudo
         Sprite spriteBase; public Sprite Base { get { return spriteBase; } }
 
         //List<Sprite> peoes = new List<Sprite>();
-        private Peao peoesAqui = new Peao(Jogadores.P3,4); public Peao Peoes { get { return peoesAqui; } set { peoesAqui = value; } }
+        private Peao peoesAqui = new Peao(Jogadores.Publico,0); public Peao Peoes { get { return peoesAqui; } set { peoesAqui = value; } }
         /*private Vector2 offsetEmpilha; public Vector2 OffsetEmpilhamento { get { return offsetEmpilha; } set { offsetEmpilha = value; AtualizaPeoes(); } }
         private Vector2 pivotPeao; public Vector2 PivotPeao { get { return pivotPeao; } set { value = pivotPeao; AtualizaPeoes(); } }
         void AtualizaPeoes()
