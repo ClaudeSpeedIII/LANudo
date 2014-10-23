@@ -116,7 +116,6 @@ namespace LANudo
 
         private void InicializaBotoes()
         {
-            bool usaXML = itens.ElementAt(0).XML;
             if (temSetas)
             {
                 botaoSuperior = new Botao(desenhista, fundo, fundoMouse, coresSeta, new Vector2(10, 10), escala, false);
@@ -135,7 +134,7 @@ namespace LANudo
             }
             if (dropDown)
             {
-                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, usaXML, escalaTexto*1.1f, false);
+                botaoRotulo = new Botao(desenhista, fundo, coresRotulo, posicao, escala * 1.1f, fonte, null, true, escalaTexto*1.1f, false);
                 if (itemAtual != null) { if (itemAtual.XML) { botaoRotulo.Val = itemAtual.Rotulo; } else { botaoRotulo.Rotulo = itemAtual.Rotulo; } }
                 botaoRotulo.Clicado += Abriu;
                 botaoRotulo.AtivarSobreMouse();
@@ -150,7 +149,7 @@ namespace LANudo
             }
             for (int i = 1; i <= capacidade; i++)
             {
-                Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, null, usaXML, escalaTexto, false);
+                Botao botao = new Botao(desenhista, fundo, fundoMouse, coresVazio, new Vector2(10, 10), escala, fonte, null, true, escalaTexto, false);
                 botao.OcultaTexto();
                 botao.DesativarSobreMouse();
                 switch (tipo)

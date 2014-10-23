@@ -286,24 +286,28 @@ namespace LANudo
                 Recursos.RegraDeTres(pista.ElementAt(0).Base.Img.Height, escalaIndividual, peao.Height) :
                 Recursos.RegraDeTres(pista.ElementAt(0).Base.Img.Width, escalaIndividual, peao.Width);
 
+            List<Sprite> peoesInvertidos = new List<Sprite>();
             foreach (Casa central in centro)
             {
                 Color corPeca = cores.CorJogador(central.Peoes.Dono);
                 bool first = true;
                 Vector2 px = Vector2.Zero;
+
                 for (int i = 0; i < central.Peoes.Quantidade; i++)
                 {
-                    Sprite spr = new Sprite(desenhista, peao, new Vector3(central.Base.PosRel.X, central.Base.PosRel.Y, escalado), corPeca,true,true);
-                    Vector2 offsetEmpilhamento = new Vector2((spr.Img.Width * spr.EscalaAbs) / 5,0f);
+                    Sprite spr = new Sprite(desenhista, peao, new Vector3(central.Base.PosRel.X, central.Base.PosRel.Y, escalado), corPeca, true, true);
+                    Vector2 offsetChegada = new Vector2((spr.Img.Width * spr.EscalaAbs)*0.65f, 0f);
                     spr.Pivot = pivotPeao;
-                    if (first) { px = new Vector2((((spr.Img.Width * spr.EscalaAbs) / 3)*3), ((spr.Img.Height * spr.EscalaAbs) / 3)*3); first = false; }
+                    if (first) { px = new Vector2((((spr.Img.Width * spr.EscalaAbs) / 3) * 3), ((spr.Img.Height * spr.EscalaAbs) / 3) * 3); first = false; }
                     else
                     {
-                        px-= offsetEmpilhamento;
+                        px -= offsetChegada;
                     }
                     spr.PosPx += Recursos.Direciona((Recursos.Direcao)count, px);
-                    peoes.Add(spr);
+                    if (count >= 3) { peoesInvertidos.Add(spr); } else { peoes.Add(spr); }
                 }
+                peoesInvertidos.Reverse();
+                peoes.AddRange(peoesInvertidos);
                 count++;
             }
             count = -1;
