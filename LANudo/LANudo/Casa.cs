@@ -12,7 +12,6 @@ namespace LANudo
         private SpriteBatch desenhista;
 
         public enum Tipos { Garagem, Saida, Pista, Entrada, Final, Chegada }
-        //Público???
         public enum Jogadores { Publico, P1, P2, P3, P4 }
         private Tipos tipoCasa; public Tipos Tipo { get { return tipoCasa; } }
         private int rotacao = 0; public int Rotacao { get { return rotacao; } set { rotacao = value; foreach (Sprite s in sprites) { s.Rot = value; } } }
