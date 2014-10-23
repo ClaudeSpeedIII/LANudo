@@ -31,7 +31,7 @@ namespace LANudo
 
         Jogador[] jogadores;
         Jogador jogadorAtual;
-        int idVetorJogadorAtual; 
+        int idVetorJogadorAtual = -1; 
 
 
         int tamanhoTab;
@@ -55,7 +55,7 @@ namespace LANudo
         void Ciclo()
         {
             //Define o jogadorAtual
-            if (idVetorJogadorAtual == null)
+            if (idVetorJogadorAtual == -1)
             {
                 //Inicia o jogo
                 idVetorJogadorAtual = 0;
@@ -83,9 +83,9 @@ namespace LANudo
             switch (dadoRolado)
             {
                 case 1:
-                    //Nova peça na pista, casa 1
+                    TransferePeao(jogadorAtual); 
                     break;
-                case 2 - 5:
+                case 2 - 5: 
                     //Mover peça
                     //Qual? 
                     //Requer ação
@@ -97,11 +97,22 @@ namespace LANudo
 
         }
 
-        void TransferePeca()
+        /// <summary>
+        /// Transfere um peão da garagem para a posição de saída
+        /// </summary>
+        /// <param name="j">Jogador em vez</param>
+        void TransferePeao(Jogador j)
         {
+            //Transfere peão para a posição de saída e subtrai da garagem
         }
 
-        void MovePeca() 
+        /// <summary>
+        /// Move um peão p do jogador j por c casas
+        /// </summary>
+        /// <param name="j">Jogador em vez</param>
+        /// <param name="p">Peão em questão</param>
+        /// <param name="c">Número de casas</param>
+        void MovePeao(Jogador j, Peao p, int c) 
         {
 
         }
