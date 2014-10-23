@@ -7,5 +7,8 @@ namespace LANudo
 {
     interface Mestre
     {
+        void TransmitirVez(); 
+        void JogarDado();
+        void MoverPeao(); 
     }
 }
