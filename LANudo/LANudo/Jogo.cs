@@ -11,6 +11,7 @@ namespace LANudo
     {
         SpriteBatch desenhista;
         private Tabuleiro tab;
+        private Fundo toalha;
         List<Elemento> elementosEmJogo = new List<Elemento>();
 
         bool ativo, interativo = true;
@@ -29,7 +30,7 @@ namespace LANudo
         Texture2D imgTabSeta;
         Texture2D imgPeao;
 
-        public Jogo(SpriteBatch _desenhista, Texture2D imgTabFundo,
+        public Jogo(SpriteBatch _desenhista,Texture2D imgTabFundo,
          Texture2D imgTabCentro,
          Texture2D imgTabTile,
          Texture2D imgTabSeta,

@@ -107,6 +107,7 @@ namespace LANudo
                 desenhista,
                 escritor,
                 Content.Load<Texture2D>(Constantes.caminho_splash_screen()),
+                Content.Load<Texture2D>(Constantes.caminho_tabuleiro_plano_fundo()),
                 Content.Load<Texture2D>(Constantes.caminho_menu_fundo()),
                 Content.Load<Texture2D>(Constantes.caminho_menu_logo()),
                 Content.Load<Texture2D>(Constantes.caminho_menu_dado()),

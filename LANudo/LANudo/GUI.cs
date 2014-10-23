@@ -19,6 +19,7 @@ namespace LANudo
         Jogo ludo;
 
 
+        Fundo fundoEmJogo;
 
         bool ativo, interativo = true;
 
@@ -48,17 +49,17 @@ namespace LANudo
                     break;
                 case GUI.EstadoGUI.conf:
                     corFundo = Constantes.cor_de_fundo_MenuConf();
-                    background = null;
+                    background = fundoInicial;
                     break;
                 case GUI.EstadoGUI.servers:
                     corFundo = Constantes.cor_de_fundo_MenuNovoJogo();
-                    background = null;
+                    background = fundoInicial;
                     break;
                 case GUI.EstadoGUI.pausado:
                     background = null;
                     break;
                 case GUI.EstadoGUI.emJogo:
-                    background = null;
+                    background = fundoEmJogo;
                     break;
             }
         }
@@ -66,6 +67,7 @@ namespace LANudo
         public GUI(SpriteBatch _desenhista,
             SpriteFont _fonte,
             Texture2D _splash,
+            Texture2D _fundoEmJogo,
             Texture2D _menuFundo,
             Texture2D _menuLogo,
             Texture2D _menuDado,
@@ -96,6 +98,7 @@ namespace LANudo
 
             imgSplash = _splash;
 
+            imgFundoEmJogo = _fundoEmJogo;
             imgFundoInicial = _menuFundo;
             imgLogoInicial = _menuLogo;
             imgDadoInicial = _menuDado;
@@ -128,7 +131,7 @@ namespace LANudo
         public static EstadoGUI Estado { get { return estado; } }
 
         //Texturas
-
+        Texture2D imgFundoEmJogo;
         Texture2D imgFundoInicial;
         Texture2D imgLogoInicial;
         Texture2D imgDadoInicial;
@@ -299,6 +302,8 @@ namespace LANudo
         void InstanciaListaServidores()
         {
 
+            fundoEmJogo = new Fundo(desenhista, imgFundoEmJogo);
+            redimensionaTodos.Add(fundoEmJogo);
             Lista listaServers = new Lista(desenhista, fonte, null,
                 Lista.TipoEvento.SelecionavelInternamente,
                 imgBotaoAlargado, null, imgBotaoAlargado, imgSeta,
@@ -336,7 +341,7 @@ namespace LANudo
             redimensionaTodos.AddRange(elementosServers);
         }
 
-        void ConectaServidor(Botao remetente) { SaiListaServidores(); ludo.NovoJogo(); }
+        void ConectaServidor(Botao remetente) { SaiListaServidores(); estado = EstadoGUI.emJogo; SetaFundo(); ludo.NovoJogo(); }
         void CriaServidor(Botao remetente) { /*SaiListaServidores(); */ }
         void SaiListaServidoresVoltaInicial(Botao remetente) { SaiListaServidores(); VaiMenuInicial(); }
 

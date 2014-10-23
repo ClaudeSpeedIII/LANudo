@@ -19,6 +19,9 @@ namespace LANudo
 
         //Splash
 
+        //Fundo Em Jogo
+        public static string caminho_tabuleiro_plano_fundo() { return "Mesa"; }
+
         //Menu Inicial
         public static string caminho_menu_logo() { return "MenuLogo"; }
         public static string caminho_menu_fundo() { return "MenuFundo"; }
@@ -113,7 +116,7 @@ namespace LANudo
         //Lista de servidores
         public static Vector2 pos_servers_lista() { return new Vector2(0.5f, 0.45f); }
         public static Vector2 pos_servers_botoes() { return new Vector2(0.5f, 0.9f); }
-        
+
         public static float distancia_servers_rotulo() { return 0.13f; }
         public static float distancia_servers_botoes() { return 0.04f; }
         public static float distancia_servers_lista() { return 0.08f; }

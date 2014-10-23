@@ -49,3 +49,4 @@ C:\Users\ra00129659\Desktop\LANudo\Servidor\bin\x86\Debug\Idioma.dll
 C:\Users\ra00129659\Desktop\LANudo\Servidor\bin\x86\Debug\LANudo.pdb
 C:\Users\ra00129659\Desktop\LANudo\Servidor\bin\x86\Debug\Idioma.pdb
 C:\Users\ra00129659\Desktop\LANudo\Servidor\bin\x86\Debug\Content\BotaoAlargado.xnb
+C:\Users\ra00129659\Desktop\LANudo\Servidor\bin\x86\Debug\Content\Mesa.xnb
