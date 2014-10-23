@@ -269,28 +269,79 @@ namespace LANudo
             fundo.PosRel = posicao;//new Vector3(posicao.X, posicao.Y, escalado);
         }
 
-        List<Sprite> peoes = new List<Sprite>();
-        private Vector2 offsetEmpilha = new Vector2(0f, -5f); public Vector2 OffsetEmpilhamento { get { return offsetEmpilha; } set { offsetEmpilha = value; AtualizaPeoes(); } }
-        private Vector2 pivotPeao = new Vector2(0.5f, 0.75f); public Vector2 PivotPeao { get { return pivotPeao; } set { value = pivotPeao; AtualizaPeoes(); } }
+        List<Sprite> peoes = new List<Sprite>(); private Vector2 pivotPeao = new Vector2(0.5f, 0.75f); public Vector2 PivotPeao { get { return pivotPeao; } set { value = pivotPeao; AtualizaPeoes(); } }
 
         public void AtualizaPeoes()
         {
             peoes = new List<Sprite>();
             List<Casa> todasAsCasas = new List<Casa>();
-            todasAsCasas.AddRange(centro);
-            todasAsCasas.AddRange(garagem);
             todasAsCasas.AddRange(final);
             todasAsCasas.AddRange(pista);
+            int count = 0;
+            Casa.Jogadores antigoDono = Casa.Jogadores.Publico;
+
+            Vector2 temp = Vector2.Zero;
+
+            float escalado = (Configuracoes.Largura > Configuracoes.Altura) ?
+                Recursos.RegraDeTres(pista.ElementAt(0).Base.Img.Height, escalaIndividual, peao.Height) :
+                Recursos.RegraDeTres(pista.ElementAt(0).Base.Img.Width, escalaIndividual, peao.Width);
+
+            foreach (Casa central in centro)
+            {
+                Color corPeca = cores.CorJogador(central.Peoes.Dono);
+                bool first = true;
+                Vector2 px = Vector2.Zero;
+                for (int i = 0; i < central.Peoes.Quantidade; i++)
+                {
+                    Sprite spr = new Sprite(desenhista, peao, new Vector3(central.Base.PosRel.X, central.Base.PosRel.Y, escalado), corPeca,true,true);
+                    Vector2 offsetEmpilhamento = new Vector2((spr.Img.Width * spr.EscalaAbs) / 5,0f);
+                    spr.Pivot = pivotPeao;
+                    if (first) { px = new Vector2((((spr.Img.Width * spr.EscalaAbs) / 3)*3), ((spr.Img.Height * spr.EscalaAbs) / 3)*3); first = false; }
+                    else
+                    {
+                        px-= offsetEmpilhamento;
+                    }
+                    spr.PosPx += Recursos.Direciona((Recursos.Direcao)count, px);
+                    peoes.Add(spr);
+                }
+                count++;
+            }
+            count = -1;
+            antigoDono = Casa.Jogadores.Publico;
+            foreach (Casa vaga in garagem)
+            {
+                Color corPeca = cores.CorJogador(vaga.Peoes.Dono);
+                bool first = true;
+                for (int i = 0; i < vaga.Peoes.Quantidade; i++)
+                {
+                    Sprite spr = new Sprite(desenhista, peao, new Vector3(vaga.Base.PosRel.X, vaga.Base.PosRel.Y, escalado), corPeca, true, true);
+                    spr.Pivot = pivotPeao;
+                    if (first) { first = false; } else { spr.PosPx -= new Vector2(0f, (spr.TamanhoAbs.Y * spr.EscalaAbs) / 8); }
+                    if (antigoDono != vaga.Dono)
+                    {
+                        antigoDono = vaga.Dono;
+                        count++;
+                        if (count > 3) { count = 0; }
+                    }
+                    spr.PosPx -= Recursos.Direciona((Recursos.Direcao)count, (vaga.TamanhoAbs * vaga.Base.EscalaAbs) / 2);
+                    temp += new Vector2((vaga.PosicaoAbs.X * vaga.Base.EscalaAbs) / 5, 0f);
+                    peoes.Add(spr);
+                }
+            }
             foreach (Casa peca in todasAsCasas)
             {
-                Vector2 lugar = peca.Base.PosicaoRelPivoteada(new Vector2(0.5f, 0.5f));
                 Color corPeca = cores.CorJogador(peca.Peoes.Dono);
                 bool first = true;
+                Vector2 px = Vector2.Zero;
                 for (int i = 0; i < peca.Peoes.Quantidade; i++)
                 {
-                    Sprite spr = new Sprite(desenhista, peao, new Vector3(peca.Base.PosRel.X, peca.Base.PosRel.Y, escalaIndividual), corPeca);
+                    Sprite spr = new Sprite(desenhista, peao, new Vector3(peca.Base.PosRel.X, peca.Base.PosRel.Y, escalado), corPeca, true, true);
                     spr.Pivot = pivotPeao;
-                    if (first) { first = false; } else { spr.PosPx += offsetEmpilha; }
+                    if (first) { first = false; px = spr.PosPx; }
+                    else
+                    {
+                        spr.PosPx = px -= new Vector2(0f, (spr.TamanhoAbs.Y * spr.EscalaAbs) / 8); ;
+                    }
                     peoes.Add(spr);
                 }
             }

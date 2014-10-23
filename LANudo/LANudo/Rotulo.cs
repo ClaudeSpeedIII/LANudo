@@ -93,7 +93,7 @@ namespace LANudo
             {
                 if (rotulo != null)
                 {
-                    desenhista.DrawString(fonte, rotulo, posPx - pivotAbsoluto, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 0f);
+                    desenhista.DrawString(fonte, rotulo, posPx - pivotAbsoluto, cor, angulo, Vector2.Zero, escalaAtual, efeitos, 1f);
                 }
             }
         }

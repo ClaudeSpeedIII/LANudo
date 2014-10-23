@@ -260,7 +260,7 @@ namespace LANudo
                 desenhista.Draw(imagemAtual, cantos, corFundoAtual);
                 if (temTexto && rotulo != null)
                 {
-                    desenhista.DrawString(fonte, rotulo, posicaoTexto, corTextoAtual, 0f, new Vector2(0f, 0f), escalaTextoAtual, new SpriteEffects(), 0f);
+                    desenhista.DrawString(fonte, rotulo, posicaoTexto, corTextoAtual, 0f, new Vector2(0f, 0f), escalaTextoAtual, new SpriteEffects(), 1f);
                 }
             }
         }

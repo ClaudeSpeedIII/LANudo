@@ -26,6 +26,19 @@ namespace LANudo
         public void Desativar() { ativo = false; }
         SpriteBatch desenhista;
         MouseState ratoAnterior;
+
+        private float ordem = 1f; public float Ordem { get { return ordem; } set { ordem = value; } }
+        private bool ordena = false; public bool Ordena { get { return ordena; } set { ordena = value; } }
+
+        void CalculaOrdem()
+        {
+            if (ordena)
+            {
+                ordem = Recursos.RegraDeTres(Configuracoes.Altura, 1, pixel.Y);
+            }
+        }
+
+
         bool temMouseSobre = false; public bool PodeMouseSobre { set { temMouseSobre = value; } }
         bool mouseSobre = false; public bool MouseSobre { get { return mouseSobre; } }
         bool dinamico = false; public bool Dinamico { get { return dinamico; } set { dinamico = value; } }
@@ -65,6 +78,7 @@ namespace LANudo
                 pivotAbs = new Vector2(0f, 0f);
                 pixel = new Vector2(retangulo.X, retangulo.Y);
                 CalculaTamanhoRelativo();
+                CalculaOrdem();
             }
         }
         public Vector2 PosPx
@@ -79,6 +93,7 @@ namespace LANudo
                 relativo = Recursos.AbsParaRelTela(new Vector3(value.X, value.Y, relativo.Z));
 
                 CalculaTamanhoRelativo();
+                CalculaOrdem();
             }
         }//*/
         public Vector3 PosRel
@@ -99,10 +114,11 @@ namespace LANudo
 
 
                 //retangulo = /*Recursos.RotacionaRetangulo(*/Recursos.RetanguloRelativamenteDeslocado(imagemAtual.Bounds, value.Z,new Vector2(value.X,value.Y));//pivotAbs);//), 0);
-                desenhaRetangulo = false; 
+                desenhaRetangulo = false;
                 pixel = Recursos.RelTelaParaAbs(new Vector2(value.X, value.Y));
                 //pixel = new Vector3(retangulo.X - pivotRel.X, retangulo.Y - pivotRel.Y, escalaAbs);
                 CalculaTamanhoRelativo();
+                CalculaOrdem();
             }
         }
         public Vector2 Pivot
@@ -132,16 +148,19 @@ namespace LANudo
             pivotRel = new Vector2(escaladoRel.X * origin.X, escaladoRel.Y * origin.Y);
         }
 
-         public Vector2 PosicaoAbsPivoteada(Vector2 pivot)
+        public Vector2 PosicaoAbsPivoteada(Vector2 pivot)
         {
-            Rectangle novo = imagemAtual.Bounds;//Recursos.RotacionaRetangulo(imagem.Bounds, angulo);
-            pivotAbs = new Vector2((novo.Width * escalaAbs) * pivot.X, (novo.Height * escalaAbs) * pivot.Y);
-            return pixel + new Vector2(novo.Width * pivot.X, novo.Height * pivot.Y);
+            /*
+           Rectangle novo = imagemAtual.Bounds;//Recursos.RotacionaRetangulo(imagem.Bounds, angulo);
+           pivotAbs = new Vector2((novo.Width * escalaAbs) * pivot.X, (novo.Height * escalaAbs) * pivot.Y);
+           return pixel + new Vector2(novo.Width * pivot.X, novo.Height * pivot.Y);*/
+            Point escaladoRel = Recursos.EscalaRelativoTela(imagemAtual.Bounds, relativo.Z);
+            return new Vector2(escaladoRel.X * pivot.X, escaladoRel.Y * pivot.Y) + pixel;
 
         }
 
         public Vector2 PosicaoRelPivoteada(Vector2 pivot)
-         {
+        {
             Point escaladoRel = Recursos.EscalaRelativoTela(imagemAtual.Bounds, relativo.Z);
             return Recursos.AbsParaRelTela(new Vector2(escaladoRel.X * pivot.X, escaladoRel.Y * pivot.Y) + pixel);
 
@@ -199,6 +218,18 @@ namespace LANudo
             this.cores = new EsquemaCores(cor, cor, cor, cor);
             this.PosRel = pos;
             this.ativo = ativo;
+        }
+        public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector3 pos, Color cor,bool _ordena, bool ativo = true)
+        {
+            this.desenhista = desenhista;
+            this.imagemAtual = imagem;
+            this.imagem = imagem;
+            this.corAtual = cor;
+            this.cores = new EsquemaCores(cor, cor, cor, cor);
+            this.PosRel = pos;
+            this.ativo = ativo;
+            ordena = _ordena;
+            CalculaOrdem();
         }
         public Sprite(SpriteBatch desenhista, Texture2D imagem, Vector3 pos, bool ativo = true)
         {
@@ -308,12 +339,12 @@ namespace LANudo
         {
             if (ativo)
             {
-                if (desenhaRetangulo) { desenhista.Draw(imagemAtual, retangulo, null, corAtual, angulo, Vector2.Zero, efeitos, 0f); }
+                if (desenhaRetangulo) { desenhista.Draw(imagemAtual, retangulo, null, corAtual, angulo, Vector2.Zero, efeitos, ordem); }
                 else
                 {
-                    desenhista.Draw(imagemAtual, pixel, null, corAtual, angulo, pivotAbsSemEscala, escalaAbs, efeitos, 0f);
+                    desenhista.Draw(imagemAtual, pixel, null, corAtual, angulo, pivotAbsSemEscala, escalaAbs, efeitos,ordem);
                 }
-                //desenhista.Draw(imagemAtual, retangulo,null, corAtual, angulo,Vector2.Zero, efeitos, 0f);
+                //desenhista.Draw(imagemAtual, retangulo,null, corAtual, angulo,Vector2.Zero, efeitos, 1f);
             }
         }
     }
