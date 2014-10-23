@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-<<<<<<< HEAD
-=======
 using Microsoft.Xna.Framework.Graphics;
-// //>>>>>>> 3ecbe8d89d8c2aa07b62081b74586dc46dc305ec
 using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
     public interface Jogador
     {
-<<<<<<< HEAD
         void SetaID(Casa.Jogadores jogador);
         void SetaCor(Color cor);
         void SetaRotacao(int rotacao);
