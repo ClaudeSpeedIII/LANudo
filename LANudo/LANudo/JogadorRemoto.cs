@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
-    class JogadorRemoto : Jogador
+  /*  class JogadorRemoto : Jogador
     {
         int id();
         Color Cor();
@@ -16,5 +17,5 @@ namespace LANudo
         bool EhVez();
         Peao[] Peoes();
         int PeoesCasaFinal();
-    }
+    }*/
 }
