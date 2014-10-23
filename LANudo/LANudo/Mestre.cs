@@ -25,7 +25,7 @@ namespace LANudo
 
         public enum JogadasPossiveis { Dado, Tira, Anda }
         //public enum Jogadas { Jogada }
-        public Jogada[] Jogadas; 
+        //public Jogada[] Jogadas; 
 
         CoresLudo cores;
 

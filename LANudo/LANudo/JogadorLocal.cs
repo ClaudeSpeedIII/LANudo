@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace LANudo
 {
+    /*
     class JogadorLocal : Jogador
     {
         public Casa.Jogadores jogador;
@@ -34,5 +35,5 @@ namespace LANudo
         void ResultadoDado(int resultado); //Invoca uma animação de dado e no final mostra o resultado;
         void AtualizaTabuleiro(Peao[] _peoes);
         void SuaVez(); //Chama para pedir um feedback
-    }
+    }*/
 }
